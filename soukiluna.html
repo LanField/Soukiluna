@@ -1,0 +1,3550 @@
+<!DOCTYPE html>
+   <html lang="en">
+       <head>
+                <meta charset="UTF-8">
+                      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                            <title>Soukiluna Pet Shop - Rabat</title>
+                            <link rel="icon" type="image/svg+xml" href="logo.png">
+                            <link rel="apple-touch-icon" href="logo.png">
+                        <script src="https://cdn.tailwindcss.com"></script>
+                            <link href="https://cdn.jsdelivr.net/npm/@fontsource/nunito@5.0.17/index.css" rel="stylesheet">
+          <style>
+body {
+font-family: 'Nunito', sans-serif;
+background-color: #fdfbf7;
+overflow-x: hidden;
+position: relative;
+}
+body::before {
+content: '';
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-image: url('sukiluna.png');
+background-repeat: no-repeat;
+background-size: cover;
+background-position: center;
+background-attachment: fixed;
+filter: blur(0px);
+transform: scale(1.1);
+z-index: -2;
+}
+body::after {
+content: '';
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(253, 251, 247, 0.30);
+z-index: -1;
+pointer-events: none;
+}
+.fade-in { animation: fadeIn 0.5s ease-out forwards; }
+.slide-up { animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.fade-out { animation: fadeOut 0.3s ease-out forwards; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+@keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.category-card { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.category-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+.category-overlay { transition: opacity 0.3s ease; }
+.category-card:hover .category-overlay { opacity: 1; }
+.product-card { transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; }
+.product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+.language-selector { position: relative; display: inline-block; }
+.language-btn {
+background: rgba(255, 255, 255, 0.8);
+backdrop-filter: blur(10px);
+-webkit-backdrop-filter: blur(10px);
+border: 2px solid rgba(255, 255, 255, 0.7);
+border-radius: 9999px;
+padding: 0.5rem 1.25rem;
+font-weight: 600;
+color: #6b7280;
+cursor: pointer;
+display: flex;
+align-items: center;
+gap: 0.5rem;
+transition: all 0.3s ease;
+}
+.language-btn:hover { background: rgba(255, 255, 255, 0.95); color: #f43f5e; border-color: #f43f5e; }
+.language-dropdown {
+position: absolute;
+top: 100%;
+right: 0;
+margin-top: 0.5rem;
+background: rgba(255, 255, 255, 0.95);
+backdrop-filter: blur(15px);
+border: 2px solid rgba(255, 255, 255, 0.7);
+border-radius: 1rem;
+padding: 0.5rem;
+min-width: 160px;
+box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+z-index: 50;
+display: none;
+flex-direction: column;
+gap: 0.25rem;
+}
+.language-selector.active .language-dropdown { display: flex; }
+.language-option {
+padding: 0.5rem 1rem;
+border-radius: 0.5rem;
+cursor: pointer;
+font-weight: 500;
+color: #4b5563;
+transition: all 0.2s ease;
+display: flex;
+align-items: center;
+gap: 0.5rem;
+}
+.language-option:hover, .language-option.active { background: rgba(244, 63, 94, 0.1); color: #f43f5e; }
+.language-option.active { font-weight: 600; }
+.about-combined-container {
+background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.3) 100%);
+backdrop-filter: blur(20px);
+border-radius: 2rem;
+padding: 1.5rem;
+display: grid;
+grid-template-columns: 1fr;
+gap: 1.5rem;
+overflow: hidden;
+position: relative;
+transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.about-combined-container.hidden {
+opacity: 0;
+transform: translateY(-20px);
+pointer-events: none;
+max-height: 0;
+padding: 0;
+margin: 0;
+overflow: hidden;
+}
+@media (min-width: 768px) { .about-combined-container { grid-template-columns: 1fr 1fr; } }
+.about-text-container {
+background: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0.6) 100%);
+backdrop-filter: blur(120px);
+padding: 2.5rem 2rem;
+display: flex;
+flex-direction: column;
+justify-content: center;
+position: relative;
+border: 2px solid rgba(255, 255, 255, 0.7);
+border-radius: 1.5rem;
+text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
+}
+.logo-container { padding: 2rem; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+.logo-container::before {
+content: '';
+position: absolute;
+top: -50%;
+left: -50%;
+width: 200%;
+height: 200%;
+background: radial-gradient(circle, transparent 100%);
+animation: pulse 4s ease-in-out infinite;
+}
+@keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.1); opacity: 0.8; } }
+.logo-image {
+position: relative;
+z-index: 1;
+filter: drop-shadow(0 10px 20px rgba(244, 63, 94, 0.25));
+transition: transform 0.3s ease;
+border: 3px solid rgba(255, 255, 255, 0.9);
+border-radius: 1.5rem;
+padding: 0.5rem;
+background: rgba(255, 255, 255, 0.2);
+backdrop-filter: blur(10px);
+}
+.logo-container:hover .logo-image { transform: scale(1.05); }
+.glass-card {
+background: rgba(255, 255, 255, 0.8);
+backdrop-filter: blur(10px);
+border: 1px solid rgba(255, 255, 255, 0.5);
+box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+.glass-badge {
+background: rgba(255, 255, 255, 0.5);
+backdrop-filter: blur(10px);
+border: 1px solid rgba(255, 255, 255, 0.4);
+}
+.product-image {
+width: 100%;
+height: 180px;
+object-fit: cover;
+border-radius: 1rem;
+background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+}
+.product-price { font-weight: 700; color: #f43f5e; font-size: 1.125rem; }
+.product-weight {
+font-size: 0.75rem;
+color: #6b7280;
+background: rgba(244, 63, 94, 0.1);
+padding: 0.25rem 0.5rem;
+border-radius: 9999px;
+font-weight: 600;
+}
+.add-to-cart-btn {
+background: linear-gradient(135deg, #f43f5e, #fb7185);
+color: white;
+padding: 0.5rem 1rem;
+border-radius: 9999px;
+font-weight: 600;
+font-size: 0.875rem;
+transition: all 0.3s ease;
+border: none;
+cursor: pointer;
+display: flex;
+align-items: center;
+gap: 0.375rem;
+}
+.add-to-cart-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(244, 63, 94, 0.4); }
+.add-to-cart-btn:active { transform: translateY(0); }
+.cart-badge {
+position: absolute;
+top: -0.5rem;
+right: -0.5rem;
+background: #f43f5e;
+color: white;
+font-size: 0.75rem;
+font-weight: 700;
+width: 1.25rem;
+height: 1.25rem;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+animation: pulse-cart 2s infinite;
+}
+@keyframes pulse-cart { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+.cart-modal {
+position: fixed;
+top: 0;
+right: -400px;
+width: 100%;
+max-width: 400px;
+height: 100vh;
+background: rgba(255, 255, 255, 0.95);
+backdrop-filter: blur(20px);
+box-shadow: -10px 0 40px rgba(0, 0, 0, 0.15);
+z-index: 100;
+transition: right 0.3s ease;
+display: flex;
+flex-direction: column;
+}
+.cart-modal.active { right: 0; }
+.cart-overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.4);
+z-index: 99;
+opacity: 0;
+visibility: hidden;
+transition: all 0.3s ease;
+}
+.cart-overlay.active { opacity: 1; visibility: visible; }
+.cart-item { display: flex; gap: 1rem; padding: 1rem; border-bottom: 1px solid rgba(0, 0, 0, 0.05); }
+.cart-item-image { width: 60px; height: 60px; border-radius: 0.75rem; background: linear-gradient(135deg, #f3f4f6, #e5e7eb); flex-shrink: 0; }
+.cart-item-info { flex: 1; }
+.cart-item-name { font-weight: 600; color: #1f2937; margin-bottom: 0.25rem; }
+.cart-item-price { color: #f43f5e; font-weight: 600; }
+.cart-item-weight { font-size: 0.75rem; color: #6b7280; margin-top: 0.25rem; }
+.cart-item-quantity { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem; }
+.quantity-btn {
+width: 1.5rem;
+height: 1.5rem;
+border-radius: 9999px;
+border: 1px solid rgba(0, 0, 0, 0.1);
+background: white;
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+font-weight: 600;
+transition: all 0.2s ease;
+}
+.quantity-btn:hover { background: #f43f5e; color: white; border-color: #f43f5e; }
+.remove-item-btn { color: #9ca3af; cursor: pointer; transition: color 0.2s ease; }
+.remove-item-btn:hover { color: #f43f5e; }
+.cart-total { border-top: 2px solid rgba(0, 0, 0, 0.1); padding: 1.5rem; background: rgba(255, 255, 255, 0.5); }
+.checkout-btn {
+background: linear-gradient(135deg, #f43f5e, #fb7185);
+color: white;
+padding: 1rem 2rem;
+border-radius: 9999px;
+font-weight: 700;
+font-size: 1rem;
+width: 100%;
+border: none;
+cursor: pointer;
+transition: all 0.3s ease;
+margin-top: 1rem;
+}
+.checkout-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(244, 63, 94, 0.4); }
+.empty-cart { text-align: center; padding: 3rem 2rem; color: #6b7280; }
+.empty-cart-icon { font-size: 3rem; margin-bottom: 1rem; }
+/* PRODUCT DETAIL MODAL */
+.product-detail-modal {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.5);
+z-index: 90;
+display: flex;
+align-items: center;
+justify-content: center;
+opacity: 0;
+visibility: hidden;
+transition: all 0.3s ease;
+padding: 1rem;
+}
+.product-detail-modal.active {
+opacity: 1;
+visibility: visible;
+}
+.product-detail-content {
+background: white;
+border-radius: 2rem;
+max-width: 600px;
+width: 100%;
+max-height: 90vh;
+overflow-y: auto;
+animation: slideUp 0.3s ease;
+}
+.product-detail-header {
+position: relative;
+height: 300px;
+overflow: hidden;
+border-radius: 2rem 2rem 0 0;
+}
+.product-detail-header img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+.product-detail-close {
+position: absolute;
+top: 1rem;
+right: 1rem;
+background: rgba(255, 255, 255, 0.9);
+border: none;
+width: 2.5rem;
+height: 2.5rem;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+transition: all 0.3s ease;
+z-index: 10;
+}
+.product-detail-close:hover {
+background: #f43f5e;
+color: white;
+transform: scale(1.1);
+}
+.product-detail-body {
+padding: 2rem;
+}
+.product-detail-title {
+font-size: 1.75rem;
+font-weight: 700;
+color: #1f2937;
+margin-bottom: 1rem;
+}
+.product-detail-price {
+font-size: 2rem;
+font-weight: 700;
+color: #f43f5e;
+margin-bottom: 1rem;
+}
+.product-detail-info {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 1rem;
+margin-bottom: 1.5rem;
+}
+.product-detail-info-item {
+background: #f9fafb;
+padding: 1rem;
+border-radius: 1rem;
+border: 1px solid #e5e7eb;
+}
+.product-detail-info-label {
+font-size: 0.875rem;
+color: #6b7280;
+font-weight: 600;
+text-transform: uppercase;
+margin-bottom: 0.5rem;
+}
+.product-detail-info-value {
+font-size: 1.125rem;
+font-weight: 600;
+color: #1f2937;
+}
+.product-detail-description {
+background: linear-gradient(135deg, rgba(244, 63, 94, 0.05) 0%, rgba(251, 113, 133, 0.05) 100%);
+padding: 1.5rem;
+border-radius: 1.5rem;
+border-left: 4px solid #f43f5e;
+margin-bottom: 1.5rem;
+line-height: 1.6;
+color: #374151;
+}
+.product-detail-actions {
+display: flex;
+gap: 1rem;
+}
+.product-detail-actions button {
+flex: 1;
+padding: 1rem;
+border: none;
+border-radius: 1rem;
+font-weight: 600;
+font-size: 1rem;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+.btn-add-to-cart {
+background: linear-gradient(135deg, #f43f5e, #fb7185);
+color: white;
+}
+.btn-add-to-cart:hover {
+transform: translateY(-2px);
+box-shadow: 0 8px 25px rgba(244, 63, 94, 0.4);
+}
+.btn-close-modal {
+background: #f3f4f6;
+color: #6b7280;
+border: 2px solid #e5e7eb;
+}
+.btn-close-modal:hover {
+background: #e5e7eb;
+border-color: #d1d5db;
+}
+.search-and-results-wrapper {
+background: linear-gradient(180deg, rgba(253, 251, 247, 0.98) 0%, rgba(253, 251, 247, 0.95) 100%);
+backdrop-filter: blur(15px);
+border: 2px solid rgba(255, 255, 255, 0.7);
+border-radius: 1.5rem;
+box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
+overflow: hidden;
+position: sticky;
+top: 0;
+z-index: 20;
+}
+.search-container {
+padding: 1rem 1.5rem;
+border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+}
+.filter-buttons-container {
+padding: 1rem 1.5rem;
+border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+display: flex;
+gap: 0.75rem;
+flex-wrap: wrap;
+justify-content: center;
+}
+.filter-btn {
+padding: 0.6rem 1.25rem;
+border: 2px solid rgba(244, 63, 94, 0.3);
+border-radius: 9999px;
+background: rgba(255, 255, 255, 0.6);
+color: #6b7280;
+font-weight: 600;
+font-size: 0.875rem;
+cursor: pointer;
+transition: all 0.3s ease;
+backdrop-filter: blur(10px);
+}
+.filter-btn:hover {
+background: rgba(255, 255, 255, 0.8);
+border-color: #f43f5e;
+color: #f43f5e;
+transform: translateY(-2px);
+box-shadow: 0 4px 12px rgba(244, 63, 94, 0.2);
+}
+.filter-btn.active {
+background: linear-gradient(135deg, #f43f5e, #fb7185);
+color: white;
+border-color: #f43f5e;
+box-shadow: 0 4px 12px rgba(244, 63, 94, 0.4);
+}
+.search-input-wrapper {
+position: relative;
+display: flex;
+align-items: center;
+gap: 0.75rem;
+}
+.search-input {
+flex: 1;
+padding: 0.65rem 1.25rem;
+border: 2px solid rgba(244, 63, 94, 0.2);
+border-radius: 9999px;
+font-size: 0.95rem;
+font-family: 'Nunito', sans-serif;
+background: rgba(255, 255, 255, 0.75);
+backdrop-filter: blur(10px);
+transition: all 0.3s ease;
+outline: none;
+}
+.search-input:focus {
+border-color: #f43f5e;
+background: rgba(255, 255, 255, 0.95);
+box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.1);
+}
+.search-input::placeholder {
+color: #9ca3af;
+}
+.search-icon {
+position: absolute;
+right: 1.25rem;
+color: #d1d5db;
+pointer-events: none;
+}
+.search-results-info {
+margin-top: 0.5rem;
+font-size: 0.8rem;
+color: #6b7280;
+text-align: center;
+}
+.search-results-info.highlight {
+color: #f43f5e;
+font-weight: 600;
+}
+.search-results-container {
+max-height: 0;
+overflow: hidden;
+transition: max-height 0.3s ease;
+}
+.search-results-container.active {
+max-height: 800px;
+overflow-y: auto;
+}
+.search-results-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+gap: 1rem;
+padding: 1.5rem;
+}
+.no-results {
+text-align: center;
+padding: 2rem 1rem;
+color: #9ca3af;
+grid-column: 1 / -1;
+}
+.no-results-icon {
+font-size: 2.5rem;
+margin-bottom: 0.5rem;
+}
+.product-card.hidden-search {
+display: none;
+}
+.product-card.hidden-filter {
+display: none;
+}
+.section-title {
+margin-top: 2rem;
+}
+.section-title.hidden-search {
+display: none;
+}
+.section-title.hidden-filter {
+display: none;
+}
+.products-wrapper {
+padding-top: 2rem;
+}
+[dir="rtl"] { direction: rtl; text-align: right; }
+[dir="rtl"] .language-dropdown { right: auto; left: 0; }
+[dir="rtl"] .language-btn svg { transform: scaleX(-1); }
+[dir="rtl"] .cart-modal { right: auto; left: -400px; }
+[dir="rtl"] .cart-modal.active { left: 0; }
+[dir="rtl"] .search-icon { right: auto; left: 1.25rem; }
+[dir="rtl"] .product-detail-close { left: 1rem; right: auto; }
+</style>
+</head>
+<body class="text-gray-800 antialiased min-h-screen flex flex-col">
+<header class="p-6 text-center relative z-10">
+<div class="flex justify-between items-center mb-4">
+<img src="logo.png" alt="Soukiluna Pet Shop Logo" class="h-20 w-20 object-contain drop-shadow-lg bg-white/90 backdrop-blur-sm rounded-full p-1 border border-white/50">
+<div class="flex items-center gap-3">
+<div class="language-selector" id="languageSelector">
+<button class="language-btn" id="languageBtn">
+<span id="currentLang">🇬🇧 EN</span>
+<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+</svg>
+</button>
+<div class="language-dropdown">
+<div class="language-option active" data-lang="en" onclick="setLanguage('en')">
+<span>🇬🇧</span> English
+</div>
+<div class="language-option" data-lang="fr" onclick="setLanguage('fr')">
+<span>🇫🇷</span> Français
+</div>
+<div class="language-option" data-lang="ar" onclick="setLanguage('ar')" dir="rtl">
+<span>🇲🇦</span> العربية
+</div>
+</div>
+</div>
+<button onclick="toggleCart()" class="relative p-2 bg-white/80 backdrop-blur-sm rounded-full hover:bg-pink-100/80 hover:text-pink-500 transition-colors border border-white/50">
+<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+</svg>
+<span id="cartCount" class="cart-badge hidden">0</span>
+</button>
+</div>
+</div>
+<h1 class="text-4xl md:text-5xl font-bold text-gray-800 tracking-tight">
+Soukiluna <span class="text-pink-500">Pet Shop</span>
+</h1>
+<p class="text-gray-500 mt-2 font-medium" data-i18n="tagline">Your pet's happy place in Rabat</p>
+</header>
+<section id="aboutSection" class="container mx-auto px-4 py-8 max-w-5xl transition-all duration-300">
+<div class="about-combined-container slide-up">
+<div class="about-text-container">
+<h2 class="text-3xl font-bold text-gray-800 mb-4" data-i18n="welcome_title">Welcome to Soukiluna</h2>
+<p class="text-gray-700 leading-relaxed mb-4" data-i18n="welcome_text1">
+Nestled in the heart of <strong>Rabat, Morocco</strong>, Soukiluna is your pet's sanctuary. Our name combines <strong>"Souki"</strong> from Soukayna, the shop's owner, and <strong>"Luna"</strong>, her beloved husky who inspired this journey.
+</p>
+<p class="text-gray-700 leading-relaxed mb-6" data-i18n="welcome_text2">
+We provide premium pet supplies, nutritious food, adorable accessories, and loving adoption services with expert advice from our passionate team.
+</p>
+<div class="flex flex-wrap gap-3">
+<span class="px-4 py-2 glass-badge text-pink-600 rounded-full text-sm font-semibold">📍 <span data-i18n="address">Mounazeh Avenue, Rabat</span></span>
+<span class="px-4 py-2 glass-badge text-green-600 rounded-full text-sm font-semibold">🐾 <span data-i18n="adoption">Pet Adoption</span></span>
+<span class="px-4 py-2 glass-badge text-blue-600 rounded-full text-sm font-semibold">💝 <span data-i18n="care">Premium Care</span></span>
+</div>
+</div>
+<div class="logo-container">
+<img src="logo.png" alt="Soukiluna Pet Shop Logo" class="logo-image max-w-full max-h-40 object-contain">
+</div>
+</div>
+</section>
+<main id="main-container" class="flex-grow container mx-auto px-4 py-8 relative z-10">
+<div id="category-view" class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto fade-in">
+<!-- Cats Card -->
+<div onclick="openCategory('cats')" class="category-card glass-card cursor-pointer group relative h-96 rounded-3xl overflow-hidden border-2 border-white/60">
+<img src="cat.png" alt="Cat" class="w-full h-full object-cover absolute inset-0 transition-transform duration-700 group-hover:scale-110">
+<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+<div class="absolute bottom-0 left-0 w-full p-8 text-center transition-all duration-300 group-hover:-translate-y-4">
+<h2 class="text-4xl font-bold text-white mb-2 drop-shadow-md" data-i18n="cats">Cats</h2>
+<p class="text-white/90 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100" data-i18n="explore">Click to explore</p>
+</div>
+<div class="category-overlay absolute inset-0 bg-orange-500/85 backdrop-blur-sm flex flex-col items-center justify-center opacity-0 pointer-events-none group-hover:pointer-events-auto">
+<ul class="text-white text-xl font-bold space-y-4 text-center">
+<li onclick="openCategory('cats', 'food'); event.stopPropagation();" class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75 cursor-pointer hover:scale-110 hover:text-yellow-200" data-i18n="food">Food</li>
+<li onclick="openCategory('cats', 'healthcare'); event.stopPropagation();" class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-85 cursor-pointer hover:scale-110 hover:text-yellow-200">Healthcare</li>
+<li onclick="openCategory('cats', 'accessories'); event.stopPropagation();" class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-100 cursor-pointer hover:scale-110 hover:text-yellow-200" data-i18n="accessories">Accessories</li>
+<li onclick="openCategory('cats', 'toys'); event.stopPropagation();" class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-150 cursor-pointer hover:scale-110 hover:text-yellow-200" data-i18n="toys">Toys</li>
+<li onclick="openCategory('cats', 'clothes'); event.stopPropagation();" class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-200 cursor-pointer hover:scale-110 hover:text-yellow-200" data-i18n="clothes">Clothes</li>
+</ul>
+</div>
+</div>
+<!-- Dogs Card -->
+<div onclick="openCategory('dogs')" class="category-card glass-card cursor-pointer group relative h-96 rounded-3xl overflow-hidden border-2 border-white/60">
+<img src="dog.png" alt="Dog" class="w-full h-full object-cover absolute inset-0 transition-transform duration-700 group-hover:scale-110">
+<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+<div class="absolute bottom-0 left-0 w-full p-8 text-center transition-all duration-300 group-hover:-translate-y-4">
+<h2 class="text-4xl font-bold text-white mb-2 drop-shadow-md" data-i18n="dogs">Dogs</h2>
+<p class="text-white/90 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100" data-i18n="explore">Click to explore</p>
+</div>
+<div class="category-overlay absolute inset-0 bg-emerald-500/85 backdrop-blur-sm flex flex-col items-center justify-center opacity-0 pointer-events-none group-hover:pointer-events-auto">
+<ul class="text-white text-xl font-bold space-y-4 text-center">
+<li onclick="openCategory('dogs', 'food'); event.stopPropagation();" class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75 cursor-pointer hover:scale-110 hover:text-yellow-200" data-i18n="food">Food</li>
+<li onclick="openCategory('dogs', 'healthcare'); event.stopPropagation();" class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-85 cursor-pointer hover:scale-110 hover:text-yellow-200">Healthcare</li>
+<li onclick="openCategory('dogs', 'accessories'); event.stopPropagation();" class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-100 cursor-pointer hover:scale-110 hover:text-yellow-200" data-i18n="accessories">Accessories</li>
+<li onclick="openCategory('dogs', 'toys'); event.stopPropagation();" class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-150 cursor-pointer hover:scale-110 hover:text-yellow-200" data-i18n="toys">Toys</li>
+<li onclick="openCategory('dogs', 'clothes'); event.stopPropagation();" class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-200 cursor-pointer hover:scale-110 hover:text-yellow-200" data-i18n="clothes">Clothes</li>
+</ul>
+</div>
+</div>
+<!-- Birds Card -->
+<div onclick="openCategory('birds')" class="category-card glass-card cursor-pointer group relative h-96 rounded-3xl overflow-hidden border-2 border-white/60">
+<img src="bird.png" alt="Bird" class="w-full h-full object-cover absolute inset-0 transition-transform duration-700 group-hover:scale-110">
+<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+<div class="absolute bottom-0 left-0 w-full p-8 text-center transition-all duration-300 group-hover:-translate-y-4">
+<h2 class="text-4xl font-bold text-white mb-2 drop-shadow-md" data-i18n="birds">Birds</h2>
+<p class="text-white/90 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100" data-i18n="explore">Click to explore</p>
+</div>
+<div class="category-overlay absolute inset-0 bg-sky-500/85 backdrop-blur-sm flex flex-col items-center justify-center opacity-0 pointer-events-none group-hover:pointer-events-auto">
+<ul class="text-white text-xl font-bold space-y-4 text-center">
+<li onclick="openCategory('birds', 'food'); event.stopPropagation();" class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75 cursor-pointer hover:scale-110 hover:text-yellow-200" data-i18n="food">Food</li>
+<li onclick="openCategory('birds', 'healthcare'); event.stopPropagation();" class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-85 cursor-pointer hover:scale-110 hover:text-yellow-200">Healthcare</li>
+<li onclick="openCategory('birds', 'toys'); event.stopPropagation();" class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-100 cursor-pointer hover:scale-110 hover:text-yellow-200" data-i18n="toys">Toys</li>
+<li onclick="openCategory('birds', 'accessories'); event.stopPropagation();" class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-150 cursor-pointer hover:scale-110 hover:text-yellow-200" data-i18n="accessories">Accessories</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="detail-view" class="hidden max-w-7xl mx-auto">
+<button onclick="goBack()" class="mb-3 flex items-center text-gray-500 hover:text-gray-800 transition-colors font-bold text-lg group glass-card px-4 py-2 rounded-full w-fit">
+<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 transform group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+</svg>
+<span data-i18n="back">Back to Categories</span>
+</button>
+<!-- Search Bar & Filters & Results -->
+<div id="searchAndResultsWrapper" class="search-and-results-wrapper hidden">
+<div id="searchContainer" class="search-container">
+<div class="search-input-wrapper">
+<input
+type="text"
+id="searchInput"
+class="search-input"
+placeholder="Search products..."
+data-i18n-placeholder="search_placeholder"
+oninput="filterProducts()"
+>
+<svg xmlns="http://www.w3.org/2000/svg" class="search-icon h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+</svg>
+</div>
+<div id="searchInfo" class="search-results-info"></div>
+</div>
+<!-- Filter Buttons -->
+<div id="filterButtonsContainer" class="filter-buttons-container hidden">
+<button class="filter-btn active" onclick="setFoodFilter('all')" data-i18n="all_types">All Types</button>
+<button class="filter-btn" onclick="setFoodFilter('sterilized')" data-i18n="sterilized">🏥 Sterilized</button>
+<button class="filter-btn" onclick="setFoodFilter('normal')" data-i18n="normal">✅ Normal</button>
+<button class="filter-btn" onclick="setFoodFilter('urinary')" data-i18n="urinary">💧 Urinary</button>
+<button class="filter-btn" onclick="setFoodFilter('supplements')" data-i18n="supplements">💊 Supplements</button>
+<!-- Healthcare Filters -->
+<button class="filter-btn hidden" id="healthcareShampooBtn" onclick="setHealthcareFilter('shampoo')">🧴 Shampoos</button>
+<button class="filter-btn hidden" id="healthcarePomadesBtn" onclick="setHealthcareFilter('pomades')">💊 Pomades</button>
+<button class="filter-btn hidden" id="healthcareSpraysBtn" onclick="setHealthcareFilter('sprays')">🧴 Sprays</button>
+</div>
+<!-- Search Results Grid -->
+<div id="searchResultsContainer" class="search-results-container">
+<div id="searchResultsGrid" class="search-results-grid"></div>
+</div>
+</div>
+<!-- All Products Content -->
+<div id="detail-content" class="slide-up products-wrapper"></div>
+</div>
+</main>
+<!-- PRODUCT DETAIL MODAL -->
+<div id="productDetailModal" class="product-detail-modal" onclick="closeProductDetail(event)">
+<div class="product-detail-content" onclick="event.stopPropagation()">
+<div class="product-detail-header">
+<img id="detailImage" src="" alt="Product" onerror="this.src='image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 300 300%22><rect fill=%22%23f3f4f6%22 width=%22300%22 height=%22300%22/></svg>'">
+<button class="product-detail-close" onclick="closeProductDetail()">
+<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+</svg>
+</button>
+</div>
+<div class="product-detail-body">
+<h2 id="detailTitle" class="product-detail-title"></h2>
+<div id="detailPrice" class="product-detail-price"></div>
+<div class="product-detail-info">
+<div class="product-detail-info-item">
+<div class="product-detail-info-label" data-i18n="weight">Weight</div>
+<div id="detailWeight" class="product-detail-info-value"></div>
+</div>
+<div class="product-detail-info-item">
+<div class="product-detail-info-label" data-i18n="availability">Availability</div>
+<div class="product-detail-info-value text-green-600">✓ In Stock</div>
+</div>
+</div>
+<div class="product-detail-description">
+<strong>Premium Quality Pet Product</strong><br><br>
+<span id="detailDescription"></span>
+</div>
+<div class="product-detail-actions">
+<button class="btn-add-to-cart" onclick="addToCartFromModal()">
+<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+</svg>
+<span data-i18n="add_to_cart">Add to Cart</span>
+</button>
+<button class="btn-close-modal" onclick="closeProductDetail()">Close</button>
+</div>
+</div>
+</div>
+</div>
+<footer class="glass-card border-t border-white/40 py-8 mt-auto">
+<div class="container mx-auto px-4">
+<div class="flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="text-center md:text-left">
+<h3 class="font-bold text-xl text-gray-800">Soukiluna Pet Shop</h3>
+<p class="text-sm text-gray-500 mt-1" data-i18n="footer_tagline">Making tails wag in Rabat since 2024</p>
+</div>
+<div class="flex flex-col md:flex-row gap-6 text-sm text-gray-600 font-medium">
+<div class="flex items-center gap-2">
+<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+</svg>
+0621-167222
+</div>
+<div class="flex items-center gap-2">
+<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+</svg>
+<span data-i18n="address">Mounazeh Avenue, Rabat, Morocco</span>
+</div>
+</div>
+<div class="flex gap-4">
+<a href="https://www.instagram.com/soukiluna_petshop?igsh=MWVocnc3NjFxYXhmMw==" target="_blank" class="p-2 bg-white/60 backdrop-blur-sm rounded-full hover:bg-pink-100/80 hover:text-pink-500 transition-colors border border-white/40">
+<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+</a>
+<a href="https://www.tiktok.com/@soukiluna.pet.shop?_r=1&_t=ZS-94iXfclwujk" target="_blank" class="p-2 bg-white/60 backdrop-blur-sm rounded-full hover:bg-black/80 hover:text-white transition-colors border border-white/40">
+<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+<div id="cartOverlay" class="cart-overlay" onclick="toggleCart()"></div>
+<div id="cartModal" class="cart-modal">
+<div class="p-6 border-b border-gray-200 flex items-center justify-between">
+<h3 class="text-xl font-bold text-gray-800" data-i18n="your_cart">Your Cart</h3>
+<button onclick="toggleCart()" class="p-2 hover:bg-gray-100 rounded-full transition-colors">
+<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+</svg>
+</button>
+</div>
+<div id="cartItems" class="flex-1 overflow-y-auto p-4 space-y-2"></div>
+<div class="cart-total">
+<div class="flex justify-between items-center mb-2">
+<span class="text-gray-600" data-i18n="subtotal">Subtotal:</span>
+<span id="cartTotal" class="text-xl font-bold text-gray-800">0 DH</span>
+</div>
+<button class="checkout-btn" onclick="checkout()" data-i18n="checkout">Proceed to Checkout</button>
+</div>
+</div>
+<script>
+let currentProduct = null;
+const translations = {
+en: {
+tagline: "Your pet's happy place in Rabat",
+welcome_title: "Welcome to Soukiluna",
+welcome_text1: 'Nestled in the heart of <strong>Rabat, Morocco</strong>, Soukiluna is your pet\'s sanctuary. Our name combines <strong>"Souki"</strong> from Soukayna, the shop\'s owner, and <strong>"Luna"</strong>, her beloved husky who inspired this journey.',
+welcome_text2: "We provide premium pet supplies, nutritious food, adorable accessories, and loving adoption services with expert advice from our passionate team.",
+address: "Mounazeh Avenue, Rabat",
+adoption: "Pet Adoption",
+care: "Premium Care",
+cats: "Cats",
+dogs: "Dogs",
+birds: "Birds",
+explore: "Click to explore",
+accessories: "Accessories",
+clothes: "Clothes",
+toys: "Toys",
+food: "Food",
+healthcare: "Healthcare",
+shampoo: "🧴 Shampoos",
+pomades: "💊 Pomades & Treatments",
+sprays: "🧴 Sprays",
+back: "Back to Categories",
+footer_tagline: "Making tails wag in Rabat since 2024",
+add_to_cart: "Add to Cart",
+added: "Added!",
+your_cart: "Your Cart",
+empty_cart: "Your cart is empty",
+start_shopping: "Start shopping",
+subtotal: "Subtotal:",
+checkout: "Proceed to Checkout",
+remove: "Remove",
+weight: "Weight",
+dry_food: "Dry Food",
+wet_food: "Wet Food",
+sterilized: "Sterilized",
+normal: "Normal",
+urinary: "Urinary",
+supplements: "💊 Supplements",
+all_types: "All Types",
+search_placeholder: "Search products...",
+search_results: "Found {count} product(s)",
+no_results: "No products found",
+clear_search: "Clear search",
+availability: "Availability"
+},
+fr: {
+tagline: "Le lieu de bonheur de votre animal à Rabat",
+welcome_title: "Bienvenue chez Soukiluna",
+welcome_text1: 'Niché au cœur de <strong>Rabat, Maroc</strong>, Soukiluna est le sanctuaire de votre animal. Notre nom combine <strong>"Souki"</strong> de Soukayna, la propriétaire, et <strong>"Luna"</strong>, son husky bien-aimé qui a inspiré ce voyage.',
+welcome_text2: "Nous proposons des fournitures premium, une nourriture nutritive, des accessoires adorables et des services d'adoption aimants avec les conseils experts de notre équipe passionnée.",
+address: "Avenue Mounazeh, Rabat",
+adoption: "Adoption d'animaux",
+care: "Soins Premium",
+cats: "Chats",
+dogs: "Chiens",
+birds: "Oiseaux",
+explore: "Cliquez pour explorer",
+accessories: "Accessoires",
+clothes: "Vêtements",
+toys: "Jouets",
+food: "Nourriture",
+healthcare: "Santé",
+shampoo: "🧴 Shampoings",
+pomades: "💊 Pommades & Traitements",
+sprays: "🧴 Sprays",
+back: "Retour aux catégories",
+footer_tagline: "Faire remuer les queues à Rabat depuis 2024",
+add_to_cart: "Ajouter au panier",
+added: "Ajouté!",
+your_cart: "Votre panier",
+empty_cart: "Votre panier est vide",
+start_shopping: "Commencer vos achats",
+subtotal: "Sous-total:",
+checkout: "Passer à la caisse",
+remove: "Supprimer",
+weight: "Poids",
+dry_food: "Nourriture sèche",
+wet_food: "Nourriture humide",
+sterilized: "Stérilisé",
+normal: "Normal",
+urinary: "Urinaire",
+supplements: "💊 Compléments",
+all_types: "Tous les types",
+search_placeholder: "Rechercher des produits...",
+search_results: "{count} produit(s) trouvé(s)",
+no_results: "Aucun produit trouvé",
+clear_search: "Effacer la recherche",
+availability: "Disponibilité"
+},
+ar: {
+tagline: "مكان سعادة حيوانك الأليف في الرباط",
+welcome_title: "مرحبًا بكم في سوكيلونا",
+welcome_text1: 'في قلب <strong>الرباط، المغرب</strong>، تُعد سوكيلونا ملاذًا لحيوانك الأليف. يجمع اسمنا بين <strong>"سوكي"</strong> من سكينة، مالكة المتجر، و <strong>"لونا"</strong>، كلبتها الهاسكي العزيزة التي ألهمت هذه الرحلة.',
+welcome_text2: "نحن نقدم لوازم حيوانات أليفة فاخرة، وطعامًا مغذيًا، وإكسسوارات لطيفة، وخدمات تبني محبة مع نصائح خبراء من فريقنا الشغوف.",
+address: "شارع منزه، الرباط",
+adoption: "تبني الحيوانات",
+care: "رعاية متميزة",
+cats: "القطط",
+dogs: "الكلاب",
+birds: "الطيور",
+explore: "انقر للاستكشاف",
+accessories: "إكسسوارات",
+clothes: "ملابس",
+toys: "ألعاب",
+food: "طعام",
+healthcare: "الرعاية الصحية",
+shampoo: "🧴 شامبو",
+pomades: "💊 مراهم وعلاجات",
+sprays: "🧴 بخاخات",
+back: "العودة إلى الفئات",
+footer_tagline: "نجعل ذيول الحيوانات ترفرف في الرباط منذ 2024",
+add_to_cart: "أضف إلى السلة",
+added: "تمت الإضافة!",
+your_cart: "سلة التسوق",
+empty_cart: "سلتك فارغة",
+start_shopping: "ابدأ التسوق",
+subtotal: "المجموع الفرعي:",
+checkout: "المتابعة للدفع",
+remove: "إزالة",
+weight: "الوزن",
+dry_food: "طعام جاف",
+wet_food: "طعام رطب",
+sterilized: "معقم",
+normal: "عادي",
+urinary: "بولي",
+supplements: "💊 المكملات",
+all_types: "جميع الأنواع",
+search_placeholder: "البحث عن المنتجات...",
+search_results: "تم العثور على {count} منتج(ات)",
+no_results: "لم يتم العثور على منتجات",
+clear_search: "مسح البحث",
+availability: "التوفر"
+}
+};
+let cart = [];
+let currentCategory = null;
+let currentSection = null;
+let currentFoodFilter = 'all';
+let currentHealthcareFilter = 'all';
+
+function showProductDetail(product) {
+currentProduct = product;
+document.getElementById('detailImage').src = product.image;
+document.getElementById('detailTitle').textContent = product.name;
+document.getElementById('detailPrice').textContent = `${product.price} DH`;
+document.getElementById('detailWeight').textContent = product.weight || 'N/A';
+document.getElementById('detailDescription').textContent = product.desc || 'Premium quality product for your beloved pet.';
+document.getElementById('productDetailModal').classList.add('active');
+}
+
+function closeProductDetail(event) {
+if (event && event.target !== event.currentTarget) return;
+document.getElementById('productDetailModal').classList.remove('active');
+currentProduct = null;
+}
+
+function addToCartFromModal() {
+if (currentProduct) {
+addToCart(currentProduct);
+closeProductDetail();
+}
+}
+
+function addToCart(product) {
+const existingItem = cart.find(item => item.id === product.id);
+if (existingItem) {
+existingItem.quantity += 1;
+} else {
+cart.push({ ...product, quantity: 1 });
+}
+updateCartCount();
+updateCartModal();
+const lang = localStorage.getItem('soukiluna_lang') || 'en';
+alert(`${product.name} ${translations[lang].added}`);
+}
+
+function removeFromCart(productId) {
+cart = cart.filter(item => item.id !== productId);
+updateCartCount();
+updateCartModal();
+}
+
+function updateQuantity(productId, change) {
+const item = cart.find(item => item.id === productId);
+if (item) {
+item.quantity += change;
+if (item.quantity <= 0) {
+removeFromCart(productId);
+} else {
+updateCartModal();
+}
+}
+}
+
+function updateCartCount() {
+const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+const badge = document.getElementById('cartCount');
+if (count > 0) {
+badge.textContent = count;
+badge.classList.remove('hidden');
+} else {
+badge.classList.add('hidden');
+}
+}
+
+function updateCartModal() {
+const cartItems = document.getElementById('cartItems');
+const cartTotal = document.getElementById('cartTotal');
+const lang = localStorage.getItem('soukiluna_lang') || 'en';
+const t = translations[lang];
+if (cart.length === 0) {
+cartItems.innerHTML = `
+<div class="empty-cart">
+<div class="empty-cart-icon">🛒</div>
+<p class="text-lg font-medium">${t.empty_cart}</p>
+<p class="text-sm mt-1">${t.start_shopping}</p>
+</div>
+`;
+cartTotal.textContent = '0 DH';
+return;
+}
+let html = '';
+let total = 0;
+cart.forEach(item => {
+const itemTotal = item.price * item.quantity;
+total += itemTotal;
+html += `
+<div class="cart-item">
+<div class="cart-item-image"></div>
+<div class="cart-item-info">
+<div class="cart-item-name">${item.name}</div>
+<div class="cart-item-price">${item.price} DH</div>
+${item.weight ? `<div class="cart-item-weight">⚖️ ${item.weight}</div>` : ''}
+<div class="cart-item-quantity">
+<button class="quantity-btn" onclick="updateQuantity('${item.id}', -1)">−</button>
+<span>${item.quantity}</span>
+<button class="quantity-btn" onclick="updateQuantity('${item.id}', 1)">+</button>
+<button class="remove-item-btn ml-auto" onclick="removeFromCart('${item.id}')">
+<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+</svg>
+</button>
+</div>
+</div>
+</div>
+`;
+});
+cartItems.innerHTML = html;
+cartTotal.textContent = `${total} DH`;
+}
+
+function toggleCart() {
+document.getElementById('cartModal').classList.toggle('active');
+document.getElementById('cartOverlay').classList.toggle('active');
+if (document.getElementById('cartModal').classList.contains('active')) {
+updateCartModal();
+}
+}
+
+function checkout() {
+if (cart.length === 0) return;
+alert('Thank you for your order! 🐾\nThis is a demo - in a real shop, you would proceed to payment.');
+cart = [];
+updateCartCount();
+toggleCart();
+}
+
+function setLanguage(lang) {
+document.querySelectorAll('.language-option').forEach(opt => {
+opt.classList.toggle('active', opt.dataset.lang === lang);
+});
+const langLabels = { en: '🇬🇧 EN', fr: '🇫🇷 FR', ar: '🇲🇦 AR' };
+document.getElementById('currentLang').textContent = langLabels[lang];
+document.documentElement.lang = lang;
+document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+document.querySelectorAll('[data-i18n]').forEach(el => {
+const key = el.dataset.i18n;
+if (translations[lang][key]) {
+el.innerHTML = translations[lang][key];
+}
+});
+const searchInput = document.getElementById('searchInput');
+if (searchInput) {
+searchInput.placeholder = translations[lang].search_placeholder;
+}
+document.getElementById('languageSelector').classList.remove('active');
+localStorage.setItem('soukiluna_lang', lang);
+if (document.getElementById('cartModal').classList.contains('active')) {
+updateCartModal();
+}
+}
+
+document.getElementById('languageBtn').addEventListener('click', (e) => {
+e.stopPropagation();
+document.getElementById('languageSelector').classList.toggle('active');
+});
+
+document.addEventListener('click', (e) => {
+if (!e.target.closest('.language-selector')) {
+document.getElementById('languageSelector').classList.remove('active');
+}
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+const savedLang = localStorage.getItem('soukiluna_lang') || 'en';
+setLanguage(savedLang);
+});
+
+function setFoodFilter(filterType) {
+currentFoodFilter = filterType;
+currentHealthcareFilter = 'all';
+document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+event.target.classList.add('active');
+document.getElementById('searchInput').value = '';
+document.getElementById('searchResultsContainer').classList.remove('active');
+document.getElementById('searchResultsGrid').innerHTML = '';
+document.getElementById('searchInfo').textContent = '';
+applyFoodFilter();
+}
+
+function applyFoodFilter() {
+document.querySelectorAll('.product-card').forEach(card => {
+const typeAttr = card.getAttribute('data-type');
+if (currentFoodFilter === 'all') {
+card.classList.remove('hidden-filter');
+} else {
+card.classList.toggle('hidden-filter', typeAttr !== currentFoodFilter);
+}
+});
+document.querySelectorAll('.section-title').forEach(section => {
+const nextGrid = section.nextElementSibling;
+if (nextGrid) {
+const visibleProducts = nextGrid.querySelectorAll('.product-card:not(.hidden-filter):not(.hidden-search)');
+section.classList.toggle('hidden-filter', visibleProducts.length === 0);
+}
+});
+}
+
+function setHealthcareFilter(filterType) {
+currentHealthcareFilter = filterType;
+currentFoodFilter = 'all';
+document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+event.target.classList.add('active');
+document.getElementById('searchInput').value = '';
+document.getElementById('searchResultsContainer').classList.remove('active');
+document.getElementById('searchResultsGrid').innerHTML = '';
+document.getElementById('searchInfo').textContent = '';
+applyHealthcareFilter();
+}
+
+function applyHealthcareFilter() {
+document.querySelectorAll('.product-card').forEach(card => {
+const subcategoryAttr = card.getAttribute('data-subcategory');
+if (currentHealthcareFilter === 'all') {
+card.classList.remove('hidden-filter');
+} else {
+card.classList.toggle('hidden-filter', subcategoryAttr !== currentHealthcareFilter);
+}
+});
+document.querySelectorAll('.section-title').forEach(section => {
+const nextGrid = section.nextElementSibling;
+if (nextGrid) {
+const visibleProducts = nextGrid.querySelectorAll('.product-card:not(.hidden-filter):not(.hidden-search)');
+section.classList.toggle('hidden-filter', visibleProducts.length === 0);
+}
+});
+}
+
+function filterProducts() {
+const searchInput = document.getElementById('searchInput').value.toLowerCase().trim();
+const lang = localStorage.getItem('soukiluna_lang') || 'en';
+const t = translations[lang];
+const searchInfo = document.getElementById('searchInfo');
+const searchResultsGrid = document.getElementById('searchResultsGrid');
+const searchResultsContainer = document.getElementById('searchResultsContainer');
+if (!searchInput) {
+document.querySelectorAll('.product-card').forEach(card => card.classList.remove('hidden-search'));
+document.querySelectorAll('.section-title').forEach(section => section.classList.remove('hidden-search'));
+searchInfo.textContent = '';
+searchResultsContainer.classList.remove('active');
+searchResultsGrid.innerHTML = '';
+if (currentSection === 'healthcare') {
+applyHealthcareFilter();
+} else {
+applyFoodFilter();
+}
+return;
+}
+let visibleCount = 0;
+let searchResultsHTML = '';
+document.querySelectorAll('.product-card').forEach(card => {
+const productName = card.querySelector('h3').textContent.toLowerCase();
+const isHiddenByFilter = card.classList.contains('hidden-filter');
+if (productName.includes(searchInput) && !isHiddenByFilter) {
+card.classList.remove('hidden-search');
+visibleCount++;
+const clone = card.cloneNode(true);
+clone.classList.remove('hidden-search', 'hidden-filter');
+searchResultsHTML += clone.outerHTML;
+} else {
+card.classList.add('hidden-search');
+}
+});
+document.querySelectorAll('.section-title').forEach(section => {
+const visibleProducts = section.nextElementSibling.querySelectorAll('.product-card:not(.hidden-search):not(.hidden-filter)');
+section.classList.toggle('hidden-search', visibleProducts.length === 0);
+});
+if (visibleCount === 0) {
+searchResultsGrid.innerHTML = `<div class="no-results"><div class="no-results-icon">🔍</div><p>${t.no_results}</p></div>`;
+searchInfo.innerHTML = '';
+searchInfo.classList.add('highlight');
+searchResultsContainer.classList.add('active');
+} else {
+searchResultsGrid.innerHTML = searchResultsHTML;
+searchInfo.textContent = t.search_results.replace('{count}', visibleCount);
+searchInfo.classList.remove('highlight');
+searchResultsContainer.classList.add('active');
+}
+}
+
+const products = {
+cats: [
+{ id: 'c1', name: 'Hills Sterilized Chicken', price: 260, weight: '1.5 kg', image: 'hill1.jpg', category: 'food', subcategory: 'dry', type: 'sterilized', desc: 'Nutritional Profile: 31.2% Protein, 10.2% Fat. Energy: 3573 kcal/kg. Contains L-carnitine for fat burning and controlled minerals (Magnesium/Phosphorus) for urinary health.' },
+{ id: 'c2', name: 'Hills Sterilized Chicken', price: 410, weight: '3 kg', image: 'hill1.jpg', category: 'food', subcategory: 'dry', type: 'sterilized', desc: 'Nutritional Profile: 31.2% Protein, 10.2% Fat. Energy: 3573 kcal/kg. Enriched with antioxidants and high-quality chicken to maintain lean muscle in adult neutered cats.' },
+{ id: 'c3', name: 'Hills Kitten Sterilized Chicken', price: 255, weight: '1.5 kg', image: 'hill2.jpeg', category: 'food', subcategory: 'dry', type: 'sterilized', desc: 'Nutritional Profile: 38.5% Protein, 14.4% Fat. Energy: 3810 kcal/kg. Includes DHA from fish oil for brain development and balanced protein for growth without excessive weight gain.' },
+{ id: 'c4', name: 'Monge Chicken Sterilized', price: 170, weight: '1.5 kg', image: 'monge.jpg', category: 'food', subcategory: 'dry', type: 'sterilized', desc: 'Nutritional Profile: 31% Protein, 12% Fat, 3.5% Fiber. Energy: 3500 kcal/kg. Formulated with X.O.S. prebiotics for gut health and a low glycemic index to regulate blood sugar.' },
+{ id: 'c5', name: 'Monge Chicken Adult Sterilized', price: 50, weight: '400 g', image: 'monge.jpg', category: 'food', subcategory: 'dry', type: 'sterilized', desc: 'Nutritional Profile: 31% Protein, 12% Fat. Energy: 350 kcal/100g. Small-portion trial size featuring rosehip antioxidants and high-fiber content for increased satiety.' },
+{ id: 'c6', name: 'Brit Sterilized Fresh Duck and Turkey', price: 170, weight: '2 kg', image: 'brit1.jpeg', category: 'food', subcategory: 'dry', type: 'sterilized', desc: 'Nutritional Profile: 32% Protein, 10% Fat, 2.7% Ash. Energy: 3540 kcal/kg. Grain-free recipe with Sea Buckthorn to maintain a low urine pH (6.0-6.5) and prevent stone formation.' },
+{ id: 'c7', name: 'Brit Sterilized Fresh Rabbit Sensitive', price: 180, weight: '2 kg', image: 'brit2.jpeg', category: 'food', subcategory: 'dry', type: 'sterilized', desc: 'Nutritional Profile: 31% Protein, 10% Fat. Energy: 3520 kcal/kg. Hypoallergenic rabbit protein and probiotics support cats with food sensitivities while maintaining a caloric deficit.' },
+{ id: 'c8', name: 'Ownat Sterilized Classic', price: 45, weight: '400 g', image: 'ownat1.jpeg', category: 'food', subcategory: 'dry', type: 'sterilized', desc: 'Nutritional Profile: 32% Protein, 12% Fat, 4% Fiber. Energy: 3450 kcal/kg. 10% fresh chicken base. Designed with natural ingredients and whole grains to optimize metabolic rate.' },
+{ id: 'c9', name: 'Ownat Sterilized Classic', price: 115, weight: '1.5 kg', image: 'ownat1.jpeg', category: 'food', subcategory: 'dry', type: 'sterilized', desc: 'Nutritional Profile: 32% Protein, 12% Fat. Energy: 345 kcal/100g. Features a high percentage of animal protein and complex carbs to provide steady energy release without fat storage.' },
+{ id: 'c10', name: 'Ownat Sterilized Classic', price: 260, weight: '4 kg', image: 'ownat1.jpeg', category: 'food', subcategory: 'dry', type: 'sterilized', desc: 'Nutritional Profile: 32% Protein, 12% Fat. Energy: 3450 kcal/kg. A balanced diet with high biological value proteins, enriched with Vitamin A, D3, and E for immune support.' },
+{ id: 'c11', name: 'Ownat Sterilized Classic', price: 530, weight: '15 kg', image: 'ownat1.jpeg', category: 'food', subcategory: 'dry', type: 'sterilized', desc: 'Nutritional Profile: 32% Protein, 12% Fat. Energy: 3450 kcal/kg. Economy size for breeders; provides optimal magnesium levels and fiber to prevent hairballs in sterilized indoor cats.' },
+{ id: 'c12', name: 'Ownat Grain Free Sterilized', price: 285, weight: '3 kg', image: 'ownat2.jpeg', category: 'food', subcategory: 'dry', type: 'sterilized', desc: 'Nutritional Profile: 42% Protein, 14% Fat, 1.3% Phosphorus. Energy: 3750 kcal/kg. High-meat, zero-grain formula that maximizes muscle maintenance while strictly controlling calories.' },
+{ id: 'c13', name: 'Ownat Grain Free Sterilized', price: 505, weight: '8 kg', image: 'ownat2.jpeg', category: 'food', subcategory: 'dry', type: 'sterilized', desc: 'Nutritional Profile: 42% Protein, 14% Fat. Energy: 375 kcal/100g. Uses tubers and legumes for healthy digestion; ideal for cats with grain allergies and low activity levels.' },
+{ id: 'c14', name: 'Reflex Stérilisé Chicken', price: 85, weight: '1.5 kg', image: 'reflix1.jpg', category: 'food', subcategory: 'dry', type: 'sterilized', desc: 'Nutritional Profile: 33% Protein, 12% Fat. Energy: 3480 kcal/kg. Fortified with Xylo-oligosaccharides and Omega 3/6 from flaxseed to improve skin and coat health.' },
+{ id: 'c15', name: 'Reflex Stérilisé Fish', price: 85, weight: '1.5 kg', image: 'reflix4.jpeg', category: 'food', subcategory: 'dry', type: 'sterilized', desc: 'Nutritional Profile: 33% Protein, 12% Fat. Energy: 3460 kcal/kg. Fish-based proteins provide essential amino acids and Taurine for cardiac health and metabolic efficiency.' },
+{ id: 'c16', name: 'Reflex Poulet Stérilisé', price: 550, weight: '15 kg', image: 'reflix3.jpeg', category: 'food', subcategory: 'dry', type: 'sterilized', desc: 'Nutritional Profile: 33% Protein, 12% Fat. Energy: 3480 kcal/kg. Bulk chicken formula with brewers yeast and yucca schidigera to significantly reduce litter box odor.' },
+{ id: 'c17', name: 'Reflex Poisson Stérilisé', price: 540, weight: '15 kg', image: 'reflix4.jpeg', category: 'food', subcategory: 'dry', type: 'sterilized', desc: 'Nutritional Profile: 33% Protein, 12% Fat. Energy: 3460 kcal/kg. Contains Vitamin E and Selenium to boost natural immunity while the fish oil aids in healthy joint function.' },
+{ id: 'c18', name: 'Reflex Viande Stérilisé', price: 550, weight: '15 kg', image: 'reflix5.jpeg', category: 'food', subcategory: 'dry', type: 'sterilized', desc: 'Nutritional Profile: 33% Protein, 12% Fat. Energy: 3480 kcal/kg. Multi-meat source kibble providing high satiety through insoluble fibers to prevent overeating.' },
+{
+id: 'me1',
+name: 'Mera Sterilized',
+price: 160,
+weight: '1.5 kg',
+image: 'mera1.png',
+category: 'food',
+subcategory: 'dry',
+type: 'sterilized',
+desc: 'Tailored nutrition for neutered cats with adjusted energy content to support weight management.'
+},
+{
+id: 'me2',
+name: 'Mera Kitten',
+price: 160,
+weight: '1.5 kg',
+image: 'mera2.jpg',
+category: 'food',
+subcategory: 'dry',
+type: 'sterilized',
+desc: 'High-protein formula enriched with essential nutrients for the healthy growth and development of young cats.'
+},
+{
+id: 'rp3',
+name: 'Reflex Plus Sterilized Beef',
+price: 550,
+weight: '15 kg',
+image: 'refliplus1.jpg',
+category: 'food',
+subcategory: 'dry',
+type: 'sterilized',
+desc: 'High-quality beef protein with balanced fiber to prevent weight gain in neutered cats.'
+},
+{
+id: 's1',
+name: 'Supreme Cat Sterilized',
+price: 470,
+weight: '15 kg',
+image: 'supreme1.webp',
+category: 'food',
+subcategory: 'dry',
+type: 'sterilized',
+desc: 'Bulk supply for sterilized cats, calculated at 40 dh/kg for optimal value.'
+},
+{ id: 'c19', name: 'Hills Adult Chicken', price: 220, weight: '1.5 kg', image: 'hillnor1.jpeg', category: 'food', subcategory: 'dry', type: 'normal', desc: 'Nutritional Profile: 32.3% Protein, 20.5% Fat. Energy: 4161 kcal/kg. High-energy formula for active cats, featuring clinical antioxidants and high-quality digestible protein.' },
+{ id: 'c20', name: 'Hills Adult Chicken', price: 300, weight: '3 kg', image: 'hillnor1.jpeg', category: 'food', subcategory: 'dry', type: 'normal', desc: 'Nutritional Profile: 32.3% Protein, 20.5% Fat. Energy: 416 kcal/100g. Promotes lean muscle and organ health with precisely balanced minerals and vitamins for adult cats.' },
+{ id: 'c21', name: 'Hills Kitten Chicken', price: 225, weight: '1.5 kg', image: 'hillnor2.jpeg', category: 'food', subcategory: 'dry', type: 'normal', desc: 'Nutritional Profile: 37.8% Protein, 23.9% Fat. Energy: 4253 kcal/kg. Maximum growth support with DHA from fish oil and high caloric density for developing immune systems.' },
+{ id: 'c22', name: 'Brit Haircare Fresh Salmon and Chicken', price: 175, weight: '2 kg', image: 'britnor1.jpeg', category: 'food', subcategory: 'dry', type: 'normal', desc: 'Nutritional Profile: 31% Protein, 16% Fat, 4.5% Fiber. Energy: 3850 kcal/kg. Rich in dietary fiber (Psyllium) to facilitate hairball passage and Salmon Oil for coat luster.' },
+{ id: 'c23', name: 'Brit Kitten Fresh Chicken and Turkey', price: 170, weight: '2 kg', image: 'britnor2.jpeg', category: 'food', subcategory: 'dry', type: 'normal', desc: 'Nutritional Profile: 38% Protein, 18% Fat. Energy: 4000 kcal/kg. Grain-free, nutrient-rich formula with colostrum to strengthen the natural defenses of kittens.' },
+{ id: 'c24', name: 'Brit Indoor Fresh Chicken', price: 170, weight: '2 kg', image: 'britnor3.jpeg', category: 'food', subcategory: 'dry', type: 'normal', desc: 'Nutritional Profile: 30% Protein, 13% Fat, 5% Fiber. Energy: 3670 kcal/kg. Lower calorie density designed for sedentary lifestyles; includes probiotics and yucca for digestion.' },
+{ id: 'c25', name: 'Brit Adult Fresh Chicken and Turkey', price: 170, weight: '2 kg', image: 'britnor4.jpeg', category: 'food', subcategory: 'dry', type: 'normal', desc: 'Nutritional Profile: 32% Protein, 16% Fat. Energy: 3910 kcal/kg. Hypoallergenic daily diet with fresh meat, ensuring high bioavailability of nutrients for healthy adult cats.' },
+{ id: 'c26', name: 'Ownat Classic Daily Care', price: 100, weight: '1.5 kg', image: 'ownatnor1.jpeg', category: 'food', subcategory: 'dry', type: 'normal', desc: 'Nutritional Profile: 30% Protein, 14% Fat. Energy: 3800 kcal/kg. Balanced natural food with fresh chicken (10%) and whole grains for maintenance of general vitality.' },
+{ id: 'c27', name: 'Ownat Classic Daily Care', price: 200, weight: '4 kg', image: 'ownatnor1.jpeg', category: 'food', subcategory: 'dry', type: 'normal', desc: 'Nutritional Profile: 30% Protein, 14% Fat. Energy: 380 kcal/100g. Provides optimal levels of calcium and phosphorus for bone health, plus natural fiber for gut transit.' },
+{ id: 'c28', name: 'Ownat Classic Daily Care', price: 500, weight: '15 kg', image: 'ownatnor1.jpeg', category: 'food', subcategory: 'dry', type: 'normal', desc: 'Nutritional Profile: 30% Protein, 14% Fat. Energy: 3800 kcal/kg. Professional bulk format featuring natural antioxidants and fresh meat for sustained cat health.' },
+{ id: 'c29', name: 'Ownat Classic Fish', price: 100, weight: '1.5 kg', image: 'ownatnor2.jpeg', category: 'food', subcategory: 'dry', type: 'normal', desc: 'Nutritional Profile: 30% Protein, 14% Fat. Energy: 3780 kcal/kg. Fish-rich recipe providing essential Omega-3 fatty acids to promote dermatological health and a shiny coat.' },
+{ id: 'c30', name: 'Ownat Classic Fish', price: 200, weight: '4 kg', image: 'ownatnor2.jpeg', category: 'food', subcategory: 'dry', type: 'normal', desc: 'Nutritional Profile: 30% Protein, 14% Fat. Energy: 378 kcal/100g. Natural seafood flavors with highly digestible animal proteins for cats with discriminating palates.' },
+{ id: 'c31', name: 'Ownat Classic Kitten', price: 105, weight: '1.5 kg', image: 'ownatnor3.jpeg', category: 'food', subcategory: 'dry', type: 'normal', desc: 'Nutritional Profile: 32% Protein, 16% Fat. Energy: 3950 kcal/kg. High-energy density with fresh meat to fuel the intense growth and development phases of kittens.' },
+{ id: 'c32', name: 'Ownat Classic Kitten', price: 225, weight: '4 kg', image: 'ownatnor3.jpeg', category: 'food', subcategory: 'dry', type: 'normal', desc: 'Nutritional Profile: 32% Protein, 16% Fat. Energy: 395 kcal/100g. Complete vitamin pack (A, D3, E) and minerals ensure robust skeletal and muscle development.' },
+{ id: 'c33', name: 'Reflex Kitten', price: 85, weight: '1.5 kg', image: 'refli1.png', category: 'food', subcategory: 'dry', type: 'normal', desc: 'Nutritional Profile: 35% Protein, 18% Fat. Energy: 3900 kcal/kg. Features X.O.S. prebiotics to stabilize intestinal flora and brewers yeast for a strong immune system.' },
+{ id: 'c34', name: 'Reflex Adult Poule', price: 100, weight: '2 kg', image: 'refli2.png', category: 'food', subcategory: 'dry', type: 'normal', desc: 'Nutritional Profile: 32% Protein, 14% Fat. Energy: 3750 kcal/kg. Balanced chicken-based kibble for adult cats, providing high-quality protein for muscle maintenance.' },
+{ id: 'c35', name: 'Reflex Kitten Poulet', price: 100, weight: '2 kg', image: 'refli3.png', category: 'food', subcategory: 'dry', type: 'normal', desc: 'Nutritional Profile: 35% Protein, 18% Fat. Energy: 3900 kcal/kg. Small kibble size specifically for kittens, enriched with Taurine and fatty acids for heart and brain health.' },
+{ id: 'c36', name: 'Reflex Kitten Poulet', price: 550, weight: '15 kg', image: 'refli3.png', category: 'food', subcategory: 'dry', type: 'normal', desc: 'Nutritional Profile: 35% Protein, 18% Fat. Energy: 3900 kcal/kg. Bulk growth formula designed to meet the high caloric and protein demands of a weaning and growing kitten.' },
+{
+id: 'r1',
+name: 'Reflex Chicken Adult',
+price: 100,
+weight: '2 kg',
+image: 'reflexex1.webp',
+category: 'food',
+subcategory: 'dry',
+type: 'adult',
+desc: 'Complete and balanced adult cat food with chicken protein, designed to meet daily nutritional needs.'
+},
+{
+id: 'r1b',
+name: 'Reflex Chicken Adult',
+price: 500,
+weight: '15 kg',
+image: 'reflexex1.webp',
+category: 'food',
+subcategory: 'dry',
+type: 'adult',
+desc: 'Complete and balanced adult cat food with chicken protein, designed to meet daily nutritional needs.'
+},
+{
+id: 'r3',
+name: 'Reflex Salmon & Rice Sterilized',
+price: 100,
+weight: '2 kg',
+image: 'reflexhigh1.webp',
+category: 'food',
+subcategory: 'dry',
+type: 'sterilized',
+desc: 'Formulated with salmon and rice for sterilized adult cats to help maintain ideal body weight.'
+},
+{
+id: 'r3b',
+name: 'Reflex Salmon & Rice Sterilized',
+price: 500,
+weight: '15 kg',
+image: 'reflexhigh1.webp',
+category: 'food',
+subcategory: 'dry',
+type: 'sterilized',
+desc: 'Formulated with salmon and rice for sterilized adult cats to help maintain ideal body weight.'
+},
+{
+id: 'r4',
+name: 'Reflex Kitten Chicken',
+price: 100,
+weight: '2 kg',
+image: 'reflexnor1.jpeg',
+category: 'food',
+subcategory: 'dry',
+type: 'kitten',
+desc: 'Specifically designed for kittens to support the immune system and healthy bone development.'
+},
+{
+id: 'rp1',
+name: 'Reflex Plus Kitten',
+price: 85,
+weight: '1.5 kg',
+image: 'refli4.webp',
+category: 'food',
+subcategory: 'dry',
+type: 'kitten',
+desc: 'Premium XOS (Xylo-oligosaccharides) enriched formula to support intestinal health in growing kittens.'
+},
+{
+id: 're1',
+name: 'Royal Elite Chicken Crunchy',
+price: 300,
+weight: '10 kg',
+image: 'royal1.jpeg',
+category: 'food',
+subcategory: 'dry',
+type: 'adult',
+desc: 'Crunchy chicken kibble providing complete nutrition at 35 dh/kg.'
+},
+{
+id: 're1b',
+name: 'Supreme Adult Croquette',
+price: 450,
+weight: '15 kg',
+image: 'royal1.jpeg',
+category: 'food',
+subcategory: 'dry',
+type: 'adult',
+desc: 'High-energy complete food for adult cats. Features selective extrusion technology for maximum digestibility. Enriched with taurine, vitamins, and minerals for daily vitality (435 kcal/100g).'
+},
+{ id: 'c37', name: 'Reflex Urinary', price: 85, weight: '1.5 kg', image: 'reflexur1.jpeg', category: 'food', subcategory: 'dry', type: 'urinary', desc: 'Nutritional Profile: 30% Protein, 12% Fat. Energy: 3550 kcal/kg. Controlled levels of Calcium, Magnesium, and Phosphorus to manage urine pH and reduce crystal formation.' },
+{ id: 'c38', name: 'Reflex Urinary', price: 550, weight: '15 kg', image: 'reflexur1.jpeg', category: 'food', subcategory: 'dry', type: 'urinary', desc: 'Nutritional Profile: 30% Protein, 12% Fat. Energy: 355 kcal/100g. Formulated with prebiotics and high-quality protein to support long-term bladder health and immunity.' },
+{
+id: 'm1',
+name: 'Monge Urinary',
+price: 180,
+weight: '1.5 kg',
+image: 'mongeur1.jpg',
+category: 'food',
+subcategory: 'dry',
+type: 'urinary',
+desc: 'Specialized formula designed to support urinary tract health by maintaining optimal mineral balance and urine pH.'
+},
+{
+id: 'rp2',
+name: 'Reflex Plus Urinary',
+price: 85,
+weight: '1.5 kg',
+image: 'refliurp1.png',
+category: 'food',
+subcategory: 'dry',
+type: 'urinary',
+desc: 'Premium formula focused on preventing crystal formation and supporting the renal system.'
+},
+{ id: 'c39w', name: 'Sauce Plaisir Morceaux pour Chats gout: truite ;saumon ;boeuf', price: 7, image: 'plasir1.jpg', category: 'food', subcategory: 'wet', type: 'sterilized', desc: 'Nutritional Profile: 8% Protein, 4.5% Fat, 82% Moisture. Energy: 85 kcal/100g. High moisture content supports kidney flushing and provides varied protein sources.' },
+{ id: 'c40w', name: 'Sauce plaisir pour chaton', price: 7, image: 'plaisir2.png', category: 'food', subcategory: 'wet', type: 'sterilized', desc: 'Nutritional Profile: 9% Protein, 5% Fat. Energy: 92 kcal/100g. Soft texture for growing kittens; fortified with Vitamin E to support the early developing immune system.' },
+{ id: 'c41w', name: 'Pack boeuf emincé eco diana en sauce 12 pochons', price: 60, weight: '100 g', image: 'diana1.jpeg', category: 'food', subcategory: 'wet', type: 'sterilized', desc: 'Nutritional Profile: 7.5% Protein, 4% Fat. Energy: 80 kcal per pouch. Bulk pack providing essential hydration and lean beef protein for weight management.' },
+{ id: 'c42w', name: 'Pack poulet emincé eco diana en sauce 12 pochons', price: 60, weight: '100 g', image: 'diana2.jpeg', category: 'food', subcategory: 'wet', type: 'sterilized', desc: 'Nutritional Profile: 7.5% Protein, 4% Fat. Energy: 80 kcal per pouch. Tender chicken in gravy, balanced for daily feeding with moderate fat and calorie levels.' },
+{ id: 'c43w', name: 'Pack poisson emincé eco diana en sauce 12 pochons', price: 60, weight: '100 g', image: 'diana3.jpeg', category: 'food', subcategory: 'wet', type: 'sterilized', desc: 'Nutritional Profile: 7.5% Protein, 4% Fat. Energy: 78 kcal per pouch. Low-calorie fish option rich in Omega-3, helping maintain weight and urinary health.' },
+{ id: 'c41w_p1', name: 'Paté au poulet Eco Diana pour chat', price: 5, weight: '100 g', image: 'dianas1.jpeg', category: 'food', subcategory: 'wet', type: 'sterilized', desc: 'Nutritional Profile: 9.5% Protein, 5% Fat. Energy: 95 kcal/100g. Dense pate with high animal protein bioavailability and added vitamins for active sterilized cats.' },
+{ id: 'c41w_p2', name: 'Paté au poisson Eco Diana pour chat', price: 5, weight: '100 g', image: 'dianas2.jpeg', category: 'food', subcategory: 'wet', type: 'sterilized', desc: 'Nutritional Profile: 9.5% Protein, 4.5% Fat. Energy: 92 kcal/100g. Nutritious seafood pate that supports a shiny coat through natural oils and mineral balance.' },
+{ id: 'c41w_p3', name: 'Paté au boeuf Eco Diana pour chat', price: 5, weight: '100 g', image: 'dianas3.jpeg', category: 'food', subcategory: 'wet', type: 'sterilized', desc: 'Nutritional Profile: 9.5% Protein, 5.5% Fat. Energy: 98 kcal/100g. Iron-rich beef protein helps maintain muscle mass while providing high moisture for hydration.' },
+{ id: 'c41w_p4', name: 'Paté au dinde Eco Diana pour chat', price: 5, weight: '100 g', image: 'dianas4.jpeg', category: 'food', subcategory: 'wet', type: 'sterilized', desc: 'Nutritional Profile: 10% Protein, 4% Fat. Energy: 90 kcal/100g. Lean turkey source, perfect for sterilized cats requiring a lower fat diet without sacrificing protein.' },
+{ id: 'c41w_d1', name: 'Diana poisson', price: 12, weight: '300 g', image: 'dianas2.jpeg', category: 'food', subcategory: 'wet', type: 'sterilized', desc: 'Nutritional Profile: 9.5% Protein, 4.5% Fat. Energy: 276 kcal per tin. Large portion fish wet food, providing essential Taurine and Zinc for skin health.' },
+{ id: 'c41w_k1', name: 'Kippy Paté mousse pour Chat Adulte Boeuf', price: 13, weight: '400 g', image: 'kippy1.png', category: 'food', subcategory: 'wet', type: 'sterilized', desc: 'Nutritional Profile: 10% Protein, 5% Fat. Energy: 380 kcal per tin. Gourmet beef mousse with high palatability and controlled mineral levels for urinary safety.' },
+{ id: 'c41w_k2', name: 'Kippy Paté mousse Pour Chat Adulte Thon', price: 13, weight: '400 g', image: 'kippy2.jpeg', category: 'food', subcategory: 'wet', type: 'sterilized', desc: 'Nutritional Profile: 11% Protein, 4% Fat. Energy: 370 kcal per tin. Pure tuna source with high protein density and low carbohydrates for lean weight support.' },
+{ id: 'c41w_k3', name: 'Whiskas junior Poulet et bœuf en sauce', price: 28, weight: '4x85 g', image: 'wiski.jpeg', category: 'food', subcategory: 'wet', type: 'sterilized', desc: 'Nutritional Profile: 8% Protein, 6% Fat. Energy: 75 kcal/pouch. Calcium-enriched formula to support the rapid bone growth and energetic needs of kittens.' },
+{ id: 'c41w_k4', name: 'Whiskas Délices de poisson avec saumon et thon en gelée', price: 28, weight: '4x85g', image: 'wiski2.jpeg', category: 'food', subcategory: 'wet', type: 'sterilized', desc: 'Nutritional Profile: 9% Protein, 4.7% Fat. Energy: 70 kcal/pouch. Balanced minerals and Vitamin C support a healthy urinary tract and strong natural defenses.' },
+{ id: 'c41w_k5', name: 'Felix Fantastic Sélection de Légumes en Gélatine pour Chats', price: 22, weight: '4x85g', image: 'felix1.webp', category: 'food', subcategory: 'wet', type: 'sterilized', desc: 'Nutritional Profile: 11.5% Protein, 2.5% Fat. Energy: 65 kcal/pouch. High-protein, low-fat meaty chunks with vegetables for added fiber and satiety.' },
+{ id: 'c41w_k6', name: 'Purina Felix Fantastic Junior', price: 22, weight: '4x85g', image: 'felix2.webp', category: 'food', subcategory: 'wet', type: 'sterilized', desc: 'Nutritional Profile: 13% Protein, 3% Fat. Energy: 82 kcal/pouch. Formulated with high-quality protein and vitamins to support the massive growth spurt in the first year.' },
+{ id: 'c41w_k7', name: 'Purina Felix Fantastic Duo', price: 22, weight: '4x85g', image: 'felix2.jpg', category: 'food', subcategory: 'wet', type: 'sterilized', desc: 'Nutritional Profile: 11.5% Protein, 2.5% Fat. Energy: 67 kcal/pouch. Features dual protein flavors with optimal moisture to prevent kidney strain in young cats.' },
+{
+id: 'bp_ss1',
+name: 'Brit Premium Saumon pour Chat Stérilisé',
+price: 9,
+weight: '100 g',
+image: 'brit.png',
+category: 'food',
+subcategory: 'wet',
+type: 'sterilized',
+desc: 'Filets de saumon en sauce pour chats adultes stérilisés. Formule équilibrée avec des minéraux contrôlés pour la santé urinaire et un taux de graisses réduit pour le contrôle du poids. Sans colorants ni conservateurs.'
+},
+{
+id: 'pl_bs1',
+name: 'Plaisir Sterilised au Bœuf',
+price: 6,
+weight: '100 g',
+image: 'pla1.png',
+category: 'food',
+subcategory: 'wet',
+type: 'sterilized',
+desc: 'Émincés en sauce pour chat stérilisé. Contient 56% de viandes et sous-produits animaux (dont 4% bœuf). Formule allégée en graisses (3.5%) avec des minéraux équilibrés pour la santé urinaire.'
+},
+{
+id: 'pl_ss1',
+name: 'Plaisir Sterilised au Saumon',
+price: 6,
+weight: '100 g',
+image: 'pla2.png',
+category: 'food',
+subcategory: 'wet',
+type: 'sterilized',
+desc: 'Bouchées au saumon en sauce pour chat stérilisé. Élaboré par des vétérinaires pour aider à maintenir le poids de forme après la stérilisation. Sans colorants ni conservateurs.'
+},
+{
+id: 'pl_at1',
+name: 'Plaisir Adult au Thon',
+price: 6,
+weight: '100 g',
+image: 'pla3.png',
+category: 'food',
+subcategory: 'wet',
+type: 'sterilized',
+desc: 'Repas complet pour chat adulte en activité normale. Riche en protéines (10%) et en vitamines E, B1 et B8 pour soutenir le système immunitaire et la vitalité quotidienne.'
+},
+{
+id: 'pl_pc1',
+name: 'Plaisir Adult au Poulet',
+price: 6,
+weight: '100 g',
+image: 'pla4.png',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Tendres émincés de poulet en sauce pour chat adulte. Contient 10% de protéines pour lentretien musculaire et des vitamines B1 pour la vitalité.'
+},
+{
+id: 'pl_ds1',
+name: 'Plaisir Sterilised à la Dinde',
+price: 6,
+weight: '100 g',
+image: 'pla5.png',
+category: 'food',
+subcategory: 'wet',
+type: 'sterilized',
+desc: 'Spécialement formulé pour chats stérilisés. Riche en dinde avec un taux de matières grasses réduit. Contient de la DL-méthionine pour favoriser un pH urinaire sain.'
+},
+{
+id: 'pl_cs1',
+name: 'Plaisir Sterilised au Cabillaud',
+price: 6,
+weight: '100 g',
+image: 'pla6.png',
+category: 'food',
+subcategory: 'wet',
+type: 'sterilized',
+desc: 'Émincés au cabillaud et poissons blancs. Recette sans céréales, idéale pour la digestion des chats stérilisés. Enrichi en vitamine E pour le soutien immunitaire.'
+},
+{
+id: 'al1',
+name: 'Aperitivo Liquido (Liquid Snack)',
+price: 40,
+weight: '15g x 8',
+image: 'liq1.webp',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'High-moisture liquid snack (Salmon/Chicken) used as a treat or food topper. Great for hydration but should not replace a full meal.'
+},
+{
+id: 'ro1',
+name: 'Rokus Adult Beef in Gravy',
+price: 18,
+weight: '810 g',
+image: '1.jpg',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Complete wet food for adult cats with real beef chunks. High moisture content (82%) for hydration and essential vitamins A, D3, and E for daily vitality.'
+},
+{
+id: 'ro2',
+name: 'Rokus Adult chicken',
+price: 18,
+weight: '810 g',
+image: '2.jpg',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Tasty fish-based chunks in gravy. Contains 7% protein and balanced minerals to support a healthy coat and muscle maintenance.'
+},
+{
+id: 'ep1',
+name: 'Premium Émincé en Poisson en Sauce',
+price: 10,
+weight: '400 g',
+image: 'pre.png',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Tender fish slices in a savory gravy. High moisture content (82%) to support renal health and urinary dilution. Enriched with Vitamin E and Taurine for heart health.'
+},
+{
+id: 'ep1b',
+name: 'Premium Émincé en boeuf en Sauce',
+price: 10,
+weight: '400 g',
+image: 'pre1.png',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Tender fish slices in a savory gravy. High moisture content (82%) to support renal health and urinary dilution. Enriched with Vitamin E and Taurine for heart health.'
+},
+{
+id: 'ep1c',
+name: 'Premium Émincé en poulet en Sauce',
+price: 10,
+weight: '400 g',
+image: 'pre2.png',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Tender fish slices in a savory gravy. High moisture content (82%) to support renal health and urinary dilution. Enriched with Vitamin E and Taurine for heart health.'
+},
+{
+id: 'pg1',
+name: 'Purina Gourmet Gold Mousse Fondant',
+price: 10,
+weight: '85 g',
+image: 'gold1.webp',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Ultra-soft mousse texture for sophisticated palates. 100% complete nutrition with 10.5% protein and 7% fat. High moisture content supports hydration.'
+},
+{
+id: 'pg1b',
+name: 'Purina Gourmet Gold Mousse Fondant de thon',
+price: 10,
+weight: '85 g',
+image: 'gold2.png',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Ultra-soft mousse texture for sophisticated palates. 100% complete nutrition with 10.5% protein and 7% fat. High moisture content supports hydration.'
+},
+{
+id: 'pg1c',
+name: 'Purina Gourmet Gold Mousse Saumon',
+price: 10,
+weight: '85 g',
+image: 'gold3.png',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Ultra-soft mousse texture for sophisticated palates. 100% complete nutrition with 10.5% protein and 7% fat. High moisture content supports hydration.'
+},
+{
+id: 'pg1d',
+name: 'Purina Gourmet Gold Mousse Les Moussline au thon',
+price: 10,
+weight: '85 g',
+image: 'gold4.webp',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Ultra-soft mousse texture for sophisticated palates. 100% complete nutrition with 10.5% protein and 7% fat. High moisture content supports hydration.'
+},
+{
+id: 'pg1e',
+name: 'Purina Gourmet Gold Mousse con verduras com legume',
+price: 10,
+weight: '85 g',
+image: 'gold5.png',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Ultra-soft mousse texture for sophisticated palates. 100% complete nutrition with 10.5% protein and 7% fat. High moisture content supports hydration.'
+},
+{
+id: 'pg1f',
+name: 'Purina Gourmet Gold Mousse Con Polo',
+price: 10,
+weight: '85 g',
+image: 'gold6.jpg',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Ultra-soft mousse texture for sophisticated palates. 100% complete nutrition with 10.5% protein and 7% fat. High moisture content supports hydration.'
+},
+{
+id: 'si_c1',
+name: 'Simba Adult Chicken Chunks',
+price: 6,
+weight: '85 g',
+image: 'simba1.png',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Oven-baked chicken chunks in gravy. Contains 8% Protein and 6% Fat. Enriched with Vitamins A, D3, and E for daily maintenance.'
+},
+{
+id: 'si_s1',
+name: 'Simba Adult Salmon Chunks',
+price: 6,
+weight: '85g',
+image: 'simba2.png',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Delicious salmon chunks providing essential fatty acids. 80% moisture content helps support hydration and natural kidney function.'
+},
+{
+id: 'si_t1',
+name: 'Simba Adult Tuna Chunks',
+price: 6,
+weight: '85 g',
+image: 'simba3.png',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Mineral-rich tuna chunks in a soft gravy. Formulated without artificial colors or preservatives for a natural adult diet.'
+},
+{
+id: 'ry1',
+name: 'Royalist Probiotic Soup Chicken and coconut',
+price: 12,
+weight: '50 g',
+image: 'soup1.png',
+category: 'food',
+subcategory: 'treat',
+type: 'normal',
+desc: 'Liquid soup enriched with probiotics and FOS for digestive health. High moisture content supports urinary dilution and hydration.'
+},
+{
+id: 'ry1b',
+name: 'Royalist Probiotic Soup Chicken and cranberry',
+price: 12,
+weight: '50 g',
+image: 'soup2.webp',
+category: 'food',
+subcategory: 'treat',
+type: 'normal',
+desc: 'Liquid soup enriched with probiotics and FOS for digestive health. High moisture content supports urinary dilution and hydration.'
+},
+{
+id: 'ry1c',
+name: 'Royalist Probiotic Soup Chicken and genseng',
+price: 12,
+weight: '50 g',
+image: 'soup3.png',
+category: 'food',
+subcategory: 'treat',
+type: 'normal',
+desc: 'Liquid soup enriched with probiotics and FOS for digestive health. High moisture content supports urinary dilution and hydration.'
+},
+{
+id: 'ry_cs1',
+name: 'Royalist Creamy Snack Crab',
+price: 25,
+weight: '75 g (5x15g)',
+image: 's1.png',
+category: 'food',
+subcategory: 'treat',
+type: 'normal',
+desc: 'Lickable creamy snack that promotes hydration. Lower in calories and fat than traditional treats, making it ideal for weight management in sterilized cats.'
+},
+{
+id: 'ry_cs1b',
+name: 'Royalist Creamy Snack Chicken',
+price: 25,
+weight: '75 g (5x15g)',
+image: 's2.png',
+category: 'food',
+subcategory: 'treat',
+type: 'normal',
+desc: 'Lickable creamy snack that promotes hydration. Lower in calories and fat than traditional treats, making it ideal for weight management in sterilized cats.'
+},
+{
+id: 'ry_cs1c',
+name: 'Royalist Creamy Snack Salmon',
+price: 25,
+weight: '75 g (5x15g)',
+image: 's3.jpg',
+category: 'food',
+subcategory: 'treat',
+type: 'normal',
+desc: 'Lickable creamy snack that promotes hydration. Lower in calories and fat than traditional treats, making it ideal for weight management in sterilized cats.'
+},
+{
+id: 'ry_cs1d',
+name: 'Royalist Creamy Snack Tuna',
+price: 25,
+weight: '75 g (5x15g)',
+image: 's4.webp',
+category: 'food',
+subcategory: 'treat',
+type: 'normal',
+desc: 'Lickable creamy snack that promotes hydration. Lower in calories and fat than traditional treats, making it ideal for weight management in sterilized cats.'
+},
+{
+id: 'ry_cs1e',
+name: 'Royalist Creamy Snack Chicken and Scallop',
+price: 25,
+weight: '75 g (5x15g)',
+image: 's5.webp',
+category: 'food',
+subcategory: 'treat',
+type: 'normal',
+desc: 'Lickable creamy snack that promotes hydration. Lower in calories and fat than traditional treats, making it ideal for weight management in sterilized cats.'
+},
+{
+id: 'ry_cs1f',
+name: 'Royalist Creamy Snack Chicken and Shrimp',
+price: 25,
+weight: '75 g (5x15g)',
+image: 's6.jpg',
+category: 'food',
+subcategory: 'treat',
+type: 'normal',
+desc: 'Lickable creamy snack that promotes hydration. Lower in calories and fat than traditional treats, making it ideal for weight management in sterilized cats.'
+},
+{
+id: 'hs_a1',
+name: "Hill's Science Plan Adult Poulet",
+price: 250,
+weight: '12x85 g',
+image: 'hill.jpg',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'High-quality protein for lean muscle and clinically proven antioxidants for a healthy immune system. Balanced nutrition for adult cats 1-6 years.'
+},
+{
+id: 'bp_bk01',
+name: 'Bio PetActive Bio Kitten Milk Replacer',
+price: 100,
+weight: '200 g',
+image: 'bioki.jpg',
+category: 'food',
+subcategory: 'supplements',
+type: 'supplements',
+desc: 'Lait maternisé en poudre pour chatons de la naissance au sevrage (1 à 84 jours). Enrichi en taurine pour le développement de la vue et du cœur. Formule hautement digestible à teneur réduite en lactose.'
+},
+{
+id: 'rc_bm1',
+name: 'Royal Canin Babycat Milk',
+price: 300,
+weight: '365 g',
+image: 'royal2.png',
+category: 'food',
+subcategory: 'supplements',
+type: 'supplements',
+desc: 'Lait de remplacement complet pour chatons de la naissance au sevrage. Dissolution instantanée. Inclus dans la boîte : biberon, tétines et mesurette.'
+},
+{
+id: 'ac_nk1',
+name: 'Biberon pour chaton et chiot',
+price: 40,
+weight: '50 ml',
+image: 'bib.png',
+category: 'accessories',
+subcategory: 'feeding_tools',
+type: 'accessory',
+desc: 'Kit complet comprenant un biberon de 50ml, plusieurs tétines de rechange et un goupillon de nettoyage. Idéal pour l\'allaitement des nouveau-nés (chatons, chiots, rongeurs).'
+},
+{
+id: 'vc_pw1',
+name: 'Veto Care Shampoing Poils Blancs',
+price: 60,
+weight: '200 ml',
+image: 'veto1.webp',
+category: 'healthcare',
+subcategory: 'shampoo',
+type: 'care',
+desc: 'Formulé pour raviver l\'éclat naturel des pelages blancs et clairs. Élimine les reflets jaunâtres sans décolorer le poil. Enrichi en agents protecteurs pour une fourrure soyeuse.'
+},
+{
+id: 'vc_pn1',
+name: 'Veto Care Shampoing Poils Noirs et Ternes',
+price: 60,
+weight: '200 ml',
+image: 'veto2.webp',
+category: 'healthcare',
+subcategory: 'shampoo',
+type: 'care',
+desc: 'Intensifie la profondeur des pelages noirs, gris et sombres. Redonne brillance et vitalité aux poils ternes grâce à sa formule nourrissante qui gaine la fibre capillaire.'
+},
+{
+id: 'vc_ap1',
+name: 'Veto Care Shampoing Antiparasitaire',
+price: 70,
+weight: '200 ml',
+image: 'veto3.jpg',
+category: 'healthcare',
+subcategory: 'shampoo',
+type: 'treatment',
+desc: 'Shampoing traitant pour éliminer les puces, tiques et poux. Contient des extraits naturels répulsifs. Nettoie en profondeur tout en protégeant la peau des irritations dues aux piqûres.'
+},
+{
+id: 'vc_nt1',
+name: 'Veto Care Shampoing Nourrissant Tous Pelages',
+price: 60,
+weight: '200 ml',
+image: 'veto4.jpg',
+category: 'healthcare',
+subcategory: 'shampoo',
+type: 'care',
+desc: 'Soin complet riche en nutriments essentiels pour tous types de poils. Hydrate la peau et facilite le démêlage. Idéal pour un usage régulier sur chats adultes et chatons.'
+},
+{
+id: 'vc_sr1',
+name: 'Veto Care Mousse Sans Rinçage Tous types de pelages',
+price: 70,
+weight: '200 ml',
+image: 'veto5.jpg',
+category: 'healthcare',
+subcategory: 'shampoo',
+type: 'care',
+desc: 'Solution de nettoyage rapide sans eau. Idéale pour les chats stressés par le bain ou pour un nettoyage localisé. Laisse le pelage frais, propre et délicatement parfumé.'
+},
+// ✅ NEW SPRAY PRODUCTS FOR CATS
+
+{ 
+    id: 'fl_ds1', 
+    name: 'Flamingo Detangling Spray pour Chat', 
+    price: 90, // Prix moyen constaté au Maroc (85 - 110 DH)
+    weight: '175 ml', 
+    image: 'spray.jpg', 
+    category: 'healthcare', 
+    subcategory: 'sprays', 
+    type: 'care', 
+    desc: 'Spray démêlant sans rinçage pour chats. Formule douce qui aide à défaire les nœuds difficiles et prévient la formation de nouvelles bourres de poils. Laisse le pelage soyeux et facile à brosser. Idéal pour les poils longs.' 
+  },
+  { 
+    id: 'fl_ds1', 
+    name: 'Flamingo Spray Hygiène Dentaire Menthe pour Chats', 
+    price: 90, // Prix moyen constaté au Maroc (85 - 110 DH)
+    weight: '175 ml', 
+    image: 'spray2.jpeg', 
+    category: 'healthcare', 
+    subcategory: 'sprays', 
+    type: 'care', 
+    desc: 'Spray démêlant sans rinçage pour chats. Formule douce qui aide à défaire les nœuds difficiles et prévient la formation de nouvelles bourres de poils. Laisse le pelage soyeux et facile à brosser. Idéal pour les poils longs.' 
+  },
+  { 
+    id: 'fl_mb1', 
+    name: 'Flamingo Pâte Anti-Boules de Poils (Malt Paste)', 
+    price: 100, // Prix moyen constaté (80 - 110 DH)
+    weight: '100 g', 
+    image: 'anti.webp', 
+    category: 'healthcare', 
+    subcategory: 'pomades', 
+    type: 'care', 
+    desc: 'Pâte au malt pour chats favorisant l\'élimination naturelle des boules de poils. Sa formule savoureuse facilite le passage des poils dans le tube digestif et prévient les vomissements et la constipation. À donner directement au tube ou sur la patte.' 
+  },
+  { 
+    id: 'gc_mv1', 
+    name: 'GimCat Multi-Vitamin Paste Professional', 
+    price: 85, // Prix moyen constaté au Maroc (75 - 95 DH)
+    weight: '50 g', 
+    image: 'gim.jpg', 
+    category: 'health', 
+    subcategory: 'pomades', 
+    type: 'care', 
+    desc: 'Pâte multi-vitaminée professionnelle contenant 12 vitamines essentielles, du bêta-glucane et des huiles de haute qualité. Soutient le système immunitaire, la structure cellulaire et la beauté du pelage. Sans sucres ajoutés.' 
+  },
+  { 
+    id: 'bc_mv1', 
+    name: 'Brit Care Cat Paste Multivitamin', 
+    price: 80, // Prix moyen constaté (95 - 125 DH)
+    weight: '100 g', 
+    image: 'brt3.jpg', 
+    category: 'healthcare', 
+    subcategory: 'pomades', 
+    type: 'care', 
+    desc: 'Complexe multivitaminé savoureux enrichi en 12 vitamines essentielles. Renforce le système immunitaire, favorise une digestion saine et soutient la vitalité générale. Sans sucres ajoutés ni conservateurs artificiels.' 
+  },
+  { 
+    id: 'rx_w1', 
+    name: 'Reflex Pet Cleaning Wipes (Lingettes)', 
+    price: 45, // Prix moyen constaté au Maroc (25 - 45 DH selon le pack)
+    weight: '50 pc', // Format standard souvent en 70 ou 100 lingettes
+    image: 'ling1.png', 
+    category: 'healthcare', 
+    subcategory: 'other', 
+    type: 'normal', 
+    desc: 'Lingettes nettoyantes douces pour chiens et chats. Idéales pour une hygiène quotidienne rapide. Éliminent les saletés et les odeurs des pattes et du pelage. Formule sans alcool, respectueuse de la peau sensible.' 
+  },
+  { 
+    id: 'acc_svb1', 
+    name: 'Brosse à Vapeur Électrique - Chien & Chat', 
+    price: 70, // Prix moyen constaté au Maroc (120 - 180 DH)
+    weight: '', 
+    image: 'bro1.jpeg', 
+    category: 'accessories', 
+    subcategory: 'accessories', 
+    type: 'accessory', 
+    desc: 'Brosse innovante 3-en-1 utilisant la technologie de la vapeur froide. Aide à retirer les poils morts, élimine la poussière et masse l\'animal. La brume fine empêche les poils de voler pendant le brossage et facilite le démêlage. Rechargeable par USB, idéale pour les chats et chiens de toutes tailles.' 
+  },
+  { 
+    id: 'acc_svb_01', 
+    name: 'Brosse à Vapeur Électrique 3-en-1 - Chien & Chat', 
+    price: 60, // Prix moyen constaté (120 - 180 DH)
+    weight: '', 
+    image: 'elec.jpeg', 
+    category: 'accessories', 
+    subcategory: 'accessories', 
+    type: 'accessories', 
+    desc: 'Brosse innovante utilisant la technologie de la vapeur froide. Aide à retirer les poils morts, élimine la poussière et masse l\'animal. La brume fine empêche les poils de voler pendant le brossage et facilite le démêlage. Rechargeable par USB, idéale pour les chats et chiens de toutes tailles.' 
+  },
+   {
+    id: 'bp_sausage_ch1', 
+    name: 'Brit Premium Sausage - 95% Chicken', 
+    price: 45, // Prix moyen constaté (35 - 55 DH)
+    weight: '800 g', 
+    image: 'brt.avif', 
+    category: 'food', 
+    subcategory: 'wet', 
+    type: 'normal', 
+    desc: 'Aliment complet pour chiens à haute teneur en viande (95% poulet). Riche en collagène et Oméga-3 pour la santé des articulations et du pelage. Sans soja, sans OGM et sans conservateurs. Texture ferme idéale pour être découpée en morceaux.' 
+  },
+  { 
+    id: 'am_ee_100', 
+    name: 'Amoremio Lingettes Yeux et Oreilles', 
+    price: 70, 
+    weight: '100 pcs', 
+    image: 'amore.jpg', 
+    category: 'healthcare', 
+    subcategory: 'other', 
+    type: 'care', 
+    desc: 'Lingettes spécialisées pour le nettoyage en douceur des yeux et des oreilles des chiens et chats. Aide à prévenir les taches de larmes et l\'accumulation de cérumen. Formule douce et apaisante, sans danger pour les zones sensibles. Format économique de 100 lingettes.' 
+  },
+  { 
+    id: 'tbl_lit_cl10', 
+    name: 'To Be Loved Litière Agglomérante - Cotton Flowers & Litchi', 
+    price: "60  ", 
+    weight: '10 L',  
+    image: 'rml1.webp', 
+    category: 'accessories', 
+    subcategory: 'accessories', 
+    type: 'accessories', 
+    desc: 'Litière ultra-agglomérante de haute qualité. Son parfum unique Fleurs de Coton & Litchi neutralise instantanément les odeurs. Forme des blocs compacts faciles à retirer, minimisant le gaspillage. Formule sans poussière pour protéger les voies respiratoires de votre chat.' 
+  },
+  { 
+    id: 'tbl_ms10', 
+    name: 'To Be Loved Litière - Savon de Marseille', 
+    price: "60  ", 
+    weight: '10 L',  
+    image: 'rml2.webp', 
+    flavor: 'Marseille Soap',
+    category: 'accessories', 
+    subcategory: 'accessories', 
+    type: 'accessories',
+    desc: 'Litière agglomérante haut de gamme au parfum authentique de savon de Marseille. Neutralise les odeurs avec une senteur de propre traditionnelle.' 
+  },
+  { 
+    id: 'tbl_tv10', 
+    name: 'To Be Loved Litière - Tropical Vanilla', 
+    price: "60", 
+    weight: '10 L', 
+    image: 'rml3.webp', 
+    flavor: 'Tropical Vanilla',
+    category: 'accessories', 
+    subcategory: 'accessories', 
+    type: 'accessories',
+    desc: 'Une touche d\'exotisme avec cette litière au parfum de vanille tropicale. Idéale pour masquer les odeurs fortes avec une note sucrée.' 
+  },
+  { 
+    id: 'tbl_wl10', 
+    name: 'To Be Loved Litière - Woodland Lavender', 
+    price: "60 ", 
+    weight: '10 L', 
+    image: 'rml4.jpeg', 
+    flavor: 'Woodland Lavender',
+    category: 'accessories', 
+    subcategory: 'accessories', 
+    type: 'accessories',
+    desc: 'Propriétés apaisantes de la lavande des bois. Un classique indémodable pour une fraîcheur florale et durable dans le bac.' 
+  },
+  { 
+    id: 'tbl_bp10', 
+    name: 'To Be Loved Litière - Baby Powder', 
+    price: "60  ", 
+    weight: '10 L', 
+    flavor: 'Baby Powder',
+    image: 'rml5.jpeg', 
+    category: 'accessories', 
+    subcategory: 'accessories', 
+    type: 'accessories',
+    desc: 'Parfum de poudre de bébé pour une sensation de douceur et de propreté absolue. Très appréciée pour les intérieurs cocooning.' 
+  },
+  { 
+    id: 'tbl_nu10', 
+    name: 'To Be Loved Litière - Natural Unscented', 
+    price: "60  ", 
+    weight: '10 L', 
+    flavor: 'Unscented',
+    image: 'rml6.webp', 
+    category: 'accessories', 
+    subcategory: 'accessories', 
+    type: 'accessories',
+    desc: 'Formule naturelle sans parfum ajouté. Idéale pour les chats très sensibles aux odeurs ou les propriétaires préférant une solution neutre.' 
+  },
+  { 
+    id: 'kf_bp10', 
+    name: 'Keyf Litière Agglomérante - Baby Powder', 
+    price: "60  ", 
+    weight: '10 L', 
+    flavor: 'Baby Powder',
+    image: 'kif1.png', 
+    category: 'accessories', 
+    subcategory: 'accessories', 
+    type: 'accessories',
+    desc: 'Litière économique au parfum de poudre de bébé. Forme des blocs compacts pour un nettoyage facile et laisse une odeur de propre très douce dans la maison.' 
+  },
+  { 
+    id: 'kf_lv10', 
+    name: 'Keyf Litière Agglomérante - Lavande', 
+    price: "60 ", 
+    weight: '10 L', 
+    flavor: 'Lavender',
+    image: 'kif2.jpg', 
+    category: 'accessories', 
+    subcategory: 'accessories', 
+    type: 'accessories',
+    desc: 'Litière au parfum classique de lavande. Ses propriétés agglomérantes permettent une absorption rapide des liquides et un contrôle efficace des odeurs.' 
+  },
+  { 
+    id: 'kf_ms10', 
+    name: 'Keyf Litière Agglomérante - Savon de Marseille', 
+    price: "60 ", 
+    weight: '10 L', 
+    flavor: 'Marseille Soap',
+    image: 'kif3.png', 
+    category: 'accessories', 
+    subcategory: 'accessories', 
+    type: 'accessories',
+    desc: 'Litière au parfum authentique de savon de Marseille. Neutralise les mauvaises odeurs tout en assurant une hygiène optimale du bac à litière.' 
+  },
+  { 
+    id: 'tbl_lit_cl10', 
+    name: 'To Be Loved Litière Agglomérante - Cotton Flowers & Litchi', 
+    price: "35 ", 
+    weight: ' 5 L',  
+    image: 'rml1.webp', 
+    category: 'accessories', 
+    subcategory: 'accessories', 
+    type: 'accessories', 
+    desc: 'Litière ultra-agglomérante de haute qualité. Son parfum unique Fleurs de Coton & Litchi neutralise instantanément les odeurs. Forme des blocs compacts faciles à retirer, minimisant le gaspillage. Formule sans poussière pour protéger les voies respiratoires de votre chat.' 
+  },
+  { 
+    id: 'tbl_ms10', 
+    name: 'To Be Loved Litière - Savon de Marseille', 
+    price: "35 ", 
+    weight: ' 5 L',  
+    image: 'rml2.webp', 
+    flavor: 'Marseille Soap',
+    category: 'accessories', 
+    subcategory: 'accessories', 
+    type: 'accessories',
+    desc: 'Litière agglomérante haut de gamme au parfum authentique de savon de Marseille. Neutralise les odeurs avec une senteur de propre traditionnelle.' 
+  },
+  { 
+    id: 'tbl_tv10', 
+    name: 'To Be Loved Litière - Tropical Vanilla', 
+    price: " 35", 
+    weight: ' 5 L', 
+    image: 'rml3.webp', 
+    flavor: 'Tropical Vanilla',
+    category: 'accessories', 
+    subcategory: 'accessories', 
+    type: 'accessories',
+    desc: 'Une touche d\'exotisme avec cette litière au parfum de vanille tropicale. Idéale pour masquer les odeurs fortes avec une note sucrée.' 
+  },
+  { 
+    id: 'tbl_wl10', 
+    name: 'To Be Loved Litière - Woodland Lavender', 
+    price: "35", 
+    weight: ' 5 L', 
+    image: 'rml4.jpeg', 
+    flavor: 'Woodland Lavender',
+    category: 'accessories', 
+    subcategory: 'accessories', 
+    type: 'accessories',
+    desc: 'Propriétés apaisantes de la lavande des bois. Un classique indémodable pour une fraîcheur florale et durable dans le bac.' 
+  },
+  { 
+    id: 'tbl_bp10', 
+    name: 'To Be Loved Litière - Baby Powder', 
+    price: "35 ", 
+    weight: ' 5 L', 
+    flavor: 'Baby Powder',
+    image: 'rml5.jpeg', 
+    category: 'accessories', 
+    subcategory: 'accessories', 
+    type: 'accessories',
+    desc: 'Parfum de poudre de bébé pour une sensation de douceur et de propreté absolue. Très appréciée pour les intérieurs cocooning.' 
+  },
+  { 
+    id: 'tbl_nu10', 
+    name: 'To Be Loved Litière - Natural Unscented', 
+    price: "35 ", 
+    weight: ' 5 L', 
+    flavor: 'Unscented',
+    image: 'rml6.webp', 
+    category: 'accessories', 
+    subcategory: 'accessories', 
+    type: 'accessories',
+    desc: 'Formule naturelle sans parfum ajouté. Idéale pour les chats très sensibles aux odeurs ou les propriétaires préférant une solution neutre.' 
+  },
+  { 
+    id: 'kf_bp10', 
+    name: 'Keyf Litière Agglomérante - Baby Powder', 
+    price: "35 ", 
+    weight: ' 5 L', 
+    flavor: 'Baby Powder',
+    image: 'kif1.png', 
+    category: 'accessories', 
+    subcategory: 'accessories', 
+    type: 'accessories',
+    desc: 'Litière économique au parfum de poudre de bébé. Forme des blocs compacts pour un nettoyage facile et laisse une odeur de propre très douce dans la maison.' 
+  },
+  { 
+    id: 'kf_lv10', 
+    name: 'Keyf Litière Agglomérante - Lavande', 
+    price: "35 ", 
+    weight: '5 L', 
+    flavor: 'Lavender',
+    image: 'kif2.jpg', 
+    category: 'accessories', 
+    subcategory: 'accessories', 
+    type: 'accessories',
+    desc: 'Litière au parfum classique de lavande. Ses propriétés agglomérantes permettent une absorption rapide des liquides et un contrôle efficace des odeurs.' 
+  },
+  { 
+    id: 'kf_ms10', 
+    name: 'Keyf Litière Agglomérante - Savon de Marseille', 
+    price: "35 ", 
+    weight: ' 5 L', 
+    flavor: 'Marseille Soap',
+    image: 'kif3.png', 
+    category: 'accessories', 
+    subcategory: 'accessories', 
+    type: 'accessories',
+    desc: 'Litière au parfum authentique de savon de Marseille. Neutralise les mauvaises odeurs tout en assurant une hygiène optimale du bac à litière.' 
+  },
+  // --- LAVANDE ---
+  { 
+    id: 'prl_lv10', 
+    name: 'Proline Litière Agglomérante - Lavande', 
+    price: 60, 
+    weight: '10 L', 
+    image: 'pro1.webp', 
+    category: 'hygiene', 
+    subcategory: 'cat_litter', 
+    type: 'budget', 
+    flavor: 'Lavender',
+    desc: 'Litière agglomérante parfumée à la lavande. Capture les odeurs et forme des blocs solides pour un entretien quotidien rapide.' 
+  },
+  { 
+    id: 'prl_lv20', 
+    name: 'Proline Litière Agglomérante - Lavande (Format XL)', 
+    price: 100, 
+    weight: '20 L', 
+    image: 'pro1.webp', 
+    category: 'hygiene', 
+    subcategory: 'cat_litter', 
+    type: 'budget', 
+    flavor: 'Lavender',
+    desc: 'Format économique de 20L idéal pour les foyers multi-chats. Parfum lavande apaisant et fort pouvoir absorbant.' 
+  },
+
+  // --- POUDRE DE BÉBÉ (BABY POWDER) ---
+  { 
+    id: 'prl_bp10', 
+    name: 'Proline Litière Agglomérante - Baby Powder', 
+    price: 60, 
+    weight: '10 L', 
+    image: 'pro2.webp', 
+    category: 'hygiene', 
+    subcategory: 'cat_litter', 
+    type: 'budget', 
+    flavor: 'Baby Powder',
+    desc: 'Litière blanche agglomérante avec une douce senteur de poudre de bébé. Neutralise les odeurs d\'ammoniac dès le contact.' 
+  },
+  { 
+    id: 'prl_bp20', 
+    name: 'Proline Litière Agglomérante - Baby Powder (Format XL)', 
+    price: 100, 
+    weight: '20 L', 
+    image: 'pro2.webp', 
+    category: 'hygiene', 
+    subcategory: 'cat_litter', 
+    type: 'budget', 
+    flavor: 'Baby Powder',
+    desc: 'Maxi format 20L pour une tranquillité longue durée. Senteur poudre de bébé délicate et agglomération instantanée.' 
+  },
+
+  // --- SAVON DE MARSEILLE ---
+  { 
+    id: 'prl_ms10', 
+    name: 'Proline Litière Agglomérante - Savon de Marseille', 
+    price: 60, 
+    weight: '10 L', 
+    image: 'pro3.webp', 
+    category: 'hygiene', 
+    subcategory: 'cat_litter', 
+    type: 'budget', 
+    flavor: 'Marseille Soap',
+    desc: 'Litière au parfum de savon de Marseille pour une hygiène irréprochable. Grains blancs très absorbants.' 
+  },
+  { 
+    id: 'prl_ms20', 
+    name: 'Proline Litière Agglomérante - Savon de Marseille (Format XL)', 
+    price: 100, 
+    weight: '20 L', 
+    image: 'pro3.webp', 
+    category: 'hygiene', 
+    subcategory: 'cat_litter', 
+    type: 'budget', 
+    flavor: 'Marseille Soap',
+    desc: 'La solution la plus économique du catalogue : 20L de litière agglomérante au savon de Marseille pour un contrôle total des odeurs.' 
+  },
+  { 
+    id: 'acc_dist_2in1_st', 
+    name: 'Distributeur Automatique 2-en-1 - Croquettes & Eau', 
+    price: 280, // Prix moyen constaté (250 - 320 DH)
+    weight: '1.2 kg', 
+    image: 'hh.png', 
+    category: 'accessories', 
+    subcategory: 'feeding_bowls', 
+    type: 'gear', 
+    desc: 'Station de nourrissage complète utilisant la gravité pour renouveler automatiquement les croquettes et l\'eau. Comprend une gamelle amovible en acier inoxydable pour une hygiène parfaite. Design moderne et compact, idéal pour les chats et petits chiens.' 
+  },
+  { 
+    id: 'acc_dist_2in1_blue', 
+    name: 'Distributeur Automatique 2-en-1 - Bleu', 
+    price: 150, 
+    weight: '1.2 kg', 
+    image: 'hihi.png', 
+    category: 'accessories', 
+    subcategory: 'feeding_bowls', 
+    type: 'gear', 
+    color: 'Blue',
+    desc: 'Solution complète de nutrition et d\'hydratation. Ce distributeur utilise la gravité pour fournir de l\'eau fraîche et des croquettes en continu. Équipé d\'une gamelle en acier inoxydable amovible pour prévenir les bactéries et faciliter le nettoyage. Design moderne et stable avec réservoirs transparents.' 
+  },
+  { 
+    id: 'acc_dist_2in1_pink', 
+    name: 'Distributeur Automatique 2-en-1 - Rose', 
+    price: 150, 
+    weight: '1.2 kg', 
+    image: 'hoho.png', 
+    category: 'accessories', 
+    subcategory: 'feeding_bowls', 
+    type: 'gear', 
+    color: 'Pink',
+    desc: 'Station d\'alimentation automatique par gravité avec réservoir de croquettes et fontaine à eau intégrée. Inclut une gamelle en acier inoxydable pour une hygiène optimale et un nettoyage facile. Couleur rose pastel moderne, idéale pour chats et petits chiens.' 
+  },
+  { 
+    id: 'acc_dist_elec_std', 
+    name: 'Distributeur de Croquettes Automatique Programmable', 
+    price: 550, 
+    weight: '2.5 kg', 
+    image: 'dis1.jpeg', 
+    category: 'accessories', 
+    subcategory: 'feeding_bowls', 
+    type: 'electronics', 
+    desc: 'Distributeur électronique haute précision permettant de programmer jusqu’à 4 repas par jour. Contrôle des portions pour éviter le surpoids. Large réservoir hermétique pour conserver la fraîcheur des croquettes. Fonctionne sur secteur ou piles pour une sécurité totale en cas de coupure de courant.' 
+  },
+   { 
+    id: 'acc_bed_sm_pink', 
+    name: 'Lit Apaisant Peluche - Rose', 
+    price: 180, 
+    weight: '0.8 kg', 
+    image: 'tkh1.jpeg', 
+    category: 'accessories', 
+    subcategory: 'pet_beds', 
+    type: 'comfort', 
+    color: 'Pink',
+    desc: 'Lit ultra-moelleux en peluche haute densité pour chat et petit chien. Sa forme ronde et ses rebords surélevés offrent un sentiment de sécurité et un soutien optimal pour la tête et le cou.' 
+  },
+  { 
+    id: 'acc_bed_sm_grey', 
+    name: 'Lit Apaisant Peluche - Gris', 
+    price: 180, 
+    weight: '0.8 kg', 
+    image: 'tkh2.jpeg', 
+    category: 'accessories', 
+    subcategory: 'pet_beds', 
+    type: 'comfort', 
+    color: 'Grey',
+    desc: 'Coussin apaisant gris anthracite. Design élégant qui s\'intègre dans tous les intérieurs. Lavable en machine pour une hygiène parfaite.' 
+  },
+  { 
+    id: 'acc_bed_sm_brown', 
+    name: 'Lit Apaisant Peluche - Marron', 
+    price: 180, 
+    weight: '0.8 kg', 
+    image: 'tkh3.jpeg', 
+    category: 'accessories', 
+    subcategory: 'pet_beds', 
+    type: 'comfort', 
+    color: 'Brown',
+    desc: 'Panier de confort marron chocolat. Texture douce et respirante, idéale pour les siestes prolongées de votre animal de compagnie.' 
+  },
+  { 
+    id: 'acc_bed_slp_red', 
+    name: 'Lit Pantoufle Confort - Rouge Magenta', 
+    price: 150, 
+    weight: '0.9 kg', 
+    image: 'khb1.png', 
+    category: 'accessories', 
+    subcategory: 'pet_beds', 
+    type: 'comfort', 
+    color: 'Red',
+    desc: 'Lit original en forme de pantoufle géante, offrant un nid douillet et chaud. Doublure en peluche épaisse et housse amovible avec fermeture éclair pour un lavage facile. Idéal pour les animaux qui aiment se cacher.' 
+  },
+  { 
+    id: 'acc_bed_rnd_pink', 
+    name: 'Coussin Rond Douillet - Rose Pastel', 
+    price: 80, 
+    weight: '0.6 kg', 
+    image: 'ter1.png', 
+    category: 'accessories', 
+    subcategory: 'pet_beds', 
+    type: 'budget_comfort', 
+    color: 'Pink',
+    desc: 'Coussin rond classique en peluche ultra-douce. Offre un confort moelleux et un sentiment de bien-être pour chats et petits chiens. Rembourrage dense et housse amovible pour un nettoyage facile. Le couchage idéal au meilleur prix.' 
+  },
+  { 
+    id: 'cj_bed_sm_med', 
+    name: 'Lit Canijess Confort - Small/Medium', 
+    price: 300, 
+    weight: '1.5 kg', 
+    image: 'sou1.png', 
+    category: 'accessories', 
+    subcategory: 'pet_beds', 
+    type: 'premium_comfort', 
+    size: 'M',
+    target: 'Cat & Small Dog',
+    desc: 'Lit haut de gamme Canijess conçu pour le bien-être articulaire. Rembourrage haute densité qui ne s\'affaisse pas avec le temps. Tissu résistant et toucher velours pour un sommeil profond.' 
+  },
+    { 
+    id: 'cj_bed_sm_med', 
+    name: 'Lit Canijess Confort - Small/Medium', 
+    price: 300, 
+    weight: '1.5 kg', 
+    image: 'sou2.png', 
+    category: 'accessories', 
+    subcategory: 'pet_beds', 
+    type: 'premium_comfort', 
+    size: 'M',
+    target: 'Cat & Small Dog',
+    desc: 'Lit haut de gamme Canijess conçu pour le bien-être articulaire. Rembourrage haute densité qui ne s\'affaisse pas avec le temps. Tissu résistant et toucher velours pour un sommeil profond.' 
+  },
+  { 
+    id: 'cj_bed_lg', 
+    name: 'Lit Canijess Grand Format - Large', 
+    price: 520, 
+    weight: '3.2 kg', 
+    image: 'sou3.png', 
+    category: 'accessories', 
+    subcategory: 'pet_beds', 
+    type: 'premium_comfort', 
+    size: 'L',
+    target: 'Large Dog',
+    desc: 'Version XXL du lit Canijess, spécialement adaptée aux grands chiens. Offre un espace généreux et un soutien orthopédique pour soulager les pressions musculaires. Finitions renforcées pour une grande longévité.' 
+  },
+  { 
+    id: 'acc_trap_cage_std', 
+    name: 'Cage de Transport Rigide - Chat & Petit Chien', 
+    price: 80, 
+    weight: '1.5 kg', 
+    image: 'port1.png', 
+    category: 'accessories', 
+    subcategory: 'travel_carriers', 
+    type: 'gear', 
+    material: 'Plastic & Metal',
+    desc: 'Cage de transport robuste en plastique haute résistance avec porte en métal sécurisée. Système de verrouillage fiable et fentes de ventilation latérales pour une circulation d\'air optimale. Légère et facile à nettoyer, elle est indispensable pour les visites chez le vétérinaire ou les voyages en voiture.' 
+  },
+  { 
+    id: 'acc_trap_bkp_grey', 
+    name: 'Sac à Dos de Transport - Gris Urbain', 
+    price: 199, 
+    weight: '1.2 kg', 
+    image: 'pr1.png', 
+    category: 'accessories', 
+    subcategory: 'travel_carriers', 
+    type: 'gear', 
+    color: 'Grey',
+    desc: 'Sac à dos de transport élégant et ergonomique en tissu gris durable. Équipé de panneaux en mesh pour une ventilation maximale, d\'une bulle transparente et de bretelles rembourrées pour votre confort. Idéal pour les voyages et les randonnées avec votre chat ou petit chien.' 
+  },
+  { 
+    id: 'acc_trap_bkp_pink', 
+    name: 'Sac à Dos de Transport - Rose Pastel', 
+    price: 199, 
+    weight: '1.2 kg', 
+    image: 'pr2.png', 
+    category: 'accessories', 
+    subcategory: 'travel_carriers', 
+    type: 'gear', 
+    color: 'Pink',
+    desc: 'Un design rose doux et protecteur. Ce sac à dos assure une circulation d\'air optimale et possède une attache de sécurité intérieure pour maintenir votre compagnon. Combinez style et bien-être lors de vos déplacements.' 
+  },
+  { 
+    id: 'acc_trap_bkp_green', 
+    name: 'Sac à Dos de Transport - Vert Émeraude', 
+    price: 199, 
+    weight: '1.2 kg', 
+    image: 'pr3.png', 
+    category: 'accessories', 
+    subcategory: 'travel_carriers', 
+    type: 'gear', 
+    color: 'Green',
+    desc: 'Coloris vert émeraude vibrant. Fabriqué en matériaux imperméables et faciles à nettoyer. Parfait pour les propriétaires actifs qui aiment partager leurs aventures avec leur animal de compagnie.' 
+  },
+  { 
+    id: 'acc_trap_bkp_blue', 
+    name: 'Sac à Dos de Transport - Bleu Saphir', 
+    price: 199, 
+    weight: '1.2 kg', 
+    image: 'pr4.png', 
+    category: 'accessories', 
+    subcategory: 'travel_carriers', 
+    type: 'gear', 
+    color: 'Blue',
+    desc: 'Design bleu classique et épuré. Ce sac à dos compact offre un espace sécurisé et aéré pour votre animal. Un accessoire indispensable pour des voyages en toute tranquillité.' 
+  },
+  { 
+    id: 'acc_trap_cage_top_s', 
+    name: 'Cage de Transport Ergonomique - Ouverture Haut (Taille S)', 
+    price: 220, 
+    weight: '1.8 kg', 
+    image: 'pt1.png', 
+    category: 'accessories', 
+    subcategory: 'travel_carriers', 
+    type: 'gear', 
+    size: 'S',
+    material: 'Plastic & Metal',
+    desc: 'Cage de transport Premium offrant deux accès : une porte frontale classique et une large ouverture par le haut pour un chargement sans stress de votre animal. Coque rigide en plastique durable avec aérations optimales. Idéale pour les chats nerveux et les petits chiens lors des visites vétérinaires.' 
+  },
+  { 
+    id: 'acc_trap_cage_top_m', 
+    name: 'Cage de Transport Ergonomique - Ouverture Haut (Taille M)', 
+    price: 280, 
+    weight: '2.3 kg', 
+    image: 'pt1.png', 
+    category: 'accessories', 
+    subcategory: 'travel_carriers', 
+    type: 'gear', 
+    size: 'M',
+    material: 'Plastic & Metal',
+    desc: 'Modèle de taille moyenne offrant les mêmes avantages d\'accès double. Sa structure robuste et sa grille supérieure en métal garantissent sécurité et ventilation pendant le transport. Recommandée pour les grands chats ou les petits chiens jusqu\'à 8kg.' 
+  },
+  
+],
+dogs: [
+  { 
+    id: 'acc_trap_cage_std', 
+    name: 'Cage de Transport Rigide - Chat & Petit Chien', 
+    price: 80, 
+    weight: '1.5 kg', 
+    image: 'port1.png', 
+    category: 'accessories', 
+    subcategory: 'travel_carriers', 
+    type: 'gear', 
+    material: 'Plastic & Metal',
+    desc: 'Cage de transport robuste en plastique haute résistance avec porte en métal sécurisée. Système de verrouillage fiable et fentes de ventilation latérales pour une circulation d\'air optimale. Légère et facile à nettoyer, elle est indispensable pour les visites chez le vétérinaire ou les voyages en voiture.' 
+  },
+{ id: 'd1', name: 'Brit care dog grain mini adult hair and skin', price: 180, weight: '2 kg', image: 'britdog1.jpeg', category: 'food', subcategory: 'dry', type: 'normal', desc: 'Nutritional Profile: 28% Protein, 17% Fat. Energy: 3880 kcal/kg. Salmon oil and biotin provide intense coat care, while the grain-free base ensures easy digestion.' },
+{ id: 'd2', name: 'Brit premium by nature junior s pour chiot', price: 150, weight: '3 kg', image: 'britdog2.jpeg', category: 'food', subcategory: 'dry', type: 'normal', desc: 'Nutritional Profile: 28% Protein, 16% Fat. Energy: 3850 kcal/kg. Features 50% chicken and Glucosamine/Chondroitin for healthy joint development in small breed puppies.' },
+{ id: 'd3', name: 'brit premium by nature croquettes adults', price: 145, weight: '3 kg', image: 'britdog3.jpeg', category: 'food', subcategory: 'dry', type: 'normal', desc: 'Nutritional Profile: 26% Protein, 15% Fat. Energy: 3760 kcal/kg. Natural daily maintenance with antioxidants and chamomile to support a healthy digestive tract.' },
+{ id: 'd4', name: 'Cani+ professionnel', price: 450, weight: '20 kg', image: 'caniprof1.jpeg', category: 'food', subcategory: 'dry', type: 'normal', desc: 'Nutritional Profile: 30% Protein, 20% Fat. Energy: 4200 kcal/kg. High caloric density for active or working dogs; includes Lecithin for energy conversion and muscle recovery.' },
+{ id: 'd5', name: 'Cani + starter', price: 350, weight: '15 kg', image: 'canistarter1.jpeg', category: 'food', subcategory: 'dry', type: 'normal', desc: 'Nutritional Profile: 32% Protein, 22% Fat. Energy: 4400 kcal/kg. Maximum nutrient density for weaning puppies; supports the high metabolic needs of pregnant/nursing mothers.' },
+{
+id: 'kg_b2',
+name: 'King Adult Dog Beef Dry Food',
+price: 280,
+weight: '20 kg',
+image: 'king1.png',
+category: 'food',
+subcategory: 'dry',
+type: 'normal',
+desc: 'All-natural dry food with beef protein and brewers yeast for immune support. Balanced omega fatty acids promote a shiny coat and healthy skin for adult dogs.'
+},
+{
+id: 'ry1',
+name: 'Special Dog Rice Paté Junior ',
+price: 13,
+weight: '400 g',
+image: 'dog1.webp',
+category: 'food',
+subcategory: 'treat',
+type: 'normal',
+desc: 'Premium steam-cooked paté for puppies (6 weeks to 12 months). High meat content (80%) and rice (4.2%) for easy digestion and healthy growth. Enriched with Vitamins A, D3, and E.'
+},
+{
+id: 'ry1b',
+name: 'Special Dog Rice Paté Vaschitta Multipack ',
+price: 13,
+weight: '150x24 g',
+image: 'dog2.jpeg',
+category: 'food',
+subcategory: 'treat',
+type: 'normal',
+desc: 'Premium Italian paté for adult dogs. Steam-cooked with 80% meat and 4% rice. Enriched with Vitamins A, D3, and E for daily vitality. No artificial dyes or preservatives.'
+},
+{
+id: 'pl_d1',
+name: 'Plaisir Sachet Fraîcheur Au Poulet (Chien Adulte)',
+price: 7,
+weight: '100 g',
+image: 'dog33.jpeg',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Tender chicken chunks in sauce for adult dogs. Formulated with veterinarians to provide 100% complete nutrition. Enriched with Vitamins E, B1, and B6 for health and vitality.'
+},
+{
+id: 'pl_p1',
+name: 'Les repas Plaisir Chiot/Puppy with Chicken',
+price: 7,
+weight: '100 g',
+image: 'dog4.webp',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Tender chicken émincés (chunks) in a savory gravy specifically for puppies (Chiot). Formulated by veterinarians to support healthy growth and development. Enriched with Vitamins E, B1, and B6 for vitality.'
+},
+{
+id: 'pl_b1',
+name: 'Les repas Plaisir Au Bœuf et Légumes (Chien Adulte)',
+price: 7,
+weight: '100 g',
+image: 'dog3.webp',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Tender beef and vegetable émincés in gravy. Formulated under veterinary control to provide 100% complete nutrition. High moisture (82%) supports hydration while maintaining a low fat content (4.5%) for weight balance.'
+},
+{
+id: 'mc_d1',
+name: 'Migliorcane Croquettes au Bœuf',
+price: 10,
+weight: '405 kg',
+image: 'mig1.jpg',
+category: 'food',
+subcategory: 'dry',
+type: 'normal',
+desc: 'Complete dry food for adult dogs. Enriched with the "Wellness System" (Vitamins, Omega 3, Calcium, and Phosphorus) to support strong bones, healthy skin, and muscle tone.'
+},
+{
+id: 'mc_w1',
+name: 'Migliorcane Paté au Poulet et Dinde',
+price: 10,
+weight: '405 g',
+image: 'mig2.jpg',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Tender meat terrine with chicken and turkey. Steam-cooked for natural taste preservation. Provides 100% complete nutrition with 80% moisture for hydration.'
+},
+{
+id: 'mc_w2',
+name: 'Miglior cane Chunks with game',
+price: 10,
+weight: '405 kg',
+image: 'mig3.jpg',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Large value can featuring meat chunks in gravy. Balanced recipe with added vegetables to support digestive health and daily energy levels.'
+},
+{
+id: 'bp_p1',
+name: 'Brit Paté & Meat Puppy (Chicken & Turkey)',
+price: 32,
+weight: '400 g',
+image: 'brt1.jpg',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Super-premium grain-free paté for puppies. Contains 70% chicken and turkey with real chunks of meat. Enriched with salmon oil for brain development and Omega-3 fatty acids.'
+},
+{
+id: 'bp_v1',
+name: 'Brit Paté & Meat Venison',
+price: 32,
+weight: '400 g',
+image: 'brt2.jpg',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Exotic protein source (Venison) mixed with chicken. Ideal for dogs with sensitive digestions. 100% grain-free with real pieces of organs for natural vitamins.'
+},
+{
+id: 'bp_d1',
+name: 'Brit Paté & Meat Duck',
+price: 32,
+weight: '400 g',
+image: 'brt3.webp',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Rich duck and chicken paté. Provides a high-quality amino acid profile for muscle maintenance. No soy, GMOs, or artificial preservatives.'
+},
+{
+id: 'bp_s1',
+name: 'Brit Paté & Meat Salmon',
+price: 32,
+weight: '400 g',
+image: 'brt4.jpg',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Salmon and chicken formula rich in fish oils. Supports healthy skin and a shiny coat while providing essential hydration for urinary health.'
+},
+{
+id: 'bp_t1',
+name: 'Brit Premium by Nature Turkey & Carrots (Junior)',
+price: 10,
+weight: '85 g',
+image: 'brrt1.jpg',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Premium fillets in gravy for puppies and juniors. Contains 85% meat in fillets with turkey for easy digestion and carrots for essential vitamins A and K to support healthy growth.'
+},
+{
+id: 'bp_c1',
+name: 'Brit Premium by Nature Chicken & Green Peas',
+price: 10,
+weight: '85 g',
+image: 'brrt2.jpg',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'High-quality chicken fillets in gravy for adult dogs. Green peas provide a natural source of fiber and antioxidants. Grain-free recipe that supports healthy digestion and muscle maintenance.'
+},
+{
+id: 'bp_l1',
+name: 'Brit Premium by Nature Lamb & Green Peas',
+price: 10,
+weight: '85 g',
+image: 'brrt3.webp',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Hypoallergenic lamb fillets in gravy for sensitive adult dogs. 85% meat content in fillets. Rich in essential amino acids for tissue regeneration and muscle health.'
+},
+{
+id: 'rk_lv1',
+name: 'Rokus Chunks with Liver',
+price: 25,
+weight: '1240 g',
+image: 'chunk1.png',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Oven-baked meat chunks in a savory liver gravy. Formulated for adult dogs of all sizes with 81% moisture to support hydration and kidney function.'
+},
+{
+id: 'rk_ga1',
+name: 'Rokus Chunks with Game',
+price: 25,
+weight: '1240 g',
+image: 'chunk2.png',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Complete pet food featuring game meat chunks in sauce. Rich in natural proteins and essential vitamins A, D3, and E for daily maintenance.'
+},
+{
+id: 'rk_ch1',
+name: 'Rokus Chunks with Chicken',
+price: 25,
+weight: '1240 g',
+image: 'chunk3.png',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Value-sized can of chicken chunks in gravy. Provides a balanced daily diet with a focus on high digestibility and muscle maintenance.'
+},
+{
+id: 'rk_bf1',
+name: 'Rokus Chunks with Beef',
+price: 25,
+weight: '1240 g',
+image: 'chunk4.png',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Classic beef-flavored chunks in a rich gravy. 100% balanced nutrition designed for healthy adult dogs with standard energy needs.'
+},
+{
+id: 'rk_tu1',
+name: 'Rokus Chunks with Turkey',
+price: 25,
+weight: '1240 g',
+image: 'chunk5.png',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Lean turkey protein in a high-moisture gravy format. Supports healthy hydration and provides essential amino acids for adult dog vitality.'
+},
+{
+id: 'os_ec1',
+name: 'Oscar Eco Dog Terrine au Poulet',
+price: 11,
+weight: '300 g',
+image: 'oscar1.avif',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Aliment complet pour chiens adultes à base de poulet. Texture terrine appétissante. Fabriqué en France, formulé pour couvrir 100% des besoins nutritionnels quotidiens avec des minéraux essentiels.'
+},
+{
+id: 'os_ec2',
+name: 'Oscar Eco Dog Terrine au Bœuf',
+price: 11,
+weight: '300 g',
+image: 'oscar2.avif',
+category: 'food',
+subcategory: 'wet',
+type: 'normal',
+desc: 'Pâtée complète au bœuf pour chien adulte. Recette équilibrée sans colorants artificiels. Riche en humidité pour favoriser une bonne fonction rénale et une digestion fluide.'
+},
+{
+id: 'ac_nk1_d',
+name: 'Biberon pour chaton et chiot',
+price: 40,
+weight: '50 ml',
+image: 'bib.png',
+category: 'accessories',
+subcategory: 'feeding_tools',
+type: 'accessory',
+desc: 'Kit complet comprenant un biberon de 50ml, plusieurs tétines de rechange et un goupillon de nettoyage. Idéal pour l\'allaitement des nouveau-nés (chatons, chiots, rongeurs).'
+},
+
+{ 
+    id: 'sh_dn1', 
+    name: 'Shampoing Nourrissant Chien - Tous Pelages', 
+    price: 60, // Prix moyen (75 - 95 DH)
+    weight: '200 ml', 
+    image: 'vetodog1.webp', 
+    category: 'healthcare', 
+    subcategory: 'shampoo', 
+    type: 'care', 
+    desc: 'Soin complet enrichi en protéines pour nourrir le poil en profondeur. Adapté à toutes les races de chiens, il redonne brillance et souplesse au pelage tout en respectant le pH cutané.' 
+  },
+  { 
+    id: 'sh_dsr1', 
+    name: 'Mousse Nettoyante Sans Rinçage pour Chien', 
+    price: 70, 
+    weight: '200 ml', 
+    image: 'vetodog2.webp', 
+    category: 'healthcare', 
+    subcategory: 'shampoo', 
+    type: 'care', 
+    desc: 'Solution idéale pour un nettoyage rapide sans eau. Cette mousse capture les impuretés et neutralise les mauvaises odeurs. Parfait pour les chiens qui n\'aiment pas le bain ou entre deux toilettages.' 
+  },
+  { 
+    id: 'sh_dap1', 
+    name: 'Shampoing Antiparasitaire Chien', 
+    price: 70, 
+    weight: '200 ml', 
+    image: 'vetodog3.png', 
+    category: 'healthcare', 
+    subcategory: 'shampoo', 
+    type: 'treatment', 
+    desc: 'Formule active contre les puces, tiques et poux. Nettoie efficacement le pelage tout en éliminant les parasites externes. Utilisation recommandée dès l\'apparition des premiers signes d\'infestation.' 
+  },
+  { 
+    id: 'sh_dad1', 
+    name: 'Shampoing Anti-Démangeaison & Apaisant', 
+    price: 60, 
+    weight: '200 ml', 
+    image: 'vetodog4.jpg', 
+    category: 'healthcare', 
+    subcategory: 'shampoo', 
+    type: 'treatment', 
+    desc: 'Soin dermo-protecteur qui soulage et apaise immédiatement les irritations cutanées. Formulé sans allergènes majeurs, il réduit les rougeurs et calme les démangeaisons liées aux allergies ou à la peau sèche.' 
+  },
+  { 
+    id: 'vc_dn1', 
+    name: 'Veto Care Shampoing Poils Noirs et Ternes (Chien)', 
+    price: 60, // Prix moyen constaté (75 - 95 DH)
+    weight: '200 ml', 
+    image: 'vetodog5.jpg', 
+    category: 'healthcare', 
+    subcategory: 'shampoo', 
+    type: 'care', 
+    desc: 'Soin professionnel pour chiens à pelage sombre. Sa formule exclusive ravive l\'intensité du noir et du gris foncé tout en éliminant les reflets ternes. Enrichi en agents lustrants pour une brillance profonde et durable. Respecte l\'équilibre cutané du chien.' 
+  },
+  { 
+    id: 'vc_dw1', 
+    name: 'Veto Care Shampoing Poils Blancs et Clairs (Chien)', 
+    price: 60, // Prix moyen constaté (75 - 95 DH)
+    weight: '200 ml', 
+    image: 'vetodog6.jpg', 
+    category: 'healthcare', 
+    subcategory: 'shampoo', 
+    type: 'care', 
+    desc: 'Soin sublimateur pour chiens à pelage blanc ou clair. Sa formule anti-jaunissement élimine les taches et les reflets ternes pour redonner une blancheur éclatante. Enrichi en agents protecteurs, il laisse le poil doux, brillant et facile à brosser.' 
+  },
+  { 
+    id: 'ha_sh01', 
+    name: 'Hermanimal Shampooing Universel - Chien & Chat', 
+    price: 30, 
+    weight: '200 ml', 
+    image: 'her1.webp', 
+    category: 'healthcare', 
+    subcategory: 'shampoo', 
+    type: 'normal', 
+    desc: 'Shampoing doux 2-en-1 conçu pour les chiens et les chats. Nettoie efficacement le pelage tout en respectant l’équilibre cutané. Laisse le poil propre, souple et discrètement parfumé. Idéal pour un entretien fréquent à petit prix.' 
+  },
+  { 
+    id: 'fl_dc1', 
+    name: 'Flamingo Dental Care Spray - Chien & Chat', 
+    price: 90, // Prix moyen constaté (85 - 110 DH)
+    weight: '175 ml', 
+    image: 'flam1.jpg', 
+    category: 'healthcare', 
+    subcategory: 'sprays', 
+    type: 'care', 
+    desc: 'Spray de soin dentaire pour chiens et chats. Aide à réduire la plaque bactérienne et rafraîchit instantanément l\'haleine. Une alternative efficace au brossage pour maintenir une bonne hygiène buccale au quotidien. Facile à appliquer par simple pulvérisation sur les dents et les gencives.' 
+  },
+  { 
+    id: 'fl_dk_mint', 
+    name: 'Flamingo Kit de Soin Dentaire - Saveur Menthe', 
+    price: 75, // Prix moyen constaté au Maroc (65 - 85 DH)
+    weight: '100 g', 
+    image: 'kit1.jpeg', 
+    category: 'healthcare', 
+    subcategory: 'pomades', 
+    type: 'care', 
+    desc: 'Kit complet Flamingo pour l\'hygiène dentaire des chiens et chats. Comprend une brosse à dents double tête ergonomique et un dentifrice à la menthe pour une haleine fraîche. Prévient la formation de la plaque dentaire et du tartre. Formule comestible sans rinçage.' 
+  },
+  { 
+    id: 'acc_svb1', 
+    name: 'Brosse à Vapeur Électrique - Chien & Chat', 
+    price: 70, // Prix moyen constaté au Maroc (120 - 180 DH)
+    weight: '', 
+    image: 'bro1.jpeg', 
+    category: 'accessories', 
+    subcategory: 'accessories', 
+    type: 'accessory', 
+    desc: 'Brosse innovante 3-en-1 utilisant la technologie de la vapeur froide. Aide à retirer les poils morts, élimine la poussière et masse l\'animal. La brume fine empêche les poils de voler pendant le brossage et facilite le démêlage. Rechargeable par USB, idéale pour les chats et chiens de toutes tailles.' 
+  },
+  { 
+    id: 'acc_svb_01', 
+    name: 'Brosse à Vapeur Électrique 3-en-1 - Chien & Chat', 
+    price: 60, // Prix moyen constaté (120 - 180 DH)
+    weight: '', 
+    image: 'elec.jpeg', 
+    category: 'accessories', 
+    subcategory: 'accessories', 
+    type: 'accessories', 
+    desc: 'Brosse innovante utilisant la technologie de la vapeur froide. Aide à retirer les poils morts, élimine la poussière et masse l\'animal. La brume fine empêche les poils de voler pendant le brossage et facilite le démêlage. Rechargeable par USB, idéale pour les chats et chiens de toutes tailles.' 
+  },
+  { 
+    id: 'bp_sausage_ch1', 
+    name: 'Brit Premium Sausage - 95% Chicken', 
+    price: 45, // Prix moyen constaté (35 - 55 DH)
+    weight: '800 g', 
+    image: 'brt.avif', 
+    category: 'food', 
+    subcategory: 'wet', 
+    type: 'normal', 
+    desc: 'Aliment complet pour chiens à haute teneur en viande (95% poulet). Riche en collagène et Oméga-3 pour la santé des articulations et du pelage. Sans soja, sans OGM et sans conservateurs. Texture ferme idéale pour être découpée en morceaux.' 
+  },
+  { 
+    id: 'ps_tf1', 
+    name: 'Parfum Pooshi - Tutti Frutti', 
+    price: 65, 
+    weight: '125 ml', 
+    image: 'par1.webp', 
+    category: 'healthcare', 
+    subcategory: 'sprays', 
+    type: 'care', 
+    flavor: 'Tutti Frutti',
+    desc: 'Parfum fruité et pétillant pour chien et chat. Neutralise les mauvaises odeurs et laisse une senteur fraîche de fruits tropicaux. Formule douce respectueuse du pelage.' 
+  },
+  { 
+    id: 'ps_bb1', 
+    name: 'Parfum Pooshi - Bonbon', 
+    price: 65, 
+    weight: '125 ml', 
+    image: 'par2.webp', 
+    category: 'healthcare', 
+    subcategory: 'sprays', 
+    type: 'care', 
+    flavor: 'Bonbon',
+    desc: 'Senteur sucrée et gourmande rappelant les confiseries de l\'enfance. Idéal pour les animaux vivant en intérieur.' 
+  },
+  { 
+    id: 'ps_cv1', 
+    name: 'Parfum Pooshi - Coco Vanille', 
+    price: 65, 
+    weight: '125 ml', 
+    image: 'par3.webp', 
+    category: 'healthcare', 
+    subcategory: 'sprays', 
+    type: 'care', 
+    flavor: 'Coco Vanille',
+    desc: 'Mélange exotique de noix de coco et de vanille. Apporte une note chaleureuse et apaisante au pelage de votre compagnon.' 
+  },
+  { 
+    id: 'ps_mp1', 
+    name: 'Parfum Pooshi - Mangue Papaye', 
+    price: 65, 
+    weight: '125 ml', 
+    image: 'par4.webp', 
+    category: 'healthcare', 
+    subcategory: 'sprays', 
+    type: 'care', 
+    flavor: 'Mangue Papaye',
+    desc: 'Fragrance tropicale riche en nuances de mangue juteuse et de papaye. Parfait pour une sensation de fraîcheur estivale.' 
+  },
+  { 
+    id: 'ps_sh_ap_cv', 
+    name: 'Pooshi Shampoing Antiparasitaire - Coco Vanille', 
+    price: 70, 
+    weight: '250 ml', 
+    image: 'shampo.jpg', 
+    category: 'healthcare', 
+    subcategory: 'shampoo', 
+    type: 'treatment', 
+    flavor: 'Coco Vanille',
+    desc: 'Solution 2-en-1 pour chiens et chats. Ce shampoing élimine efficacement les parasites externes tout en laissant un parfum exotique et gourmand de coco et vanille. Sa formule douce nettoie le pelage en profondeur sans irriter la peau sensible de l\'animal.' 
+  },
+  { 
+    id: 'ps_sh_ap_cv', 
+    name: 'Pooshi Shampoing Antiparasitaire - bon bon', 
+    price: 70, 
+    weight: '250 ml', 
+    image: 'shamp1.jpeg', 
+    category: 'healthcare', 
+    subcategory: 'shampoo', 
+    type: 'treatment', 
+    flavor: 'Coco Vanille',
+    desc: 'Solution 2-en-1 pour chiens et chats. Ce shampoing élimine efficacement les parasites externes tout en laissant un parfum exotique et gourmand de coco et vanille. Sa formule douce nettoie le pelage en profondeur sans irriter la peau sensible de l\'animal.' 
+  },
+  { 
+    id: 'ps_sh_ap_cv', 
+    name: 'Pooshi Shampoing Antiparasitaire - tutti frutti', 
+    price: 70, 
+    weight: '250 ml', 
+    image: 'shamp2.webp', 
+    category: 'healthcare', 
+    subcategory: 'shampoo', 
+    type: 'treatment', 
+    flavor: 'Coco Vanille',
+    desc: 'Solution 2-en-1 pour chiens et chats. Ce shampoing élimine efficacement les parasites externes tout en laissant un parfum exotique et gourmand de coco et vanille. Sa formule douce nettoie le pelage en profondeur sans irriter la peau sensible de l\'animal.' 
+  },
+  { 
+    id: 'bc_so500', 
+    name: 'Brit Care Salmon Oil (Huile de Saumon)', 
+    price: 180, // Prix moyen constaté (220 - 260 DH)
+    weight: '500 ml', 
+    image: 'brrrt.jpg', 
+    category: 'healthcare', 
+    subcategory: 'pomades', 
+    type: 'premium', 
+    desc: 'Huile de saumon de Norvège 100% naturelle. Source exceptionnelle d\'Oméga-3 (EPA & DHA). Favorise un pelage dense et soyeux, aide à réduire les inflammations cutanées et soutient les fonctions cérébrales et cardiaques. Flacon pompe pour un dosage facile sur les croquettes.' 
+  },
+  { 
+    id: 'ob_so250', 
+    name: 'Optibiomega Salmon Oil (Huile de Saumon)', 
+    price: 135, // Prix moyen constaté au Maroc (130 - 160 DH)
+    weight: '250 ml', 
+    image: 'opti.png', 
+    category: 'healthcare', 
+    subcategory: 'pomades', 
+    type: 'care', 
+    desc: 'Supplément nutritionnel premium à base d\'huile de saumon pure. Riche en Oméga-3, elle garantit un pelage brillant et une peau saine. Aide à renforcer les défenses immunitaires et favorise le bon fonctionnement du cœur et des articulations. Flacon pompe pour un dosage précis.' 
+  },
+  { 
+    id: 'am_ee_100', 
+    name: 'Amoremio Lingettes Yeux et Oreilles', 
+    price: 70, 
+    weight: '100 pcs', 
+    image: 'amore.jpg', 
+    category: 'healthcare', 
+    subcategory: 'other', 
+    type: 'care', 
+    desc: 'Lingettes spécialisées pour le nettoyage en douceur des yeux et des oreilles des chiens et chats. Aide à prévenir les taches de larmes et l\'accumulation de cérumen. Formule douce et apaisante, sans danger pour les zones sensibles. Format économique de 100 lingettes.' 
+  },
+  { 
+    id: 'acc_dist_2in1_st', 
+    name: 'Distributeur Automatique 2-en-1 - Croquettes & Eau', 
+    price: 280, // Prix moyen constaté (250 - 320 DH)
+    weight: '1.2 kg', 
+    image: 'hh.png', 
+    category: 'accessories', 
+    subcategory: 'feeding_bowls', 
+    type: 'gear', 
+    desc: 'Station de nourrissage complète utilisant la gravité pour renouveler automatiquement les croquettes et l\'eau. Comprend une gamelle amovible en acier inoxydable pour une hygiène parfaite. Design moderne et compact, idéal pour les chats et petits chiens.' 
+  },
+  { 
+    id: 'acc_dist_2in1_blue', 
+    name: 'Distributeur Automatique 2-en-1 - Bleu', 
+    price: 150, 
+    weight: '1.2 kg', 
+    image: 'hihi.png', 
+    category: 'accessories', 
+    subcategory: 'feeding_bowls', 
+    type: 'gear', 
+    color: 'Blue',
+    desc: 'Solution complète de nutrition et d\'hydratation. Ce distributeur utilise la gravité pour fournir de l\'eau fraîche et des croquettes en continu. Équipé d\'une gamelle en acier inoxydable amovible pour prévenir les bactéries et faciliter le nettoyage. Design moderne et stable avec réservoirs transparents.' 
+  },
+  { 
+    id: 'acc_dist_2in1_pink', 
+    name: 'Distributeur Automatique 2-en-1 - Rose', 
+    price: 150, 
+    weight: '1.2 kg', 
+    image: 'hoho.png', 
+    category: 'accessories', 
+    subcategory: 'feeding_bowls', 
+    type: 'gear', 
+    color: 'Pink',
+    desc: 'Station d\'alimentation automatique par gravité avec réservoir de croquettes et fontaine à eau intégrée. Inclut une gamelle en acier inoxydable pour une hygiène optimale et un nettoyage facile. Couleur rose pastel moderne, idéale pour chats et petits chiens.' 
+  },
+  { 
+    id: 'acc_dist_elec_std', 
+    name: 'Distributeur de Croquettes Automatique Programmable', 
+    price: 550, 
+    weight: '2.5 kg', 
+    image: 'dis1.jpeg', 
+    category: 'accessories', 
+    subcategory: 'feeding_bowls', 
+    type: 'electronics', 
+    desc: 'Distributeur électronique haute précision permettant de programmer jusqu’à 4 repas par jour. Contrôle des portions pour éviter le surpoids. Large réservoir hermétique pour conserver la fraîcheur des croquettes. Fonctionne sur secteur ou piles pour une sécurité totale en cas de coupure de courant.' 
+  },
+  { 
+    id: 'acc_bed_sm_pink', 
+    name: 'Lit Apaisant Peluche - Rose', 
+    price: 180, 
+    weight: '0.8 kg', 
+    image: 'tkh1.jpeg', 
+    category: 'accessories', 
+    subcategory: 'pet_beds', 
+    type: 'comfort', 
+    color: 'Pink',
+    desc: 'Lit ultra-moelleux en peluche haute densité pour chat et petit chien. Sa forme ronde et ses rebords surélevés offrent un sentiment de sécurité et un soutien optimal pour la tête et le cou.' 
+  },
+  { 
+    id: 'acc_bed_sm_grey', 
+    name: 'Lit Apaisant Peluche - Gris', 
+    price: 180, 
+    weight: '0.8 kg', 
+    image: 'tkh2.jpeg', 
+    category: 'accessories', 
+    subcategory: 'pet_beds', 
+    type: 'comfort', 
+    color: 'Grey',
+    desc: 'Coussin apaisant gris anthracite. Design élégant qui s\'intègre dans tous les intérieurs. Lavable en machine pour une hygiène parfaite.' 
+  },
+  { 
+    id: 'acc_bed_sm_brown', 
+    name: 'Lit Apaisant Peluche - Marron', 
+    price: 180, 
+    weight: '0.8 kg', 
+    image: 'tkh3.jpeg', 
+    category: 'accessories', 
+    subcategory: 'pet_beds', 
+    type: 'comfort', 
+    color: 'Brown',
+    desc: 'Panier de confort marron chocolat. Texture douce et respirante, idéale pour les siestes prolongées de votre animal de compagnie.' 
+  },
+  { 
+    id: 'acc_bed_slp_red', 
+    name: 'Lit Pantoufle Confort - Rouge Magenta', 
+    price: 150, 
+    weight: '0.9 kg', 
+    image: 'khb1.png', 
+    category: 'accessories', 
+    subcategory: 'pet_beds', 
+    type: 'comfort', 
+    color: 'Red',
+    desc: 'Lit original en forme de pantoufle géante, offrant un nid douillet et chaud. Doublure en peluche épaisse et housse amovible avec fermeture éclair pour un lavage facile. Idéal pour les animaux qui aiment se cacher.' 
+  },
+  { 
+    id: 'acc_bed_rnd_pink', 
+    name: 'Coussin Rond Douillet - Rose Pastel', 
+    price: 80, 
+    weight: '0.6 kg', 
+    image: 'ter1.png', 
+    category: 'accessories', 
+    subcategory: 'pet_beds', 
+    type: 'budget_comfort', 
+    color: 'Pink',
+    desc: 'Coussin rond classique en peluche ultra-douce. Offre un confort moelleux et un sentiment de bien-être pour chats et petits chiens. Rembourrage dense et housse amovible pour un nettoyage facile. Le couchage idéal au meilleur prix.' 
+  },
+  { 
+    id: 'cj_bed_sm_med', 
+    name: 'Lit Canijess Confort - Small/Medium', 
+    price: 300, 
+    weight: '1.5 kg', 
+    image: 'sou1.png', 
+    category: 'accessories', 
+    subcategory: 'pet_beds', 
+    type: 'premium_comfort', 
+    size: 'M',
+    target: 'Cat & Small Dog',
+    desc: 'Lit haut de gamme Canijess conçu pour le bien-être articulaire. Rembourrage haute densité qui ne s\'affaisse pas avec le temps. Tissu résistant et toucher velours pour un sommeil profond.' 
+  },
+    { 
+    id: 'cj_bed_sm_med', 
+    name: 'Lit Canijess Confort - Small/Medium', 
+    price: 300, 
+    weight: '1.5 kg', 
+    image: 'sou2.png', 
+    category: 'accessories', 
+    subcategory: 'pet_beds', 
+    type: 'premium_comfort', 
+    size: 'M',
+    target: 'Cat & Small Dog',
+    desc: 'Lit haut de gamme Canijess conçu pour le bien-être articulaire. Rembourrage haute densité qui ne s\'affaisse pas avec le temps. Tissu résistant et toucher velours pour un sommeil profond.' 
+  },
+  { 
+    id: 'cj_bed_lg', 
+    name: 'Lit Canijess Grand Format - Large', 
+    price: 520, 
+    weight: '3.2 kg', 
+    image: 'sou3.png', 
+    category: 'accessories', 
+    subcategory: 'pet_beds', 
+    type: 'premium_comfort', 
+    size: 'L',
+    target: 'Large Dog',
+    desc: 'Version XXL du lit Canijess, spécialement adaptée aux grands chiens. Offre un espace généreux et un soutien orthopédique pour soulager les pressions musculaires. Finitions renforcées pour une grande longévité.' 
+  },
+  { 
+    id: 'acc_trap_bkp_grey', 
+    name: 'Sac à Dos de Transport - Gris Urbain', 
+    price: 199, 
+    weight: '1.2 kg', 
+    image: 'pr1.png', 
+    category: 'accessories', 
+    subcategory: 'travel_carriers', 
+    type: 'gear', 
+    color: 'Grey',
+    desc: 'Sac à dos de transport élégant et ergonomique en tissu gris durable. Équipé de panneaux en mesh pour une ventilation maximale, d\'une bulle transparente et de bretelles rembourrées pour votre confort. Idéal pour les voyages et les randonnées avec votre chat ou petit chien.' 
+  },
+  { 
+    id: 'acc_trap_bkp_pink', 
+    name: 'Sac à Dos de Transport - Rose Pastel', 
+    price: 199, 
+    weight: '1.2 kg', 
+    image: 'pr2.png', 
+    category: 'accessories', 
+    subcategory: 'travel_carriers', 
+    type: 'gear', 
+    color: 'Pink',
+    desc: 'Un design rose doux et protecteur. Ce sac à dos assure une circulation d\'air optimale et possède une attache de sécurité intérieure pour maintenir votre compagnon. Combinez style et bien-être lors de vos déplacements.' 
+  },
+  { 
+    id: 'acc_trap_bkp_green', 
+    name: 'Sac à Dos de Transport - Vert Émeraude', 
+    price: 199, 
+    weight: '1.2 kg', 
+    image: 'pr3.png', 
+    category: 'accessories', 
+    subcategory: 'travel_carriers', 
+    type: 'gear', 
+    color: 'Green',
+    desc: 'Coloris vert émeraude vibrant. Fabriqué en matériaux imperméables et faciles à nettoyer. Parfait pour les propriétaires actifs qui aiment partager leurs aventures avec leur animal de compagnie.' 
+  },
+  { 
+    id: 'acc_trap_bkp_blue', 
+    name: 'Sac à Dos de Transport - Bleu Saphir', 
+    price: 199, 
+    weight: '1.2 kg', 
+    image: 'pr4.png', 
+    category: 'accessories', 
+    subcategory: 'travel_carriers', 
+    type: 'gear', 
+    color: 'Blue',
+    desc: 'Design bleu classique et épuré. Ce sac à dos compact offre un espace sécurisé et aéré pour votre animal. Un accessoire indispensable pour des voyages en toute tranquillité.' 
+  },
+  { 
+    id: 'acc_trap_cage_top_s', 
+    name: 'Cage de Transport Ergonomique - Ouverture Haut (Taille S)', 
+    price: 220, 
+    weight: '1.8 kg', 
+    image: 'pt1.png', 
+    category: 'accessories', 
+    subcategory: 'travel_carriers', 
+    type: 'gear', 
+    size: 'S',
+    material: 'Plastic & Metal',
+    desc: 'Cage de transport Premium offrant deux accès : une porte frontale classique et une large ouverture par le haut pour un chargement sans stress de votre animal. Coque rigide en plastique durable avec aérations optimales. Idéale pour les chats nerveux et les petits chiens lors des visites vétérinaires.' 
+  },
+  { 
+    id: 'acc_trap_cage_top_m', 
+    name: 'Cage de Transport Ergonomique - Ouverture Haut (Taille M)', 
+    price: 280, 
+    weight: '2.3 kg', 
+    image: 'pt1.png', 
+    category: 'accessories', 
+    subcategory: 'travel_carriers', 
+    type: 'gear', 
+    size: 'M',
+    material: 'Plastic & Metal',
+    desc: 'Modèle de taille moyenne offrant les mêmes avantages d\'accès double. Sa structure robuste et sa grille supérieure en métal garantissent sécurité et ventilation pendant le transport. Recommandée pour les grands chats ou les petits chiens jusqu\'à 8kg.' 
+  },
+  { 
+    id: 'flx_leash_m_5m', 
+    name: 'Laisse Rétractable Flexi New Classic - Medium (5m)', 
+    price: 200, 
+    weight: '0.35 kg', 
+    image: 'cla1.jpeg', 
+    category: 'accessories', 
+    subcategory: 'leashes_collars', 
+    type: 'gear', 
+    desc: 'La laisse rétractable originale allemande. Offre une liberté de mouvement de 5 mètres tout en gardant un contrôle total grâce au système de freinage court et intuitif. Poignée ergonomique ajustable et ruban haute résistance. Conçue pour durer et sécuriser vos balades.' 
+  },
+  { 
+    id: 'flx_comfort_s_5m', 
+    name: 'Laisse Rétractable Flexi New Comfort - Small (5m)', 
+    price: 180, 
+    weight: '0.25 kg', 
+    image: 'cla2.jpeg', 
+    category: 'accessories', 
+    subcategory: 'leashes_collars', 
+    type: 'gear', 
+    brand: 'Flexi',
+    desc: 'La gamme New Comfort de Flexi allie design bicolore et ergonomie supérieure. Sa poignée à grip souple offre une prise en main exceptionnelle. Système de freinage ultra-rapide et fiable pour une sécurité totale lors des balades avec votre petit chien ou votre chat.' 
+  },
+  { 
+    id: 'toy_ball_launcher_std', 
+    name: 'Lanceur de Balle Ergonomique "Shooter"', 
+    price: 150, 
+    weight: '0.2 kg', 
+    image: 'bat.avif', 
+    category: 'toys', 
+    subcategory: 'fetch_toys', 
+    type: 'outdoor_gear', 
+    desc: 'Le jouet indispensable pour les chiens actifs. Ce lanceur permet de projeter la balle deux fois plus loin sans effort tout en évitant de se baisser ou de se salir les mains. Manche flexible ultra-résistant et poignée ergonomique pour une prise en main parfaite lors des sessions de jeu en extérieur.' 
+  },
+  { 
+    id: 'acc_set_lg_red_blk', 
+    name: 'Pack Laisse & Collier Robuste - Rouge/Noir (Mélange)', 
+    price: 120, 
+    color: 'Red/Black Mixed',
+    image: 'bra1.png', // Laisse suspendue à gauche dans l'image
+    category: 'accessories',
+    type: 'heavy_duty', 
+    desc: 'Mélange tressé rouge et noir pour un look technique et une robustesse à toute épreuve.' 
+  },
+  { 
+    id: 'acc_set_lg_blk', 
+    name: 'Pack Laisse & Collier Robuste - Noir Intense (Uni)', 
+    price: 120, 
+    color: 'Pure Black',
+    image: 'bra4.png', // Laisse suspendue centrale dans l'image
+    type: 'heavy_duty', 
+    category: 'accessories',
+    desc: 'Le classique universel. Nylon noir uni haute densité pour une sécurité totale.' 
+  },
+  { 
+    id: 'acc_set_lg_blk_blu', 
+    name: 'Pack Laisse & Collier Robuste - Noir/Bleu (Duo)', 
+    price: 120, 
+    color: 'Black/Blue Duo',
+    image: 'bra2.png', // Inspiré par le modèle tressé en boîte
+    category: 'accessories',
+    type: 'heavy_duty', 
+    desc: 'Un design bicolore noir et bleu pour les maîtres qui aiment l\'élégance discrète.' 
+  },
+  { 
+    id: 'acc_set_lg_grn', 
+    name: 'Pack Laisse & Collier Robuste - Vert Forêt (Uni)', 
+    price: 120, 
+    color: 'Forest Green',
+    image: 'bra3.png', // Laisse fine suspendue à droite
+    type: 'light_tactical', // Plus fin, pour "petits" grands chiens
+    category: 'accessories',
+    desc: 'Nylon uni vert forêt. Idéal pour les balades en nature et le camouflage tactique.' 
+  },
+  { 
+    id: 'acc_set_lg_red_blu', 
+    name: 'Pack Laisse & Collier Robuste - Rouge/Bleu (Mélange)', 
+    price: 120, 
+    color: 'Red/Blue Mixed',
+    category: 'accessories',
+    image: 'bra5.png', // Laisse dans la boîte en foreground
+    type: 'premium_tactical', // Modèle avec renforts supplémentaires
+    desc: 'Un mélange tressé rouge et bleu vif. Notre modèle le plus résistant, conçu pour les plus grands tireurs.' 
+  },
+  { 
+    id: 'acc_leash_lea_spr_12', 
+    name: 'Laisse en Cuir Véritable avec Ressort Amortisseur (1.2m)', 
+    price: "promo 120 nouveau tarif" , 
+    old_price: 149,
+    on_sale: true,
+    weight: '1.2 m', 
+    image: 'br1.png', 
+    category: 'accessories', 
+    subcategory: 'leashes_collars', 
+    type: 'leather_shock_absorber', 
+    material: 'Genuine Leather & Steel',
+    length: '1.2m',
+    desc: 'Laisse de prestige en cuir véritable alliant élégance et fonctionnalité. Équipée d\'un ressort en acier haute résistance qui absorbe les chocs lors des tractions brusques, protégeant ainsi vos articulations et les cervicales de votre chien. Longueur de 1.2m idéale pour garder un contrôle parfait en ville.' 
+  },
+  { 
+    id: 'jk9_coll_cg_red_4970', 
+    name: 'Collier Julius-K9 IDC Color&Gray - Rouge (49-70 cm)', 
+    price: "250 promo", 
+    old_price: 300,
+    on_sale: true,
+    weight: '0.12 kg', 
+    image: 'br2.png', 
+    category: 'accessories', 
+    subcategory: 'leashes_collars', 
+    type: 'technical_gear', 
+    brand: 'Julius-K9',
+    desc: 'Le collier professionnel par excellence. La gamme Color&Gray se distingue par son tissage de fils de caoutchouc entrelacés avec du textile,size: 49-70 cm , width: 25 mm offrant une adhérence parfaite et une résistance extrême. Idéal pour les chiens de travail et les balades sportives. Facile à nettoyer et ultra-durable.' 
+  }
+
+
+    
+  
+  
+],
+birds: [
+{ id: 'b1', name: 'Melange pour inseparable', price: 30, weight: '1 kg', image: 'vinci1.webp', category: 'food', subcategory: 'dry', type: 'general', desc: 'Nutritional Profile: ~14% Protein, ~8% Fat. Energy: 3200 kcal/kg. Blend of millet, canary seed, and sunflower to provide essential fatty acids for lovebirds.' },
+{ id: 'b2', name: 'Melange pour canaries avec alpiste', price: 12, weight: '500 g', image: 'vinci2.png', category: 'food', subcategory: 'dry', type: 'general', desc: 'Nutritional Profile: ~16% Protein, ~5% Fat. Energy: 2900 kcal/kg. High alpiste (canary grass seed) content provides peak energy and supports healthy vocal cords for singing.' },
+{ id: 'b3', name: 'Melange pour canaries sans alpiste', price: 10, weight: '500 g', image: 'vinci2.png', category: 'food', subcategory: 'dry', type: 'general', desc: 'Nutritional Profile: ~12% Protein, ~10% Fat. Energy: 3100 kcal/kg. A higher oilseed mix (rape, linseed) designed for molting or breeding periods where higher fat is needed.' },
+{ id: 'b4', name: 'Melange pour perruche', price: 20, weight: '1 kg', image: 'vinci3.webp', category: 'food', subcategory: 'wet', type: 'general', desc: 'Nutritional Profile: ~12% Protein, ~4% Fat. Energy: 2850 kcal/kg. Balanced seed mix focused on digestible carbohydrates and vitamins for daily parakeet activity.' },
+{ id: 'b5', name: 'Melange pour perruche', price: 10, weight: '500 g', image: 'vinci3.webp', category: 'food', subcategory: 'wet', type: 'general', desc: 'Nutritional Profile: ~12% Protein, ~4% Fat. Energy: 285 kcal/100g. Enriched with trace minerals to support strong beak development and vibrant plumage colors.' },
+{ id: 'b6', name: 'Melange pour calopsitte', price: 30, weight: '1 kg', image: 'vinci4.webp', category: 'food', subcategory: 'wet', type: 'general', desc: 'Nutritional Profile: ~13% Protein, ~9% Fat. Energy: 3300 kcal/kg. Includes striped sunflower and cardi seeds tailored for the higher metabolic rate of cockatiels.' },
+{ id: 'b7', name: 'NutriBird', price: 75, weight: '250 g', image: 'nutribird1.webp', category: 'food', type: 'general', desc: 'Nutritional Profile: 15% Protein, 16% Fat. Energy: 3700 kcal/kg. Extruded pellets containing Florastimul to prevent intestinal disorders and ensure complete nutrition.' },
+{ id: 'b8', name: 'NutriBird', price: 550, weight: '3 kg', image: 'nutribird2.jpg', category: 'food', type: 'general', desc: 'Nutritional Profile: 15% Protein, 16% Fat. Energy: 370 kcal/100g. Professional maintenance pellets that eliminate selective eating, ensuring 100% vitamin and mineral uptake.' },
+{
+id: 'ac_ab1',
+name: 'Abreuvoir Siphon pour Petit Oiseau',
+price: 15,
+weight: '100 ml',
+image: 'mange1.webp',
+category: 'accessories',
+subcategory: 'cage_birds',
+type: 'accessory',
+desc: 'Abreuvoir automatique en plastique transparent pour un contrôle facile du niveau d\'eau. Fixation simple aux barreaux de la cage. Idéal pour canaris et perruches.'
+}
+]
+};
+
+function openCategory(categoryKey, section = null) {
+currentCategory = categoryKey;
+currentSection = section;
+currentFoodFilter = 'all';
+currentHealthcareFilter = 'all';
+const categoryView = document.getElementById('category-view');
+const detailView = document.getElementById('detail-view');
+const detailContent = document.getElementById('detail-content');
+const searchAndResultsWrapper = document.getElementById('searchAndResultsWrapper');
+const filterButtonsContainer = document.getElementById('filterButtonsContainer');
+const aboutSection = document.getElementById('aboutSection');
+const lang = localStorage.getItem('soukiluna_lang') || 'en';
+const t = translations[lang];
+
+aboutSection.classList.add('fade-out');
+setTimeout(() => aboutSection.classList.add('hidden'), 300);
+categoryView.classList.add('hidden');
+searchAndResultsWrapper.classList.remove('hidden');
+
+// Show appropriate filters based on section
+if ((categoryKey === 'cats' || categoryKey === 'dogs') && section === 'food') {
+filterButtonsContainer.classList.remove('hidden');
+document.querySelectorAll('.filter-btn').forEach(btn => {
+if (btn.id.includes('healthcare')) {
+btn.classList.add('hidden');
+} else {
+btn.classList.remove('hidden');
+}
+});
+} else if ((categoryKey === 'cats' || categoryKey === 'dogs') && section === 'healthcare') {
+filterButtonsContainer.classList.remove('hidden');
+document.querySelectorAll('.filter-btn').forEach(btn => {
+if (btn.id.includes('healthcare')) {
+btn.classList.remove('hidden');
+} else if (!btn.getAttribute('data-i18n') || btn.getAttribute('data-i18n') === 'all_types') {
+btn.classList.remove('hidden');
+} else {
+btn.classList.add('hidden');
+}
+});
+} else {
+filterButtonsContainer.classList.add('hidden');
+}
+
+document.getElementById('searchInput').value = '';
+document.getElementById('searchInfo').textContent = '';
+document.getElementById('searchResultsContainer').classList.remove('active');
+document.getElementById('searchResultsGrid').innerHTML = '';
+
+const categoryNames = {
+cats: { title: t.cats, theme: 'orange', icon: '🐱' },
+dogs: { title: t.dogs, theme: 'green', icon: '🐶' },
+birds: { title: t.birds, theme: 'blue', icon: '🐦' }
+};
+const cat = categoryNames[categoryKey];
+
+// Create a copy of the list to sort
+let productList = products[categoryKey];
+let displayList = [...productList];
+
+// Sort logic: If a section is selected, items matching that category appear first
+if (section) {
+displayList.sort((a, b) => {
+const aMatch = a.category === section;
+const bMatch = b.category === section;
+if (aMatch && !bMatch) return -1;
+if (!aMatch && bMatch) return 1;
+return 0;
+});
+}
+
+let html = `
+<div class="text-center mb-12">
+<h2 class="text-4xl font-bold text-gray-800 mb-2">${cat.icon} ${cat.title}</h2>
+<div class="h-1 w-20 bg-${cat.theme}-400 mx-auto rounded-full"></div>
+<p class="text-gray-500 mt-2">${displayList.length} products available</p>
+</div>
+`;
+html += `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">`;
+
+displayList.forEach((product, index) => {
+const delay = index * 50;
+html += `
+<div class="glass-card rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-300 border border-white/40 product-card slide-up cursor-pointer"
+onclick="showProductDetail(${JSON.stringify(product).replace(/"/g, '&quot;')})"
+style="animation-delay: ${delay}ms" 
+data-type="${product.type || 'other'}"
+data-subcategory="${product.subcategory || 'other'}">
+<img src="${product.image}" alt="${product.name}" class="product-image mb-4" onerror="this.src='image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23f3f4f6%22 width=%22100%22 height=%22100%22/></svg>'">
+<h3 class="font-bold text-gray-800 mb-1">${product.name}</h3>
+<div class="flex items-center gap-2 mb-3">
+<span class="product-weight">⚖️ ${product.weight}</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="product-price">${product.price} DH</span>
+<span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-semibold">Click Details</span>
+</div>
+</div>
+`;
+});
+html += `</div>`;
+detailContent.innerHTML = html;
+detailView.classList.remove('hidden');
+window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goBack() {
+const categoryView = document.getElementById('category-view');
+const detailView = document.getElementById('detail-view');
+const searchAndResultsWrapper = document.getElementById('searchAndResultsWrapper');
+const aboutSection = document.getElementById('aboutSection');
+detailView.classList.add('hidden');
+searchAndResultsWrapper.classList.add('hidden');
+categoryView.classList.remove('hidden');
+categoryView.classList.add('fade-in');
+aboutSection.classList.remove('hidden');
+setTimeout(() => aboutSection.classList.remove('fade-out'), 50);
+setTimeout(() => categoryView.classList.remove('fade-in'), 500);
+}
+</script>
+</body>
+</html>
