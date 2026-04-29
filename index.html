@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-   <html lang="en">
-       <head>
-                <meta charset="UTF-8">
-                      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                            <title>Soukiluna Pet Shop - Rabat</title>
-                            <link rel="icon" type="image/svg+xml" href="logo.png">
-                            <link rel="apple-touch-icon" href="logo.png">
-                        <script src="https://cdn.tailwindcss.com"></script>
-                            <link href="https://cdn.jsdelivr.net/npm/@fontsource/nunito@5.0.17/index.css" rel="stylesheet">
-          <style>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soukiluna Pet Shop - Rabat</title>
+<link rel="icon" type="image/svg+xml" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/nunito@5.0.17/index.css" rel="stylesheet">
+<style>
 body {
 font-family: 'Nunito', sans-serif;
 background-color: #fdfbf7;
@@ -570,149 +570,148 @@ padding-top: 2rem;
 [dir="rtl"] .cart-modal.active { left: 0; }
 [dir="rtl"] .search-icon { right: auto; left: 1.25rem; }
 [dir="rtl"] .product-detail-close { left: 1rem; right: auto; }
-
 /* ===== ORDER SYSTEM STYLES ===== */
 .order-modal-overlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.55);
-  z-index: 200;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
-  padding: 1rem;
+position: fixed;
+top: 0; left: 0;
+width: 100%; height: 100%;
+background: rgba(0,0,0,0.55);
+z-index: 200;
+display: flex;
+align-items: center;
+justify-content: center;
+opacity: 0;
+visibility: hidden;
+transition: all 0.3s ease;
+padding: 1rem;
 }
 .order-modal-overlay.active {
-  opacity: 1;
-  visibility: visible;
+opacity: 1;
+visibility: visible;
 }
 .order-modal-box {
-  background: #fff;
-  border-radius: 2rem;
-  max-width: 480px;
-  width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
-  padding: 2rem;
-  animation: slideUp 0.35s ease;
+background: #fff;
+border-radius: 2rem;
+max-width: 480px;
+width: 100%;
+max-height: 90vh;
+overflow-y: auto;
+padding: 2rem;
+animation: slideUp 0.35s ease;
 }
 .order-modal-title {
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: #1f2937;
-  margin-bottom: 0.25rem;
+font-size: 1.4rem;
+font-weight: 800;
+color: #1f2937;
+margin-bottom: 0.25rem;
 }
 .order-modal-subtitle {
-  font-size: 0.85rem;
-  color: #6b7280;
-  margin-bottom: 1.5rem;
+font-size: 0.85rem;
+color: #6b7280;
+margin-bottom: 1.5rem;
 }
 .order-field { margin-bottom: 1rem; }
 .order-field label {
-  display: block;
-  font-weight: 700;
-  font-size: 0.85rem;
-  color: #374151;
-  margin-bottom: 0.4rem;
+display: block;
+font-weight: 700;
+font-size: 0.85rem;
+color: #374151;
+margin-bottom: 0.4rem;
 }
 .order-field input, .order-field select {
-  width: 100%;
-  padding: 0.7rem 1rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 0.75rem;
-  font-size: 0.95rem;
-  font-family: 'Nunito', sans-serif;
-  outline: none;
-  transition: border-color 0.2s;
-  background: #fafafa;
+width: 100%;
+padding: 0.7rem 1rem;
+border: 2px solid #e5e7eb;
+border-radius: 0.75rem;
+font-size: 0.95rem;
+font-family: 'Nunito', sans-serif;
+outline: none;
+transition: border-color 0.2s;
+background: #fafafa;
 }
 .order-field input:focus, .order-field select:focus {
-  border-color: #f43f5e;
-  background: #fff;
+border-color: #f43f5e;
+background: #fff;
 }
 .order-submit-btn {
-  background: linear-gradient(135deg, #f43f5e, #fb7185);
-  color: white;
-  width: 100%;
-  padding: 1rem;
-  border: none;
-  border-radius: 9999px;
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  margin-top: 1.25rem;
-  transition: all 0.3s ease;
-  font-family: 'Nunito', sans-serif;
+background: linear-gradient(135deg, #f43f5e, #fb7185);
+color: white;
+width: 100%;
+padding: 1rem;
+border: none;
+border-radius: 9999px;
+font-size: 1rem;
+font-weight: 700;
+cursor: pointer;
+margin-top: 1.25rem;
+transition: all 0.3s ease;
+font-family: 'Nunito', sans-serif;
 }
 .order-submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(244,63,94,0.4); }
 .order-cancel-btn {
-  background: #f3f4f6;
-  color: #6b7280;
-  width: 100%;
-  padding: 0.75rem;
-  border: none;
-  border-radius: 9999px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  margin-top: 0.5rem;
-  transition: all 0.2s ease;
-  font-family: 'Nunito', sans-serif;
+background: #f3f4f6;
+color: #6b7280;
+width: 100%;
+padding: 0.75rem;
+border: none;
+border-radius: 9999px;
+font-size: 0.9rem;
+font-weight: 600;
+cursor: pointer;
+margin-top: 0.5rem;
+transition: all 0.2s ease;
+font-family: 'Nunito', sans-serif;
 }
 .order-cancel-btn:hover { background: #e5e7eb; }
 .confirm-product-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.6rem 0;
-  border-bottom: 1px solid #f3f4f6;
-  font-size: 0.9rem;
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 0.6rem 0;
+border-bottom: 1px solid #f3f4f6;
+font-size: 0.9rem;
 }
 .confirm-product-name { color: #1f2937; font-weight: 600; flex: 1; }
 .confirm-product-qty { color: #6b7280; margin: 0 0.75rem; }
 .confirm-product-price { color: #f43f5e; font-weight: 700; }
 .confirm-address-box {
-  background: linear-gradient(135deg, rgba(244,63,94,0.07), rgba(251,113,133,0.07));
-  border-left: 4px solid #f43f5e;
-  border-radius: 0.75rem;
-  padding: 1rem;
-  margin: 1rem 0;
-  font-size: 0.9rem;
-  color: #374151;
-  line-height: 1.8;
+background: linear-gradient(135deg, rgba(244,63,94,0.07), rgba(251,113,133,0.07));
+border-left: 4px solid #f43f5e;
+border-radius: 0.75rem;
+padding: 1rem;
+margin: 1rem 0;
+font-size: 0.9rem;
+color: #374151;
+line-height: 1.8;
 }
 .whatsapp-btn {
-  background: linear-gradient(135deg, #25d366, #128c7e);
-  color: white;
-  width: 100%;
-  padding: 1rem;
-  border: none;
-  border-radius: 9999px;
-  font-size: 1.05rem;
-  font-weight: 800;
-  cursor: pointer;
-  margin-top: 1.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-  transition: all 0.3s ease;
-  font-family: 'Nunito', sans-serif;
+background: linear-gradient(135deg, #25d366, #128c7e);
+color: white;
+width: 100%;
+padding: 1rem;
+border: none;
+border-radius: 9999px;
+font-size: 1.05rem;
+font-weight: 800;
+cursor: pointer;
+margin-top: 1.25rem;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 0.6rem;
+transition: all 0.3s ease;
+font-family: 'Nunito', sans-serif;
 }
 .whatsapp-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(37,211,102,0.4); }
 .confirm-total-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 0.75rem 0 0;
-  font-weight: 800;
-  font-size: 1.1rem;
-  color: #1f2937;
-  border-top: 2px solid #e5e7eb;
-  margin-top: 0.5rem;
+display: flex;
+justify-content: space-between;
+padding: 0.75rem 0 0;
+font-weight: 800;
+font-size: 1.1rem;
+color: #1f2937;
+border-top: 2px solid #e5e7eb;
+margin-top: 0.5rem;
 }
 </style>
 </head>
@@ -864,7 +863,6 @@ We provide premium pet supplies, nutritious food, adorable accessories, and lovi
 <div id="detail-content" class="slide-up products-wrapper"></div>
 </div>
 </main>
-
 <!-- PRODUCT DETAIL MODAL -->
 <div id="productDetailModal" class="product-detail-modal" onclick="closeProductDetail(event)">
 <div class="product-detail-content" onclick="event.stopPropagation()">
@@ -905,70 +903,67 @@ We provide premium pet supplies, nutritious food, adorable accessories, and lovi
 </div>
 </div>
 </div>
-
 <!-- ===== ORDER ADDRESS MODAL ===== -->
 <div id="orderAddressModal" class="order-modal-overlay" onclick="if(event.target===this)closeAddressModal()">
-  <div class="order-modal-box">
-    <div class="text-center mb-2"><span style="font-size:2.5rem">🚚</span></div>
-    <div class="order-modal-title text-center">Delivery Address</div>
-    <div class="order-modal-subtitle text-center">Fill in your details for delivery anywhere in Morocco</div>
-    <div class="order-field">
-      <label>👤 Full Name / Nom complet / الاسم الكامل</label>
-      <input type="text" id="orderName" placeholder="Ex: Mohammed Amine">
-    </div>
-    <div class="order-field">
-      <label>📱 Phone Number / Numéro / رقم الهاتف</label>
-      <input type="tel" id="orderPhone" placeholder="Ex: 06 XX XX XX XX">
-    </div>
-    <div class="order-field">
-      <label>🏙️ City / Ville / المدينة</label>
-      <select id="orderCity">
-        <option value="">-- Select your city --</option>
-        <option>Rabat</option><option>Casablanca</option><option>Marrakech</option>
-        <option>Fès</option><option>Tanger</option><option>Agadir</option>
-        <option>Meknès</option><option>Oujda</option><option>Kénitra</option>
-        <option>Tétouan</option><option>Salé</option><option>Témara</option>
-        <option>Safi</option><option>El Jadida</option><option>Nador</option>
-        <option>Settat</option><option>Beni Mellal</option><option>Mohammedia</option>
-        <option>Khouribga</option><option>Laâyoune</option>
-        <option>Other / Autre / أخرى</option>
-      </select>
-    </div>
-    <div class="order-field">
-      <label>📍 Neighborhood / Quartier / الحي</label>
-      <input type="text" id="orderNeighborhood" placeholder="Ex: Hay Riad, Maarif, Guéliz...">
-    </div>
-    <button class="order-submit-btn" onclick="submitAddress()">✅ Confirm &amp; See Order Summary</button>
-    <button class="order-cancel-btn" onclick="closeAddressModal()">← Back to Cart</button>
-  </div>
+<div class="order-modal-box">
+<div class="text-center mb-2"><span style="font-size:2.5rem">🚚</span></div>
+<div class="order-modal-title text-center">Delivery Address</div>
+<div class="order-modal-subtitle text-center">Fill in your details for delivery anywhere in Morocco</div>
+<div class="order-field">
+<label>👤 Full Name / Nom complet / الاسم الكامل</label>
+<input type="text" id="orderName" placeholder="Ex: Mohammed Amine">
 </div>
-
+<div class="order-field">
+<label>📱 Phone Number / Numéro / رقم الهاتف</label>
+<input type="tel" id="orderPhone" placeholder="Ex: 06 XX XX XX XX">
+</div>
+<div class="order-field">
+<label>🏙️ City / Ville / المدينة</label>
+<select id="orderCity">
+<option value="">-- Select your city --</option>
+<option>Rabat</option><option>Casablanca</option><option>Marrakech</option>
+<option>Fès</option><option>Tanger</option><option>Agadir</option>
+<option>Meknès</option><option>Oujda</option><option>Kénitra</option>
+<option>Tétouan</option><option>Salé</option><option>Témara</option>
+<option>Safi</option><option>El Jadida</option><option>Nador</option>
+<option>Settat</option><option>Beni Mellal</option><option>Mohammedia</option>
+<option>Khouribga</option><option>Laâyoune</option>
+<option>Other / Autre / أخرى</option>
+</select>
+</div>
+<div class="order-field">
+<label>📍 Neighborhood / Quartier / الحي</label>
+<input type="text" id="orderNeighborhood" placeholder="Ex: Hay Riad, Maarif, Guéliz...">
+</div>
+<button class="order-submit-btn" onclick="submitAddress()">✅ Confirm &amp; See Order Summary</button>
+<button class="order-cancel-btn" onclick="closeAddressModal()">← Back to Cart</button>
+</div>
+</div>
 <!-- ===== ORDER CONFIRMATION MODAL ===== -->
 <div id="orderConfirmModal" class="order-modal-overlay" onclick="if(event.target===this)closeConfirmModal()">
-  <div class="order-modal-box">
-    <div class="text-center mb-2"><span style="font-size:2.5rem">🐾</span></div>
-    <div class="order-modal-title text-center">Order Confirmation</div>
-    <div class="order-modal-subtitle text-center">Review your order before sending to us on WhatsApp</div>
-    <div style="margin-top:1rem">
-      <div style="font-weight:700;color:#374151;margin-bottom:0.5rem;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.05em">🛒 Your Products</div>
-      <div id="confirmProductsList"></div>
-      <div class="confirm-total-row">
-        <span>Total</span>
-        <span id="confirmTotal" style="color:#f43f5e"></span>
-      </div>
-    </div>
-    <div class="confirm-address-box" id="confirmAddressBox"></div>
-    <div style="background:#fef9c3;border:1px solid #fde047;border-radius:0.75rem;padding:0.75rem 1rem;font-size:0.85rem;color:#92400e;margin-bottom:0.5rem">
-      💵 <strong>Payment:</strong> Cash on Delivery (Paiement à la livraison / الدفع عند التسليم)
-    </div>
-    <button class="whatsapp-btn" onclick="sendWhatsApp()">
-      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      Send Order via WhatsApp 📲
-    </button>
-    <button class="order-cancel-btn" onclick="closeConfirmModal()">← Edit Address</button>
-  </div>
+<div class="order-modal-box">
+<div class="text-center mb-2"><span style="font-size:2.5rem">🐾</span></div>
+<div class="order-modal-title text-center">Order Confirmation</div>
+<div class="order-modal-subtitle text-center">Review your order before sending to us on WhatsApp</div>
+<div style="margin-top:1rem">
+<div style="font-weight:700;color:#374151;margin-bottom:0.5rem;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.05em">🛒 Your Products</div>
+<div id="confirmProductsList"></div>
+<div class="confirm-total-row">
+<span>Total</span>
+<span id="confirmTotal" style="color:#f43f5e"></span>
 </div>
-
+</div>
+<div class="confirm-address-box" id="confirmAddressBox"></div>
+<div style="background:#fef9c3;border:1px solid #fde047;border-radius:0.75rem;padding:0.75rem 1rem;font-size:0.85rem;color:#92400e;margin-bottom:0.5rem">
+💵 <strong>Payment:</strong> Cash on Delivery (Paiement à la livraison / الدفع عند التسليم)
+</div>
+<button class="whatsapp-btn" onclick="sendWhatsApp()">
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+Send Order via WhatsApp 📲
+</button>
+<button class="order-cancel-btn" onclick="closeConfirmModal()">← Edit Address</button>
+</div>
+</div>
 <footer class="glass-card border-t border-white/40 py-8 mt-auto">
 <div class="container mx-auto px-4">
 <div class="flex flex-col md:flex-row justify-between items-center gap-6">
@@ -1096,13 +1091,11 @@ search_results: "تم العثور على {count} منتج(ات)", no_results: "
 clear_search: "مسح البحث", availability: "التوفر"
 }
 };
-
 let cart = [];
 let currentCategory = null;
 let currentSection = null;
 let currentFoodFilter = 'all';
 let currentHealthcareFilter = 'all';
-
 function showProductDetail(product) {
 currentProduct = product;
 document.getElementById('detailImage').src = product.image;
@@ -1112,17 +1105,14 @@ document.getElementById('detailWeight').textContent = product.weight || 'N/A';
 document.getElementById('detailDescription').textContent = product.desc || 'Premium quality product for your beloved pet.';
 document.getElementById('productDetailModal').classList.add('active');
 }
-
 function closeProductDetail(event) {
 if (event && event.target !== event.currentTarget) return;
 document.getElementById('productDetailModal').classList.remove('active');
 currentProduct = null;
 }
-
 function addToCartFromModal() {
 if (currentProduct) { addToCart(currentProduct); closeProductDetail(); }
 }
-
 function addToCart(product) {
 const existingItem = cart.find(item => item.id === product.id);
 if (existingItem) { existingItem.quantity += 1; }
@@ -1132,13 +1122,11 @@ updateCartModal();
 const lang = localStorage.getItem('soukiluna_lang') || 'en';
 alert(`${product.name} ${translations[lang].added}`);
 }
-
 function removeFromCart(productId) {
 cart = cart.filter(item => item.id !== productId);
 updateCartCount();
 updateCartModal();
 }
-
 function updateQuantity(productId, change) {
 const item = cart.find(item => item.id === productId);
 if (item) {
@@ -1147,14 +1135,12 @@ if (item.quantity <= 0) { removeFromCart(productId); }
 else { updateCartModal(); }
 }
 }
-
 function updateCartCount() {
 const count = cart.reduce((sum, item) => sum + item.quantity, 0);
 const badge = document.getElementById('cartCount');
 if (count > 0) { badge.textContent = count; badge.classList.remove('hidden'); }
 else { badge.classList.add('hidden'); }
 }
-
 function updateCartModal() {
 const cartItems = document.getElementById('cartItems');
 const cartTotal = document.getElementById('cartTotal');
@@ -1190,102 +1176,102 @@ ${item.weight ? `<div class="cart-item-weight">⚖️ ${item.weight}</div>` : ''
 cartItems.innerHTML = html;
 cartTotal.textContent = `${total} DH`;
 }
-
 function toggleCart() {
 document.getElementById('cartModal').classList.toggle('active');
 document.getElementById('cartOverlay').classList.toggle('active');
 if (document.getElementById('cartModal').classList.contains('active')) { updateCartModal(); }
 }
-
 // ===== NEW ORDER SYSTEM =====
 let orderAddress = {};
-
 function checkout() {
-  if (cart.length === 0) return;
-  // Close cart first
-  document.getElementById('cartModal').classList.remove('active');
-  document.getElementById('cartOverlay').classList.remove('active');
-  // Open address modal
-  document.getElementById('orderAddressModal').classList.add('active');
+if (cart.length === 0) return;
+// Close cart first
+document.getElementById('cartModal').classList.remove('active');
+document.getElementById('cartOverlay').classList.remove('active');
+// Open address modal
+document.getElementById('orderAddressModal').classList.add('active');
 }
-
 function closeAddressModal() {
-  document.getElementById('orderAddressModal').classList.remove('active');
-  // Reopen cart
-  document.getElementById('cartModal').classList.add('active');
-  document.getElementById('cartOverlay').classList.add('active');
+document.getElementById('orderAddressModal').classList.remove('active');
+// Reopen cart
+document.getElementById('cartModal').classList.add('active');
+document.getElementById('cartOverlay').classList.add('active');
 }
-
 function submitAddress() {
-  const name = document.getElementById('orderName').value.trim();
-  const phone = document.getElementById('orderPhone').value.trim();
-  const city = document.getElementById('orderCity').value.trim();
-  const neighborhood = document.getElementById('orderNeighborhood').value.trim();
-  if (!name || !phone || !city || !neighborhood) {
-    alert('Please fill in all fields / Veuillez remplir tous les champs / يرجى ملء جميع الحقول');
-    return;
-  }
-  orderAddress = { name, phone, city, neighborhood };
-  document.getElementById('orderAddressModal').classList.remove('active');
-  showConfirmation();
+const name = document.getElementById('orderName').value.trim();
+const phone = document.getElementById('orderPhone').value.trim();
+const city = document.getElementById('orderCity').value.trim();
+const neighborhood = document.getElementById('orderNeighborhood').value.trim();
+if (!name || !phone || !city || !neighborhood) {
+alert('Please fill in all fields / Veuillez remplir tous les champs / يرجى ملء جميع الحقول');
+return;
 }
-
+orderAddress = { name, phone, city, neighborhood };
+document.getElementById('orderAddressModal').classList.remove('active');
+showConfirmation();
+}
 function showConfirmation() {
-  let productsHTML = '';
-  let total = 0;
-  cart.forEach(item => {
-    const itemTotal = item.price * item.quantity;
-    total += itemTotal;
-    productsHTML += `<div class="confirm-product-row">
-      <span class="confirm-product-name">${item.name}${item.weight ? ' (' + item.weight + ')' : ''}</span>
-      <span class="confirm-product-qty">x${item.quantity}</span>
-      <span class="confirm-product-price">${itemTotal} DH</span>
-    </div>`;
-  });
-  document.getElementById('confirmProductsList').innerHTML = productsHTML;
-  document.getElementById('confirmTotal').textContent = total + ' DH';
-  document.getElementById('confirmAddressBox').innerHTML = `
-    <strong>📦 Delivery to:</strong><br>
-    👤 ${orderAddress.name}<br>
-    📱 ${orderAddress.phone}<br>
-    📍 ${orderAddress.neighborhood}, ${orderAddress.city}, Morocco
-  `;
-  document.getElementById('orderConfirmModal').classList.add('active');
+let productsHTML = '';
+let total = 0;
+cart.forEach(item => {
+const itemTotal = item.price * item.quantity;
+total += itemTotal;
+productsHTML += `<div class="confirm-product-row">
+<span class="confirm-product-name">${item.name}${item.weight ? ' (' + item.weight + ')' : ''}</span>
+<span class="confirm-product-qty">x${item.quantity}</span>
+<span class="confirm-product-price">${itemTotal} DH</span>
+</div>`;
+});
+document.getElementById('confirmProductsList').innerHTML = productsHTML;
+document.getElementById('confirmTotal').textContent = total + ' DH';
+document.getElementById('confirmAddressBox').innerHTML = `
+<strong>📦 Delivery to:</strong><br>
+👤 ${orderAddress.name}<br>
+📱 ${orderAddress.phone}<br>
+📍 ${orderAddress.neighborhood}, ${orderAddress.city}, Morocco
+`;
+document.getElementById('orderConfirmModal').classList.add('active');
 }
-
 function closeConfirmModal() {
-  document.getElementById('orderConfirmModal').classList.remove('active');
-  document.getElementById('orderAddressModal').classList.add('active');
+document.getElementById('orderConfirmModal').classList.remove('active');
+document.getElementById('orderAddressModal').classList.add('active');
 }
-
 function sendWhatsApp() {
-  let message = `🐾 *New Order - Soukiluna Pet Shop* 🐾\n\n`;
-  message += `👤 *Customer:* ${orderAddress.name}\n`;
-  message += `📱 *Phone:* ${orderAddress.phone}\n`;
-  message += `📍 *Address:* ${orderAddress.neighborhood}, ${orderAddress.city}, Morocco\n\n`;
-  message += `🛒 *Order Details:*\n`;
-  let total = 0;
-  cart.forEach(item => {
-    const itemTotal = item.price * item.quantity;
-    total += itemTotal;
-    message += `• ${item.name}${item.weight ? ' (' + item.weight + ')' : ''} x${item.quantity} → ${itemTotal} DH\n`;
-  });
-  message += `\n💰 *Total: ${total} DH*\n`;
-  message += `💵 *Payment: Cash on Delivery*\n\n`;
-  message += `Thank you for your order! 🐾`;
-  const encoded = encodeURIComponent(message);
-  const url = `https://wa.me/212629167222?text=${encoded}`;
-  window.open(url, '_blank');
-  // Clear cart after order sent
-  setTimeout(() => {
-    cart = [];
-    updateCartCount();
-    updateCartModal();
-    document.getElementById('orderConfirmModal').classList.remove('active');
-  }, 1000);
+let message = `🐾 *New Order - Soukiluna Pet Shop* 🐾
+`;
+message += `👤 *Customer:* ${orderAddress.name}
+`;
+message += `📱 *Phone:* ${orderAddress.phone}
+`;
+message += `📍 *Address:* ${orderAddress.neighborhood}, ${orderAddress.city}, Morocco
+`;
+message += `🛒 *Order Details:*
+`;
+let total = 0;
+cart.forEach(item => {
+const itemTotal = item.price * item.quantity;
+total += itemTotal;
+message += `• ${item.name}${item.weight ? ' (' + item.weight + ')' : ''} x${item.quantity} → ${itemTotal} DH
+`;
+});
+message += `
+💰 *Total: ${total} DH*
+`;
+message += `💵 *Payment: Cash on Delivery*
+`;
+message += `Thank you for your order! 🐾`;
+const encoded = encodeURIComponent(message);
+const url = `https://wa.me/212629167222?text=${encoded}`;
+window.open(url, '_blank');
+// Clear cart after order sent
+setTimeout(() => {
+cart = [];
+updateCartCount();
+updateCartModal();
+document.getElementById('orderConfirmModal').classList.remove('active');
+}, 1000);
 }
 // ===== END ORDER SYSTEM =====
-
 function setLanguage(lang) {
 document.querySelectorAll('.language-option').forEach(opt => { opt.classList.toggle('active', opt.dataset.lang === lang); });
 const langLabels = { en: '🇬🇧 EN', fr: '🇫🇷 FR', ar: '🇲🇦 AR' };
@@ -1302,21 +1288,17 @@ document.getElementById('languageSelector').classList.remove('active');
 localStorage.setItem('soukiluna_lang', lang);
 if (document.getElementById('cartModal').classList.contains('active')) { updateCartModal(); }
 }
-
 document.getElementById('languageBtn').addEventListener('click', (e) => {
 e.stopPropagation();
 document.getElementById('languageSelector').classList.toggle('active');
 });
-
 document.addEventListener('click', (e) => {
 if (!e.target.closest('.language-selector')) { document.getElementById('languageSelector').classList.remove('active'); }
 });
-
 document.addEventListener('DOMContentLoaded', () => {
 const savedLang = localStorage.getItem('soukiluna_lang') || 'en';
 setLanguage(savedLang);
 });
-
 function setFoodFilter(filterType) {
 currentFoodFilter = filterType;
 currentHealthcareFilter = 'all';
@@ -1328,7 +1310,6 @@ document.getElementById('searchResultsGrid').innerHTML = '';
 document.getElementById('searchInfo').textContent = '';
 applyFoodFilter();
 }
-
 function applyFoodFilter() {
 document.querySelectorAll('.product-card').forEach(card => {
 const typeAttr = card.getAttribute('data-type');
@@ -1343,7 +1324,6 @@ section.classList.toggle('hidden-filter', visibleProducts.length === 0);
 }
 });
 }
-
 function setHealthcareFilter(filterType) {
 currentHealthcareFilter = filterType;
 currentFoodFilter = 'all';
@@ -1355,7 +1335,6 @@ document.getElementById('searchResultsGrid').innerHTML = '';
 document.getElementById('searchInfo').textContent = '';
 applyHealthcareFilter();
 }
-
 function applyHealthcareFilter() {
 document.querySelectorAll('.product-card').forEach(card => {
 const subcategoryAttr = card.getAttribute('data-subcategory');
@@ -1370,7 +1349,6 @@ section.classList.toggle('hidden-filter', visibleProducts.length === 0);
 }
 });
 }
-
 function filterProducts() {
 const searchInput = document.getElementById('searchInput').value.toLowerCase().trim();
 const lang = localStorage.getItem('soukiluna_lang') || 'en';
@@ -1416,7 +1394,6 @@ searchInfo.classList.remove('highlight');
 searchResultsContainer.classList.add('active');
 }
 }
-
 const products = {
 cats: [
 { id: 'c1', name: 'Hills Sterilized Chicken', price: 260, weight: '1.5 kg', image: 'hill1.jpg', category: 'food', subcategory: 'dry', type: 'sterilized', desc: 'Nutritional Profile: 31.2% Protein, 10.2% Fat. Energy: 3573 kcal/kg. Contains L-carnitine for fat burning and controlled minerals (Magnesium/Phosphorus) for urinary health.' },
@@ -1676,7 +1653,6 @@ birds: [
 { id: 'ac_ab1', name: 'Abreuvoir Siphon pour Petit Oiseau', price: 15, weight: '100 ml', image: 'mange1.webp', category: 'accessories', subcategory: 'cage_birds', type: 'accessory', desc: 'Abreuvoir automatique en plastique transparent. Fixation simple aux barreaux de la cage.' }
 ]
 };
-
 function openCategory(categoryKey, section = null) {
 currentCategory = categoryKey;
 currentSection = section;
@@ -1746,7 +1722,9 @@ data-type="${product.type || 'other'}"
 data-subcategory="${product.subcategory || 'other'}">
 <img src="${product.image}" alt="${product.name}" class="product-image mb-4" onerror="this.style.background='#f3f4f6'">
 <h3 class="font-bold text-gray-800 mb-1">${product.name}</h3>
-<div class="flex items-center gap-2 mb-3">
+<div class="flex items-center gap-2 mb-3 flex-wrap">
+${product.category === 'food' && product.subcategory === 'dry' ? `<span class="text-xs font-semibold px-2 py-1 rounded-full bg-yellow-100 text-yellow-700">🌾 Dry</span>` : ''}
+${product.category === 'food' && product.subcategory === 'wet' ? `<span class="text-xs font-semibold px-2 py-1 rounded-full bg-blue-100 text-blue-700">💧 Wet</span>` : ''}
 <span class="product-weight">⚖️ ${product.weight || ''}</span>
 </div>
 <div class="flex items-center justify-between">
@@ -1760,7 +1738,6 @@ detailContent.innerHTML = html;
 detailView.classList.remove('hidden');
 window.scrollTo({ top: 0, behavior: 'smooth' });
 }
-
 function goBack() {
 const categoryView = document.getElementById('category-view');
 const detailView = document.getElementById('detail-view');
