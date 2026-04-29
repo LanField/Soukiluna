@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -713,6 +714,25 @@ color: #1f2937;
 border-top: 2px solid #e5e7eb;
 margin-top: 0.5rem;
 }
+
+/* ===== ADDED DRY/WET FILTER STYLES ===== */
+.product-card.hidden-dw { display: none; }
+.dry-wet-select {
+  margin-top: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  border: 2px solid rgba(244, 63, 94, 0.2);
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(10px);
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s ease;
+}
+.dry-wet-select:focus { border-color: #f43f5e; background: rgba(255, 255, 255, 0.95); }
 </style>
 </head>
 <body class="text-gray-800 antialiased min-h-screen flex flex-col">
@@ -763,7 +783,7 @@ Nestled in the heart of <strong>Rabat, Morocco</strong>, Soukiluna is your pet's
 We provide premium pet supplies, nutritious food, adorable accessories, and loving adoption services with expert advice from our passionate team.
 </p>
 <div class="flex flex-wrap gap-3">
-<span class="px-4 py-2 glass-badge text-pink-600 rounded-full text-sm font-semibold">📍 <span data-i18n="address">Mounazeh Avenue, Rabat</span></span>
+<span class="px-4 py-2 glass-badge text-pink-600 rounded-full text-sm font-semibold">📍 <span data-i18n="address">Rue Assounounou, El Menzeh, Rabat</span></span>
 <span class="px-4 py-2 glass-badge text-green-600 rounded-full text-sm font-semibold">🐾 <span data-i18n="adoption">Pet Adoption</span></span>
 <span class="px-4 py-2 glass-badge text-blue-600 rounded-full text-sm font-semibold">💝 <span data-i18n="care">Premium Care</span></span>
 </div>
@@ -844,6 +864,11 @@ We provide premium pet supplies, nutritious food, adorable accessories, and lovi
 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
 </svg>
 </div>
+<select id="dryWetSelect" class="dry-wet-select" onchange="setDryWet(this.value)">
+  <option value="all">All Food Types</option>
+  <option value="dry">🌾 Dry Food</option>
+  <option value="wet">💧 Wet Food</option>
+</select>
 <div id="searchInfo" class="search-results-info"></div>
 </div>
 <div id="filterButtonsContainer" class="filter-buttons-container hidden">
@@ -1024,7 +1049,7 @@ tagline: "Your pet's happy place in Rabat",
 welcome_title: "Welcome to Soukiluna",
 welcome_text1: 'Nestled in the heart of <strong>Rabat, Morocco</strong>, Soukiluna is your pet\'s sanctuary. Our name combines <strong>"Souki"</strong> from Soukayna, the shop\'s owner, and <strong>"Luna"</strong>, her beloved husky who inspired this journey.',
 welcome_text2: "We provide premium pet supplies, nutritious food, adorable accessories, and loving adoption services with expert advice from our passionate team.",
-address: "Mounazeh Avenue, Rabat",
+address: "Rue Assounounou, El Menzeh, Rabat",
 adoption: "Pet Adoption",
 care: "Premium Care",
 cats: "Cats", dogs: "Dogs", birds: "Birds",
@@ -1049,7 +1074,7 @@ tagline: "Le lieu de bonheur de votre animal à Rabat",
 welcome_title: "Bienvenue chez Soukiluna",
 welcome_text1: 'Niché au cœur de <strong>Rabat, Maroc</strong>, Soukiluna est le sanctuaire de votre animal.',
 welcome_text2: "Nous proposons des fournitures premium, une nourriture nutritive, des accessoires adorables et des services d'adoption aimants.",
-address: "Avenue Mounazeh, Rabat", adoption: "Adoption d'animaux", care: "Soins Premium",
+address: "Rue Assounounou, El Menzeh, Rabat", adoption: "Adoption d'animaux", care: "Soins Premium",
 cats: "Chats", dogs: "Chiens", birds: "Oiseaux",
 explore: "Cliquez pour explorer",
 accessories: "Accessoires", clothes: "Vêtements", toys: "Jouets", food: "Nourriture", healthcare: "Santé",
@@ -1370,16 +1395,17 @@ let searchResultsHTML = '';
 document.querySelectorAll('.product-card').forEach(card => {
 const productName = card.querySelector('h3').textContent.toLowerCase();
 const isHiddenByFilter = card.classList.contains('hidden-filter');
-if (productName.includes(searchInput) && !isHiddenByFilter) {
+const isHiddenByDW = card.classList.contains('hidden-dw');
+if (productName.includes(searchInput) && !isHiddenByFilter && !isHiddenByDW) {
 card.classList.remove('hidden-search');
 visibleCount++;
 const clone = card.cloneNode(true);
-clone.classList.remove('hidden-search', 'hidden-filter');
+clone.classList.remove('hidden-search', 'hidden-filter', 'hidden-dw');
 searchResultsHTML += clone.outerHTML;
 } else { card.classList.add('hidden-search'); }
 });
 document.querySelectorAll('.section-title').forEach(section => {
-const visibleProducts = section.nextElementSibling.querySelectorAll('.product-card:not(.hidden-search):not(.hidden-filter)');
+const visibleProducts = section.nextElementSibling.querySelectorAll('.product-card:not(.hidden-search):not(.hidden-filter):not(.hidden-dw)');
 section.classList.toggle('hidden-search', visibleProducts.length === 0);
 });
 if (visibleCount === 0) {
@@ -1750,6 +1776,19 @@ categoryView.classList.add('fade-in');
 aboutSection.classList.remove('hidden');
 setTimeout(() => aboutSection.classList.remove('fade-out'), 50);
 setTimeout(() => categoryView.classList.remove('fade-in'), 500);
+}
+
+// ===== ADDED DRY/WET FILTER LOGIC =====
+function setDryWet(type) {
+  document.querySelectorAll('.product-card').forEach(card => {
+    const sub = card.getAttribute('data-subcategory');
+    if (type === 'all') {
+      card.classList.remove('hidden-dw');
+    } else {
+      card.classList.toggle('hidden-dw', sub !== type);
+    }
+  });
+  filterProducts();
 }
 </script>
 </body>
