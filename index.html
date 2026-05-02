@@ -42,7 +42,11 @@
     }
 
     /* ===== ANIMATIONS ===== */
-    .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+    .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+    /* Safety: product cards must always be visible even if animation hasn't fired */
+    .product-card { opacity: 1 !important; }
+    .product-card.fade-in { animation: fadeInCard 0.4s ease-out both; }
+    @keyframes fadeInCard { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
     .slide-up { animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     .fade-out { animation: fadeOut 0.3s ease-out forwards; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -1287,10 +1291,7 @@
       try {
         history.pushState({ category: categoryKey, section: section }, '', '#' + categoryKey);
       } catch(e) {
-        // Fallback: just update hash without pushState
-        var scrollPos = window.pageYOffset;
-        window.location.hash = categoryKey;
-        window.scrollTo(0, scrollPos);
+        // Silent fail - don't change URL if pushState fails, to avoid page reload on mobile
       }
       const categoryView = document.getElementById('category-view');
       const detailView = document.getElementById('detail-view');
@@ -1348,12 +1349,13 @@
       </div>`;
       html += `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">`;
       displayList.forEach((product, index) => {
-        const delay = index * 50;
+        // delay handled below with cap
         const dryLabel = `<span class="text-xs font-semibold px-2 py-1 rounded-full bg-yellow-100 text-yellow-700">${t.dry_food_label || '🌾 Dry'}</span>`;
         const wetLabel = `<span class="text-xs font-semibold px-2 py-1 rounded-full bg-blue-100 text-blue-700">${t.wet_food_label || '💧 Wet'}</span>`;
-        html += `<div class="glass-card rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-300 border border-white/40 product-card slide-up cursor-pointer"
+        const cappedDelay = Math.min(index * 30, 300);
+        html += `<div class="glass-card rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-300 border border-white/40 product-card fade-in cursor-pointer"
           onclick="showProductDetail(${JSON.stringify(product).replace(/"/g, '&quot;')})"
-          style="animation-delay: ${delay}ms"
+          style="animation-delay: ${cappedDelay}ms"
           data-type="${product.type || 'other'}"
           data-subcategory="${product.subcategory || 'other'}">
           <img src="${product.image}" alt="${product.name}" class="product-image mb-4" onerror="this.style.background='#f3f4f6'">
@@ -1372,6 +1374,12 @@
       html += `</div>`;
       detailContent.innerHTML = html;
       detailView.classList.remove('hidden');
+      // Force reflow to ensure all cards render visibly on slow mobile devices
+      detailContent.style.opacity = '0';
+      requestAnimationFrame(() => {
+        detailContent.style.opacity = '';
+        detailContent.style.transition = 'opacity 0.3s ease';
+      });
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.dataset.i18n;
         if (t[key]) { el.innerHTML = t[key]; }
