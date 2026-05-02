@@ -1283,6 +1283,7 @@
       currentSection = section;
       currentFoodFilter = 'all';
       currentHealthcareFilter = 'all';
+      history.pushState({ category: categoryKey, section: section }, '', '#' + categoryKey);
       const categoryView = document.getElementById('category-view');
       const detailView = document.getElementById('detail-view');
       const detailContent = document.getElementById('detail-content');
@@ -1384,6 +1385,14 @@
       setTimeout(() => categoryView.classList.remove('fade-in'), 500);
     }
 
+    // Browser back/forward button support
+    window.addEventListener('popstate', function(e) {
+      goBack();
+    });
+
+    // Set initial history state so back button works from first category entry
+    history.replaceState({ home: true }, '', window.location.pathname);
+
     // ===== DRY/WET FILTER LOGIC =====
     function setDryWet(type) {
       document.querySelectorAll('.product-card').forEach(card => {
@@ -1399,4 +1408,3 @@
   </script>
 </body>
 </html>
-
