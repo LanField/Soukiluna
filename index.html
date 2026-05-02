@@ -1283,7 +1283,15 @@
       currentSection = section;
       currentFoodFilter = 'all';
       currentHealthcareFilter = 'all';
-      history.pushState({ category: categoryKey, section: section }, '', '#' + categoryKey);
+      // Safely push history state so browser back button works without breaking on mobile
+      try {
+        history.pushState({ category: categoryKey, section: section }, '', '#' + categoryKey);
+      } catch(e) {
+        // Fallback: just update hash without pushState
+        var scrollPos = window.pageYOffset;
+        window.location.hash = categoryKey;
+        window.scrollTo(0, scrollPos);
+      }
       const categoryView = document.getElementById('category-view');
       const detailView = document.getElementById('detail-view');
       const detailContent = document.getElementById('detail-content');
@@ -1385,13 +1393,26 @@
       setTimeout(() => categoryView.classList.remove('fade-in'), 500);
     }
 
-    // Browser back/forward button support
+    // Browser back/forward button support - safe for all devices
     window.addEventListener('popstate', function(e) {
-      goBack();
+      if (!window.location.hash || window.location.hash === '#') {
+        goBack();
+      }
     });
 
-    // Set initial history state so back button works from first category entry
-    history.replaceState({ home: true }, '', window.location.pathname);
+    window.addEventListener('hashchange', function(e) {
+      if (!window.location.hash || window.location.hash === '#') {
+        goBack();
+      }
+    });
+
+    // Set initial history state safely (wrapped in try/catch for mobile compatibility)
+    try { history.replaceState({ home: true }, '', window.location.pathname); } catch(e) {}
+
+    // Clear any leftover hash on load
+    if (window.location.hash) {
+      try { history.replaceState({ home: true }, '', window.location.pathname); } catch(e) {}
+    }
 
     // ===== DRY/WET FILTER LOGIC =====
     function setDryWet(type) {
