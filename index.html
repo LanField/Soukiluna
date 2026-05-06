@@ -536,10 +536,8 @@ let currentProduct = null;
 let orderAddress = {};
 let carouselIndex = 0;
 let carouselImages = [];
-
 // ✅ FIX #2: Global product lookup map to avoid JSON.stringify in onclick attributes
 window._productLookup = {};
-
 // ===== TRANSLATIONS =====
 const translations = {
 en: {
@@ -637,7 +635,6 @@ cod: "الدفع عند التسليم (Cash on Delivery / Paiement à la livrai
 send_whatsapp: "إرسال الطلب عبر واتساب 📲", edit_address: "← تعديل العنوان", fill_all_fields: "يرجى ملء جميع الحقول"
 }
 };
-
 // ===== PRODUCT DATABASE =====
 const products = {
 cats: [
@@ -989,10 +986,9 @@ birds: [
 { id: 'b7', name: 'NutriBird', price: 75, weight: '250 g', image: 'nutribird1.webp', images: ['nutribird1.webp'], category: 'food', type: 'general', desc: 'Extruded pellets containing Florastimul to prevent intestinal disorders and ensure complete nutrition.' },
 { id: 'b8', name: 'NutriBird', price: 550, weight: '3 kg', image: 'nutribird2.jpg', images: ['nutribird2.jpg'], category: 'food', type: 'general', desc: 'Professional maintenance pellets that eliminate selective eating, ensuring 100% vitamin uptake.' },
 { id: 'ac_ab1', name: 'Abreuvoir Siphon pour Petit Oiseau', price: 15, weight: '100 ml', image: 'mange1.webp', images: ['mange1.webp'], category: 'accessories', subcategory: 'cage_birds', type: 'accessory', desc: 'Abreuvoir automatique en plastique transparent. Fixation simple aux barreaux de la cage.' }
-]};
-
+]
+};
 // ✅ FIX #2 continued: Product lookup is populated in openCategory() below
-
 // ===== CAROUSEL FUNCTIONS =====
 function getImagesForProduct(product) {
 // Support both formats: single image or array of images
@@ -1279,7 +1275,7 @@ function setLanguage(lang) {
 // ✅ FIX #1: Wrap localStorage in try/catch for iOS safety
 try {
 document.querySelectorAll('.language-option').forEach(opt => { opt.classList.toggle('active', opt.dataset.lang === lang); });
-const langLabels = { en: '🇬🇧 EN', fr: '🇫🇷 FR', ar: '🇲🇦 AR' };
+const langLabels = { en: '🇬🇧 EN', fr: '🇫🇷 FR', ar: '🇲 AR' };
 document.getElementById('currentLang').textContent = langLabels[lang];
 document.documentElement.lang = lang;
 document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
@@ -1302,7 +1298,7 @@ if (document.getElementById('cartModal').classList.contains('active')) { updateC
 } catch(e) {
 // Fallback: just update DOM without localStorage
 document.querySelectorAll('.language-option').forEach(opt => { opt.classList.toggle('active', opt.dataset.lang === lang); });
-const langLabels = { en: '🇬🇧 EN', fr: '🇫🇷 FR', ar: '🇲🇦 AR' };
+const langLabels = { en: '🇬 EN', fr: '🇷 FR', ar: '🇲🇦 AR' };
 document.getElementById('currentLang').textContent = langLabels[lang];
 document.documentElement.lang = lang;
 document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
@@ -1490,12 +1486,10 @@ let html = `<div class="text-center mb-12">
 <p class="text-gray-500 mt-2">${displayList.length} ${t.products_available}</p>
 </div>`;
 html += `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">`;
-
 // ✅ FIX #2: Use product lookup map instead of JSON.stringify in onclick
 displayList.forEach((product, index) => {
 const pid = `prod_${categoryKey}_${index}`;
 window._productLookup[pid] = product;
-
 const dryLabel = `<span class="text-xs font-semibold px-2 py-1 rounded-full bg-yellow-100 text-yellow-700">${t.dry_food_label || '🌾 Dry'}</span>`;
 const wetLabel = `<span class="text-xs font-semibold px-2 py-1 rounded-full bg-blue-100 text-blue-700">${t.wet_food_label || '💧 Wet'}</span>`;
 const cappedDelay = Math.min(index * 30, 300);
