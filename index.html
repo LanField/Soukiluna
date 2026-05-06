@@ -25,7 +25,7 @@ background-image: url('sukiluna.png');
 background-repeat: no-repeat;
 background-size: cover;
 background-position: center;
-background-attachment: fixed;
+background-attachment: scroll; /* ✅ FIX #3: Changed from 'fixed' to 'scroll' for iOS compatibility */
 filter: blur(0px);
 transform: scale(1.1);
 z-index: -2;
@@ -536,6 +536,10 @@ let currentProduct = null;
 let orderAddress = {};
 let carouselIndex = 0;
 let carouselImages = [];
+
+// ✅ FIX #2: Global product lookup map to avoid JSON.stringify in onclick attributes
+window._productLookup = {};
+
 // ===== TRANSLATIONS =====
 const translations = {
 en: {
@@ -633,6 +637,7 @@ cod: "الدفع عند التسليم (Cash on Delivery / Paiement à la livrai
 send_whatsapp: "إرسال الطلب عبر واتساب 📲", edit_address: "← تعديل العنوان", fill_all_fields: "يرجى ملء جميع الحقول"
 }
 };
+
 // ===== PRODUCT DATABASE =====
 const products = {
 cats: [
@@ -689,10 +694,10 @@ cats: [
 { id: 'c30', name: 'Ownat Classic Fish', price: 200, weight: '4 kg', image: 'ownatnor2.jpeg', images: ['ownatnor2.jpeg'], category: 'food', subcategory: 'dry', type: 'normal', desc: 'Natural seafood flavors with highly digestible animal proteins for cats with discriminating palates.' },
 { id: 'c31', name: 'Ownat Classic Kitten', price: 105, weight: '1.5 kg', image: 'ownatnor3.jpeg', images: ['ownatnor3.jpeg'], category: 'food', subcategory: 'dry', type: 'normal', desc: 'High-energy density with fresh meat to fuel the intense growth and development phases of kittens.' },
 { id: 'c32', name: 'Ownat Classic Kitten', price: 225, weight: '4 kg', image: 'ownatnor3.jpeg', images: ['ownatnor3.jpeg'], category: 'food', subcategory: 'dry', type: 'normal', desc: 'Complete vitamin pack (A, D3, E) and minerals ensure robust skeletal and muscle development.' },
-{ id: 'c13', name: 'Ownat Grain Free Sterilized', price: 505, weight: '8 kg', image: 'ownat2.jpeg', images: ['ownat2.jpeg'], category: 'food', subcategory: 'dry', type: 'sterilized', desc: 'Uses tubers and legumes for healthy digestion; ideal for cats with grain allergies and low activity levels.' },
 { id: 'c4', name: 'Monge Chicken Sterilized', price: 170, weight: '1.5 kg', image: 'monge.jpg', images: ['monge.jpg'], category: 'food', subcategory: 'dry', type: 'sterilized', desc: 'Nutritional Profile: 31% Protein, 12% Fat, 3.5% Fiber. Energy: 3500 kcal/kg. Formulated with X.O.S. prebiotics for gut health and a low glycemic index to regulate blood sugar.' },
 { id: 'c5', name: 'Monge Chicken Adult Sterilized', price: 50, weight: '400 g', image: 'monge.jpg', images: ['monge.jpg'], category: 'food', subcategory: 'dry', type: 'sterilized', desc: 'Small-portion trial size featuring rosehip antioxidants and high-fiber content for increased satiety.' },
 { id: 'm1', name: 'Monge Urinary', price: 180, weight: '1.5 kg', image: 'mongeur1.jpg', images: ['mongeur1.jpg'], category: 'food', subcategory: 'dry', type: 'urinary', desc: 'Specialized formula designed to support urinary tract health by maintaining optimal mineral balance.' },
+{ id: 'c13', name: 'Ownat Grain Free Sterilized', price: 505, weight: '8 kg', image: 'ownat2.jpeg', images: ['ownat2.jpeg'], category: 'food', subcategory: 'dry', type: 'sterilized', desc: 'Uses tubers and legumes for healthy digestion; ideal for cats with grain allergies and low activity levels.' },
 { id: 'c14', name: 'Reflex Stérilisé Chicken', price: 85, weight: '1.5 kg', image: 'reflix1.jpg', images: ['reflix1.jpg'], category: 'food', subcategory: 'dry', type: 'sterilized', desc: 'Fortified with Xylo-oligosaccharides and Omega 3/6 from flaxseed to improve skin and coat health.' },
 { id: 'c15', name: 'Reflex Stérilisé Fish', price: 85, weight: '1.5 kg', image: 'reflix4.jpeg', images: ['reflix4.jpeg'], category: 'food', subcategory: 'dry', type: 'sterilized', desc: 'Fish-based proteins provide essential amino acids and Taurine for cardiac health and metabolic efficiency.' },
 { id: 'c16', name: 'Reflex Poulet Stérilisé', price: 550, weight: '15 kg', image: 'reflix3.jpeg', images: ['reflix3.jpeg'], category: 'food', subcategory: 'dry', type: 'sterilized', desc: 'Bulk chicken formula with brewers yeast and yucca schidigera to significantly reduce litter box odor.' },
@@ -984,8 +989,10 @@ birds: [
 { id: 'b7', name: 'NutriBird', price: 75, weight: '250 g', image: 'nutribird1.webp', images: ['nutribird1.webp'], category: 'food', type: 'general', desc: 'Extruded pellets containing Florastimul to prevent intestinal disorders and ensure complete nutrition.' },
 { id: 'b8', name: 'NutriBird', price: 550, weight: '3 kg', image: 'nutribird2.jpg', images: ['nutribird2.jpg'], category: 'food', type: 'general', desc: 'Professional maintenance pellets that eliminate selective eating, ensuring 100% vitamin uptake.' },
 { id: 'ac_ab1', name: 'Abreuvoir Siphon pour Petit Oiseau', price: 15, weight: '100 ml', image: 'mange1.webp', images: ['mange1.webp'], category: 'accessories', subcategory: 'cage_birds', type: 'accessory', desc: 'Abreuvoir automatique en plastique transparent. Fixation simple aux barreaux de la cage.' }
-]
-};
+]};
+
+// ✅ FIX #2 continued: Product lookup is populated in openCategory() below
+
 // ===== CAROUSEL FUNCTIONS =====
 function getImagesForProduct(product) {
 // Support both formats: single image or array of images
@@ -1269,6 +1276,8 @@ document.getElementById('orderConfirmModal').classList.remove('active');
 }
 // ===== LANGUAGE & TRANSLATIONS =====
 function setLanguage(lang) {
+// ✅ FIX #1: Wrap localStorage in try/catch for iOS safety
+try {
 document.querySelectorAll('.language-option').forEach(opt => { opt.classList.toggle('active', opt.dataset.lang === lang); });
 const langLabels = { en: '🇬🇧 EN', fr: '🇫🇷 FR', ar: '🇲🇦 AR' };
 document.getElementById('currentLang').textContent = langLabels[lang];
@@ -1290,6 +1299,19 @@ dwSelect.options[2].text = t.wet_food_opt;
 document.getElementById('languageSelector').classList.remove('active');
 localStorage.setItem('soukiluna_lang', lang);
 if (document.getElementById('cartModal').classList.contains('active')) { updateCartModal(); }
+} catch(e) {
+// Fallback: just update DOM without localStorage
+document.querySelectorAll('.language-option').forEach(opt => { opt.classList.toggle('active', opt.dataset.lang === lang); });
+const langLabels = { en: '🇬🇧 EN', fr: '🇫🇷 FR', ar: '🇲🇦 AR' };
+document.getElementById('currentLang').textContent = langLabels[lang];
+document.documentElement.lang = lang;
+document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+const t = translations[lang];
+document.querySelectorAll('[data-i18n]').forEach(el => {
+const key = el.dataset.i18n;
+if (t[key]) { el.innerHTML = t[key]; }
+});
+}
 }
 document.getElementById('languageBtn').addEventListener('click', (e) => {
 e.stopPropagation();
@@ -1299,8 +1321,13 @@ document.addEventListener('click', (e) => {
 if (!e.target.closest('.language-selector')) { document.getElementById('languageSelector').classList.remove('active'); }
 });
 document.addEventListener('DOMContentLoaded', () => {
+// ✅ FIX #1: Safe localStorage access
+try {
 const savedLang = localStorage.getItem('soukiluna_lang') || 'en';
 setLanguage(savedLang);
+} catch(e) {
+setLanguage('en'); // Fallback to English
+}
 });
 // ===== SEARCH & FILTER LOGIC =====
 function setFoodFilter(filterType) {
@@ -1463,12 +1490,17 @@ let html = `<div class="text-center mb-12">
 <p class="text-gray-500 mt-2">${displayList.length} ${t.products_available}</p>
 </div>`;
 html += `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">`;
+
+// ✅ FIX #2: Use product lookup map instead of JSON.stringify in onclick
 displayList.forEach((product, index) => {
+const pid = `prod_${categoryKey}_${index}`;
+window._productLookup[pid] = product;
+
 const dryLabel = `<span class="text-xs font-semibold px-2 py-1 rounded-full bg-yellow-100 text-yellow-700">${t.dry_food_label || '🌾 Dry'}</span>`;
 const wetLabel = `<span class="text-xs font-semibold px-2 py-1 rounded-full bg-blue-100 text-blue-700">${t.wet_food_label || '💧 Wet'}</span>`;
 const cappedDelay = Math.min(index * 30, 300);
 html += `<div class="glass-card rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-300 border border-white/40 product-card fade-in cursor-pointer"
-onclick="showProductDetail(${JSON.stringify(product).replace(/"/g, '&quot;')})"
+onclick="showProductDetail(window._productLookup['${pid}'])"
 style="animation-delay: ${cappedDelay}ms"
 data-type="${product.type || 'other'}"
 data-subcategory="${product.subcategory || 'other'}">
