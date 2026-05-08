@@ -10,34 +10,73 @@
 <link href="https://cdn.jsdelivr.net/npm/@fontsource/nunito@5.0.17/index.css" rel="stylesheet">
 <style>
 /* ===== BASE & LAYOUT ===== */
+html {
+min-height: 100%;
+background-color: #fdfbf7;
+}
 body {
 font-family: 'Nunito', sans-serif;
-background-color: #fdfbf7;
+background-color: transparent;
 overflow-x: hidden;
 position: relative;
+min-height: 100%;
+isolation: isolate;
 }
-body::before {
-content: '';
+.site-background {
 position: fixed;
-top: 0; left: 0;
-width: 100%; height: 100%;
-background-image: url('sukiluna.png');
-background-repeat: no-repeat;
-background-size: cover;
-background-position: center;
-background-attachment: scroll;
-z-index: -2;
+inset: 0;
+z-index: -1;
+overflow: hidden;
+pointer-events: none;
+background: #fdfbf7;
+contain: strict;
+}
+.site-background img {
+display: block;
+width: 100%;
+height: 100%;
+object-fit: cover;
+object-position: center;
+transform: translateZ(0);
+}
+.site-background::after {
+content: '';
+position: absolute;
+inset: 0;
+background: rgba(253, 251, 247, 0.34);
+pointer-events: none;
+}
+@supports (-webkit-touch-callout: none) {
+.site-background {
+height: 100dvh;
+transform: none;
 will-change: auto;
 }
-/* Keep background image on mobile too, but ensure it's lightweight (scroll attachment, no blur/scale) so iOS Safari doesn't run out of memory. */
-body::after {
-content: '';
-position: fixed;
-top: 0; left: 0;
-width: 100%; height: 100%;
-background: rgba(253, 251, 247, 0.30);
-z-index: -1;
-pointer-events: none;
+.site-background img {
+transform: none;
+will-change: auto;
+}
+.glass-card, .glass-badge, .map-badge, .language-btn, .language-dropdown,
+.about-combined-container, .about-text-container, .search-and-results-wrapper,
+.search-input, .dry-wet-select, .cart-modal {
+-webkit-backdrop-filter: none !important;
+backdrop-filter: none !important;
+}
+.product-card.fade-in {
+animation: none !important;
+}
+}
+@media (max-width: 768px) {
+.site-background::after {
+background: rgba(253, 251, 247, 0.46);
+}
+.glass-card {
+background: rgba(255, 255, 255, 0.88);
+}
+.about-combined-container,
+.search-and-results-wrapper {
+background: rgba(253, 251, 247, 0.92);
+}
 }
 /* ===== ANIMATIONS ===== */
 .fade-in { animation: fadeIn 0.4s ease-out forwards; }
@@ -205,6 +244,7 @@ pointer-events: none;
 </style>
 </head>
 <body class="text-gray-800 antialiased min-h-screen flex flex-col">
+<div class="site-background" aria-hidden="true"><img src="sukiluna.png" alt="" fetchpriority="high" decoding="async"></div>
 <!-- HEADER -->
 <header class="p-6 text-center relative z-10">
 <div class="flex justify-between items-center mb-4">
@@ -536,6 +576,10 @@ let currentProduct = null;
 let orderAddress = {};
 let carouselIndex = 0;
 let carouselImages = [];
+let activeDisplayList = [];
+let activeDisplayCategory = null;
+let activeProductRenderIndex = 0;
+const PRODUCT_BATCH_SIZE = /iPhone|iPad|iPod/i.test(navigator.userAgent) ? 20 : 48;
 // ✅ FIX #2: Global product lookup map to avoid JSON.stringify in onclick attributes
 window._productLookup = {};
 // ===== TRANSLATIONS =====
@@ -1335,6 +1379,7 @@ document.getElementById('searchInput').value = '';
 document.getElementById('searchResultsContainer').classList.remove('active');
 document.getElementById('searchResultsGrid').innerHTML = '';
 document.getElementById('searchInfo').textContent = '';
+if (resetProductGridForFilters()) { return; }
 applyFoodFilter();
 }
 function applyFoodFilter() {
@@ -1360,6 +1405,7 @@ document.getElementById('searchInput').value = '';
 document.getElementById('searchResultsContainer').classList.remove('active');
 document.getElementById('searchResultsGrid').innerHTML = '';
 document.getElementById('searchInfo').textContent = '';
+if (resetProductGridForFilters()) { return; }
 applyHealthcareFilter();
 }
 function applyHealthcareFilter() {
@@ -1376,13 +1422,113 @@ section.classList.toggle('hidden-filter', visibleProducts.length === 0);
 }
 });
 }
+
+function getCurrentLangSafe() {
+try { return localStorage.getItem('soukiluna_lang') || 'en'; } catch(e) { return 'en'; }
+}
+function productMatchesActiveView(product) {
+const searchInputEl = document.getElementById('searchInput');
+const searchTerm = searchInputEl ? searchInputEl.value.toLowerCase().trim() : '';
+if (searchTerm && !String(product.name || '').toLowerCase().includes(searchTerm)) { return false; }
+if (currentSection === 'food' && currentFoodFilter !== 'all' && product.type !== currentFoodFilter) { return false; }
+if (currentSection === 'healthcare' && currentHealthcareFilter !== 'all' && product.subcategory !== currentHealthcareFilter) { return false; }
+if (window._soukilunaDryWetFilter && window._soukilunaDryWetFilter !== 'all' && product.subcategory !== window._soukilunaDryWetFilter) { return false; }
+return true;
+}
+function countMatchingActiveProducts() {
+return activeDisplayList.filter(productMatchesActiveView).length;
+}
+function createProductCardHTML(product, index) {
+const lang = getCurrentLangSafe();
+const t = translations[lang] || translations.en;
+const pid = `prod_${activeDisplayCategory || 'category'}_${index}_${Math.random().toString(36).slice(2)}`;
+window._productLookup[pid] = product;
+const dryLabel = `<span class="text-xs font-semibold px-2 py-1 rounded-full bg-yellow-100 text-yellow-700">${t.dry_food_label || '🌾 Dry'}</span>`;
+const wetLabel = `<span class="text-xs font-semibold px-2 py-1 rounded-full bg-blue-100 text-blue-700">${t.wet_food_label || '💧 Wet'}</span>`;
+return `<div class="glass-card rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-300 border border-white/40 product-card fade-in cursor-pointer"
+onclick="showProductDetail(window._productLookup['${pid}'])"
+data-type="${product.type || 'other'}"
+data-subcategory="${product.subcategory || 'other'}">
+<img src="${product.image}" alt="${product.name}" class="product-image mb-4" loading="lazy" decoding="async" width="300" height="180" onerror="this.onerror=null;this.style.background='#f3f4f6';this.removeAttribute('src');">
+<h3 class="font-bold text-gray-800 mb-1">${product.name}</h3>
+<div class="flex items-center gap-2 mb-3 flex-wrap">
+${product.category === 'food' && product.subcategory === 'dry' ? dryLabel : ''}
+${product.category === 'food' && product.subcategory === 'wet' ? wetLabel : ''}
+<span class="product-weight">⚖️ ${product.weight || ''}</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="product-price">${product.price} DH</span>
+<span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-semibold">${t.click_details}</span>
+</div>
+</div>`;
+}
+function updateLoadMoreButton() {
+const btn = document.getElementById('loadMoreProductsBtn');
+if (!btn) { return; }
+let hasMore = false;
+for (let i = activeProductRenderIndex; i < activeDisplayList.length; i++) {
+if (productMatchesActiveView(activeDisplayList[i])) { hasMore = true; break; }
+}
+btn.classList.toggle('hidden', !hasMore);
+}
+function renderProductBatch(reset = false) {
+const grid = document.getElementById('productGrid');
+if (!grid) { return; }
+if (reset) {
+grid.innerHTML = '';
+window._productLookup = {};
+activeProductRenderIndex = 0;
+}
+let added = 0;
+while (activeProductRenderIndex < activeDisplayList.length && added < PRODUCT_BATCH_SIZE) {
+const sourceIndex = activeProductRenderIndex;
+const product = activeDisplayList[activeProductRenderIndex++];
+if (!productMatchesActiveView(product)) { continue; }
+grid.insertAdjacentHTML('beforeend', createProductCardHTML(product, sourceIndex));
+added++;
+}
+const lang = getCurrentLangSafe();
+const t = translations[lang] || translations.en;
+const totalMatches = countMatchingActiveProducts();
+if (reset && totalMatches === 0) {
+grid.innerHTML = `<div class="no-results"><div class="no-results-icon">🔍</div><p>${t.no_results}</p></div>`;
+}
+const searchInfo = document.getElementById('searchInfo');
+const searchInput = document.getElementById('searchInput');
+if (searchInfo && searchInput && searchInput.value.trim()) {
+searchInfo.textContent = t.search_results.replace('{count}', totalMatches);
+searchInfo.classList.toggle('highlight', totalMatches === 0);
+}
+updateLoadMoreButton();
+}
+function resetProductGridForFilters() {
+if (!activeDisplayList.length || !document.getElementById('productGrid')) { return false; }
+renderProductBatch(true);
+return true;
+}
 function filterProducts() {
-const searchInput = document.getElementById('searchInput').value.toLowerCase().trim();
-const lang = localStorage.getItem('soukiluna_lang') || 'en';
-const t = translations[lang];
+const searchInputEl = document.getElementById('searchInput');
+const searchInput = searchInputEl ? searchInputEl.value.toLowerCase().trim() : '';
+const lang = getCurrentLangSafe();
+const t = translations[lang] || translations.en;
 const searchInfo = document.getElementById('searchInfo');
 const searchResultsGrid = document.getElementById('searchResultsGrid');
 const searchResultsContainer = document.getElementById('searchResultsContainer');
+if (activeDisplayList.length && document.getElementById('productGrid')) {
+if (searchResultsContainer) { searchResultsContainer.classList.remove('active'); }
+if (searchResultsGrid) { searchResultsGrid.innerHTML = ''; }
+if (searchInfo) {
+if (searchInput) {
+searchInfo.textContent = t.search_results.replace('{count}', countMatchingActiveProducts());
+searchInfo.classList.remove('highlight');
+} else {
+searchInfo.textContent = '';
+searchInfo.classList.remove('highlight');
+}
+}
+renderProductBatch(true);
+return;
+}
 if (!searchInput) {
 document.querySelectorAll('.product-card').forEach(card => card.classList.remove('hidden-search'));
 document.querySelectorAll('.section-title').forEach(section => section.classList.remove('hidden-search'));
@@ -1429,6 +1575,7 @@ currentSection = section;
 currentFoodFilter = 'all';
 currentHealthcareFilter = 'all';
 try {
+sessionStorage.setItem('soukiluna_last_view', JSON.stringify({ category: categoryKey, section: section, time: Date.now() }));
 history.pushState({ category: categoryKey, section: section }, '', '#' + categoryKey);
 } catch(e) {}
 const categoryView = document.getElementById('category-view');
@@ -1485,34 +1632,13 @@ let html = `<div class="text-center mb-12">
 <div class="h-1 w-20 bg-${cat.theme}-400 mx-auto rounded-full"></div>
 <p class="text-gray-500 mt-2">${displayList.length} ${t.products_available}</p>
 </div>`;
-html += `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">`;
-// ✅ FIX #2: Use product lookup map instead of JSON.stringify in onclick
-displayList.forEach((product, index) => {
-const pid = `prod_${categoryKey}_${index}`;
-window._productLookup[pid] = product;
-const dryLabel = `<span class="text-xs font-semibold px-2 py-1 rounded-full bg-yellow-100 text-yellow-700">${t.dry_food_label || '🌾 Dry'}</span>`;
-const wetLabel = `<span class="text-xs font-semibold px-2 py-1 rounded-full bg-blue-100 text-blue-700">${t.wet_food_label || '💧 Wet'}</span>`;
-const cappedDelay = Math.min(index * 30, 300);
-html += `<div class="glass-card rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-300 border border-white/40 product-card fade-in cursor-pointer"
-onclick="showProductDetail(window._productLookup['${pid}'])"
-style="animation-delay: ${cappedDelay}ms"
-data-type="${product.type || 'other'}"
-data-subcategory="${product.subcategory || 'other'}">
-<img src="${product.image}" alt="${product.name}" class="product-image mb-4" loading="lazy" decoding="async" width="300" height="180" onerror="this.onerror=null;this.style.background='#f3f4f6';this.removeAttribute('src');">
-<h3 class="font-bold text-gray-800 mb-1">${product.name}</h3>
-<div class="flex items-center gap-2 mb-3 flex-wrap">
-${product.category === 'food' && product.subcategory === 'dry' ? dryLabel : ''}
-${product.category === 'food' && product.subcategory === 'wet' ? wetLabel : ''}
-<span class="product-weight">⚖️ ${product.weight || ''}</span>
-</div>
-<div class="flex items-center justify-between">
-<span class="product-price">${product.price} DH</span>
-<span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-semibold">${t.click_details}</span>
-</div>
-</div>`;
-});
-html += `</div>`;
+html += `<div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>`;
+html += `<div class="mt-8 flex justify-center"><button id="loadMoreProductsBtn" type="button" onclick="renderProductBatch(false)" class="px-6 py-3 rounded-full bg-pink-500 text-white font-bold shadow-sm hover:bg-pink-600 transition-colors hidden">Load more products</button></div>`;
+activeDisplayList = displayList;
+activeDisplayCategory = categoryKey;
+activeProductRenderIndex = 0;
 detailContent.innerHTML = html;
+renderProductBatch(true);
 detailView.classList.remove('hidden');
 detailContent.style.opacity = '0';
 requestAnimationFrame(() => {
@@ -1526,6 +1652,10 @@ if (t[key]) { el.innerHTML = t[key]; }
 window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 function goBack() {
+try { sessionStorage.removeItem('soukiluna_last_view'); } catch(e) {}
+activeDisplayList = [];
+activeDisplayCategory = null;
+activeProductRenderIndex = 0;
 const categoryView = document.getElementById('category-view');
 const detailView = document.getElementById('detail-view');
 const searchAndResultsWrapper = document.getElementById('searchAndResultsWrapper');
@@ -1548,7 +1678,7 @@ if (!window.location.hash || window.location.hash === '#') {
 goBack();
 }
 });
-// Restore category if the page was reloaded on a category hash (e.g. iOS memory reload)
+// Restore category if iOS reloads the tab while viewing cats/dogs/birds.
 (function(){
   const validHashes = ['#cats','#dogs','#birds'];
   const h = window.location.hash;
@@ -1556,12 +1686,25 @@ goBack();
     const key = h.slice(1);
     try { history.replaceState({ category: key }, '', h); } catch(e) {}
     setTimeout(() => { try { openCategory(key); } catch(e) {} }, 0);
-  } else {
-    try { history.replaceState({ home: true }, '', window.location.pathname); } catch(e) {}
+    return;
   }
+  try {
+    const nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+    const navType = nav ? nav.type : '';
+    const saved = JSON.parse(sessionStorage.getItem('soukiluna_last_view') || 'null');
+    const fresh = saved && saved.category && (Date.now() - saved.time < 15 * 60 * 1000);
+    if (fresh && navType === 'reload' && ['cats','dogs','birds'].includes(saved.category)) {
+      history.replaceState({ category: saved.category, section: saved.section || null }, '', '#' + saved.category);
+      setTimeout(() => { try { openCategory(saved.category, saved.section || null); } catch(e) {} }, 0);
+      return;
+    }
+  } catch(e) {}
+  try { history.replaceState({ home: true }, '', window.location.pathname); } catch(e) {}
 })();
 // ===== DRY/WET FILTER LOGIC =====
 function setDryWet(type) {
+window._soukilunaDryWetFilter = type;
+if (resetProductGridForFilters()) { filterProducts(); return; }
 document.querySelectorAll('.product-card').forEach(card => {
 const sub = card.getAttribute('data-subcategory');
 if (type === 'all') {
