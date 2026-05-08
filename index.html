@@ -25,10 +25,11 @@ background-image: url('sukiluna.png');
 background-repeat: no-repeat;
 background-size: cover;
 background-position: center;
-background-attachment: scroll; /* ✅ FIX #3: Changed from 'fixed' to 'scroll' for iOS compatibility */
-filter: blur(0px);
-transform: scale(1.1);
+background-attachment: scroll;
 z-index: -2;
+}
+@media (max-width: 768px) {
+body::before { background-image: none; background-color: #fdfbf7; }
 }
 body::after {
 content: '';
@@ -638,7 +639,7 @@ send_whatsapp: "إرسال الطلب عبر واتساب 📲", edit_address: "
 // ===== PRODUCT DATABASE =====
 const products = {
 cats: [
-{ id: 'c19', name: 'Hills Adult Chicken Jawad ANAFAL', price: 220, weight: '1.5 kg', image: 'hillnor1.jpeg', images: ['hillnor1.jpeg'], category: 'food', subcategory: 'dry', type: 'normal', desc: 'High-energy formula for active cats, featuring clinical antioxidants and high-quality digestible protein.' },
+{ id: 'c19', name: 'Hills Adult Chicken', price: 220, weight: '1.5 kg', image: 'hillnor1.jpeg', images: ['hillnor1.jpeg'], category: 'food', subcategory: 'dry', type: 'normal', desc: 'High-energy formula for active cats, featuring clinical antioxidants and high-quality digestible protein.' },
 { id: 'c20', name: 'Hills Adult Chicken', price: 300, weight: '3 kg', image: 'hillnor1.jpeg', images: ['hillnor1.jpeg'], category: 'food', subcategory: 'dry', type: 'normal', desc: 'Promotes lean muscle and organ health with precisely balanced minerals and vitamins for adult cats.' },
 { id: 'c21', name: 'Hills Kitten Chicken', price: 225, weight: '1.5 kg', image: 'hillnor2.jpeg', images: ['hillnor2.jpeg'], category: 'food', subcategory: 'dry', type: 'normal', desc: 'Maximum growth support with DHA from fish oil and high caloric density for developing immune systems.' },
 { id: 'c1', name: 'Hills Sterilized Chicken', price: 260, weight: '1.5 kg', image: 'hill1.jpg', images: ['hill1.jpg'], category: 'food', subcategory: 'dry', type: 'sterilized', desc: 'Nutritional Profile: 31.2% Protein, 10.2% Fat. Energy: 3573 kcal/kg. Contains L-carnitine for fat burning and controlled minerals (Magnesium/Phosphorus) for urinary health.' },
@@ -1498,7 +1499,7 @@ onclick="showProductDetail(window._productLookup['${pid}'])"
 style="animation-delay: ${cappedDelay}ms"
 data-type="${product.type || 'other'}"
 data-subcategory="${product.subcategory || 'other'}">
-<img src="${product.image}" alt="${product.name}" class="product-image mb-4" onerror="this.style.background='#f3f4f6'">
+<img src="${product.image}" alt="${product.name}" class="product-image mb-4" loading="lazy" decoding="async" width="300" height="180" onerror="this.onerror=null;this.style.background='#f3f4f6';this.removeAttribute('src');">
 <h3 class="font-bold text-gray-800 mb-1">${product.name}</h3>
 <div class="flex items-center gap-2 mb-3 flex-wrap">
 ${product.category === 'food' && product.subcategory === 'dry' ? dryLabel : ''}
@@ -1548,10 +1549,18 @@ if (!window.location.hash || window.location.hash === '#') {
 goBack();
 }
 });
-try { history.replaceState({ home: true }, '', window.location.pathname); } catch(e) {}
-if (window.location.hash) {
-try { history.replaceState({ home: true }, '', window.location.pathname); } catch(e) {}
-}
+// Restore category if the page was reloaded on a category hash (e.g. iOS memory reload)
+(function(){
+  const validHashes = ['#cats','#dogs','#birds'];
+  const h = window.location.hash;
+  if (validHashes.includes(h)) {
+    const key = h.slice(1);
+    try { history.replaceState({ category: key }, '', h); } catch(e) {}
+    setTimeout(() => { try { openCategory(key); } catch(e) {} }, 0);
+  } else {
+    try { history.replaceState({ home: true }, '', window.location.pathname); } catch(e) {}
+  }
+})();
 // ===== DRY/WET FILTER LOGIC =====
 function setDryWet(type) {
 document.querySelectorAll('.product-card').forEach(card => {
