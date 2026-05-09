@@ -10,73 +10,23 @@
 <link href="https://cdn.jsdelivr.net/npm/@fontsource/nunito@5.0.17/index.css" rel="stylesheet">
 <style>
 /* ===== BASE & LAYOUT ===== */
-html {
-min-height: 100%;
-background-color: #fdfbf7;
-}
-body {
-font-family: 'Nunito', sans-serif;
-background-color: transparent;
-overflow-x: hidden;
-position: relative;
-min-height: 100%;
-isolation: isolate;
-}
-.site-background {
-position: fixed;
-inset: 0;
-z-index: -1;
-overflow: hidden;
-pointer-events: none;
-background: #fdfbf7;
-contain: strict;
-}
-.site-background img {
-display: block;
-width: 100%;
-height: 100%;
-object-fit: cover;
-object-position: center;
-transform: translateZ(0);
-}
-.site-background::after {
-content: '';
-position: absolute;
-inset: 0;
-background: rgba(253, 251, 247, 0.34);
-pointer-events: none;
-}
+html { min-height: 100%; background-color: #fdfbf7; }
+body { font-family: 'Nunito', sans-serif; background-color: transparent; overflow-x: hidden; position: relative; min-height: 100%; isolation: isolate; }
+.site-background { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; background: #fdfbf7; contain: strict; }
+.site-background img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; transform: translateZ(0); }
+.site-background::after { content: ''; position: absolute; inset: 0; background: rgba(253, 251, 247, 0.34); pointer-events: none; }
 @supports (-webkit-touch-callout: none) {
-.site-background {
-height: 100dvh;
-transform: none;
-will-change: auto;
-}
-.site-background img {
-transform: none;
-will-change: auto;
-}
+.site-background { height: 100dvh; transform: none; will-change: auto; }
+.site-background img { transform: none; will-change: auto; }
 .glass-card, .glass-badge, .map-badge, .language-btn, .language-dropdown,
 .about-combined-container, .about-text-container, .search-and-results-wrapper,
-.search-input, .dry-wet-select, .cart-modal {
--webkit-backdrop-filter: none !important;
-backdrop-filter: none !important;
-}
-.product-card.fade-in {
-animation: none !important;
-}
+.search-input, .dry-wet-select, .cart-modal { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+.product-card.fade-in { animation: none !important; }
 }
 @media (max-width: 768px) {
-.site-background::after {
-background: rgba(253, 251, 247, 0.46);
-}
-.glass-card {
-background: rgba(255, 255, 255, 0.88);
-}
-.about-combined-container,
-.search-and-results-wrapper {
-background: rgba(253, 251, 247, 0.92);
-}
+.site-background::after { background: rgba(253, 251, 247, 0.46); }
+.glass-card { background: rgba(255, 255, 255, 0.88); }
+.about-combined-container, .search-and-results-wrapper { background: rgba(253, 251, 247, 0.92); }
 }
 /* ===== ANIMATIONS ===== */
 .fade-in { animation: fadeIn 0.4s ease-out forwards; }
@@ -382,9 +332,8 @@ background: rgba(253, 251, 247, 0.92);
 <button class="filter-btn" onclick="setFoodFilter('sterilized')" data-i18n="sterilized">🏥 Sterilized</button>
 <button class="filter-btn" onclick="setFoodFilter('normal')" data-i18n="normal">✅ Normal</button>
 <button class="filter-btn" onclick="setFoodFilter('urinary')" data-i18n="urinary">💧 Urinary</button>
-<button class="filter-btn" onclick="setFoodFilter('supplements')" data-i18n="supplements">💊 Supplements</button>
+<button class="filter-btn hidden" id="healthcareSupplementsBtn" onclick="setHealthcareFilter('supplements')" data-i18n="supplements">💊 Supplements</button>
 <button class="filter-btn" onclick="setFoodFilter('treats')" data-i18n="treats">🍖 Treats</button>
-<button class="filter-btn hidden" id="healthcareComplementsBtn" onclick="setHealthcareFilter('complements')" data-i18n="complements">💊 Complements</button>
 <button class="filter-btn hidden" id="healthcareCleaningsBtn" onclick="setHealthcareFilter('cleanings')" data-i18n="cleanings">🧼 Cleanings</button>
 </div>
 <div id="searchResultsContainer" class="search-results-container">
@@ -810,8 +759,8 @@ cats: [
 { id: 'ry_cs1d', name: 'Royalist Creamy Snack Tuna', price: 25, weight: '75 g (5x15g)', image: 's4.webp', images: ['s4.webp'], category: 'food', subcategory: 'wet', type: 'treats', desc: 'Lickable creamy tuna snack for cats.' },
 { id: 'ry_cs1e', name: 'Royalist Creamy Snack Chicken and Scallop', price: 25, weight: '75 g (5x15g)', image: 's5.webp', images: ['s5.webp'], category: 'food', subcategory: 'wet', type: 'treats', desc: 'Lickable creamy chicken and scallop snack for hydration.' },
 { id: 'ry_cs1f', name: 'Royalist Creamy Snack Chicken and Shrimp', price: 25, weight: '75 g (5x15g)', image: 's6.jpg', images: ['s6.jpg'], category: 'food', subcategory: 'wet', type: 'treats', desc: 'Lickable creamy chicken and shrimp snack for hydration.' },
-{ id: 'bp_bk01', name: 'Bio PetActive Bio Kitten Milk Replacer', price: 100, weight: '200 g', image: 'bioki.jpg', images: ['bioki.jpg'], category: 'food', subcategory: 'supplements', type: 'supplements', desc: 'Lait maternisé en poudre pour chatons de la naissance au sevrage. Enrichi en taurine pour le développement.' },
-{ id: 'rc_bm1', name: 'Royal Canin Babycat Milk', price: 300, weight: '365 g', image: 'royal2.png', images: ['royal2.png'], category: 'food', subcategory: 'supplements', type: 'supplements', desc: 'Lait de remplacement complet pour chatons. Dissolution instantanée. Inclus : biberon, tétines et mesurette.' },
+{ id: 'bp_bk01', name: 'Bio PetActive Bio Kitten Milk Replacer', price: 100, weight: '200 g', image: 'bioki.jpg', images: ['bioki.jpg'], category: 'healthcare', subcategory: 'supplements', type: 'supplements', desc: 'Lait maternisé en poudre pour chatons de la naissance au sevrage. Enrichi en taurine pour le développement.' },
+{ id: 'rc_bm1', name: 'Royal Canin Babycat Milk', price: 300, weight: '365 g', image: 'royal2.png', images: ['royal2.png'], category: 'healthcare', subcategory: 'supplements', type: 'supplements', desc: 'Lait de remplacement complet pour chatons. Dissolution instantanée. Inclus : biberon, tétines et mesurette.' },
 { id: 'ac_nk1', name: 'Biberon pour chaton et chiot', price: 40, weight: '50 ml', image: 'bib.png', images: ['bib.png'], category: 'accessories', subcategory: 'feeding_tools', type: 'accessory', desc: 'Kit complet avec biberon 50ml, tétines de rechange et goupillon de nettoyage.' },
 { id: 'vc_pw1', name: 'Veto Care Shampoing Poils Blancs', price: 60, weight: '200 ml', image: 'veto1.webp', images: ['veto1.webp'], category: 'healthcare', subcategory: 'cleanings', type: 'care', desc: 'Formulé pour raviver les pelages blancs et clairs. Élimine les reflets jaunâtres.' },
 { id: 'vc_pn1', name: 'Veto Care Shampoing Poils Noirs et Ternes', price: 60, weight: '200 ml', image: 'veto2.webp', images: ['veto2.webp'], category: 'healthcare', subcategory: 'cleanings', type: 'care', desc: 'Intensifie la profondeur des pelages noirs, gris et sombres.' },
@@ -902,7 +851,7 @@ cats: [
 { id: 'toy_tunnel1_d', name: 'Royal Canin Fit Adult.', price: 827, weight: '10 kg', image: 'maxicat1.jfif', images: ['maxicat1.jfif'], category: 'food', subcategory: 'dry', type: 'normal', desc: 'Aliment complet et équilibré pour chats adultes de plus de 1 an.' },
 { id: 'toy_tunnel1_d', name: 'Royal Canin Indoor.', price: 292, weight: '2 kg', image: 'maxicat2.jfif', images: ['maxicat2.jfif'], category: 'food', subcategory: 'dry', type: 'normal', desc: 'Aliment complet et équilibré pour chats adultes (de 1 à 7 ans), vivant à l’intérieur.' },
 { id: 'toy_tunnel1_d', name: 'Royal Canin Indoor.', price: 1098, weight: '10 kg', image: 'maxicat2.jfif', images: ['maxicat2.jfif'], category: 'food', subcategory: 'dry', type: 'normal', desc: 'Aliment complet et équilibré pour chats adultes (de 1 à 7 ans), vivant à l’intérieur.' },
-{ id: 'rc_bm1', name: 'Huile de saumon chien et chat Beaphar', price: 188, weight: '425 ml', image: 'medog1.jfif', images: ['medog1.jfif'], category: 'food', subcategory: 'supplements', type: 'supplements', desc: '* Contient des acides gras essentiels : Omega 3 et 6 * Effet bénéfique sur le système cardio-vasculaire * Contribue à la souplesse des articulations * Constitue un apport énergétique L’huile de saumon de Beaphar est un aliment complémentaire appètent pour chiens et chats. Elle contient des acides gras Omega 3 et Omega 6 et est une source acides gras essentiels comme le EPA et le DHA. huile de saumon a un effet bénéfique sur le système cardio-vasculaire et contribue à la souplesse des articulations. Elle constitue un apport énergétique et maintient un pelage et un épiderme en bonne santé. L’huile de saumon est idéale pour les chiens qui dépensent beaucoup d’énergie (chiens de sauvetage, chiens sportifs, chiens de chasse) et les chats vivant en liberté..' },
+{ id: 'rc_bm1', name: 'Huile de saumon chien et chat Beaphar', price: 188, weight: '425 ml', image: 'medog1.jfif', images: ['medog1.jfif'], category: 'healthcare', subcategory: 'supplements', type: 'supplements', desc: '* Contient des acides gras essentiels : Omega 3 et 6 * Effet bénéfique sur le système cardio-vasculaire * Contribue à la souplesse des articulations * Constitue un apport énergétique L’huile de saumon de Beaphar est un aliment complémentaire appètent pour chiens et chats. Elle contient des acides gras Omega 3 et Omega 6 et est une source acides gras essentiels comme le EPA et le DHA. huile de saumon a un effet bénéfique sur le système cardio-vasculaire et contribue à la souplesse des articulations. Elle constitue un apport énergétique et maintient un pelage et un épiderme en bonne santé. L’huile de saumon est idéale pour les chiens qui dépensent beaucoup d’énergie (chiens de sauvetage, chiens sportifs, chiens de chasse) et les chats vivant en liberté..' },
 ],
 dogs: [
 { id: 'acc_trap_cage_std_d', name: 'Cage de Transport Rigide - Chat & Petit Chien', price: 80, weight: '1.5 kg', image: 'port1.png', images: ['port1.png'], category: 'accessories', subcategory: 'travel_carriers', type: 'gear', desc: 'Cage robuste en plastique with porte en métal sécurisée. Légère et facile à nettoyer.' },
@@ -957,8 +906,8 @@ dogs: [
 { id: 'ps_sh_ap_bb_d', name: 'Pooshi Shampoing Antiparasitaire - Bonbon', price: 70, weight: '250 ml', image: 'shamp1.jpeg', images: ['shamp1.jpeg'], category: 'healthcare', subcategory: 'cleanings', type: 'treatment', desc: 'Solution 2-en-1. Élimine les parasites with parfum bonbon.' },
 { id: 'ps_sh_ap_tf_d', name: 'Pooshi Shampoing Antiparasitaire - Tutti Frutti', price: 70, weight: '250 ml', image: 'shamp2.webp', images: ['shamp2.webp'], category: 'healthcare', subcategory: 'cleanings', type: 'treatment', desc: 'Solution 2-en-1. Élimine les parasites with parfum tutti frutti.' },
 { id: 'ha_sh01_dd', name: 'Pooshi Shampoing antiparasitaire mangue papaye 250ml', price: 75, weight: '250 ml', image: 'shamp3.jfif', images: ['shamp3.jfif'], category: 'healthcare', subcategory: 'cleanings', type: 'normal', desc: 'Shampoing antiparasitaire pour chiens et chats 250ml.' },
-{ id: 'bc_so500', name: 'Brit Care Salmon Oil (Huile de Saumon)', price: 180, weight: '500 ml', image: 'brrrt.jpg', images: ['brrrt.jpg'], category: 'food', subcategory: 'wet', type: 'supplements', desc: "Huile de saumon de Norvège 100% naturelle. Source d'Oméga-3 (EPA & DHA). Flacon pompe." },
-{ id: 'ob_so250', name: 'Optibiomega Salmon Oil (Huile de Saumon)', price: 135, weight: '250 ml', image: 'opti.png', images: ['opti.png'], category: 'food', subcategory: 'wet', type: 'supplements', desc: 'Supplément premium huile de saumon pure. Riche en Oméga-3 pour le pelage et la peau.' },
+{ id: 'bc_so500', name: 'Brit Care Salmon Oil (Huile de Saumon)', price: 180, weight: '500 ml', image: 'brrrt.jpg', images: ['brrrt.jpg'], category: 'healthcare', subcategory: 'supplements', type: 'supplements', desc: "Huile de saumon de Norvège 100% naturelle. Source d'Oméga-3 (EPA & DHA). Flacon pompe." },
+{ id: 'ob_so250', name: 'Optibiomega Salmon Oil (Huile de Saumon)', price: 135, weight: '250 ml', image: 'opti.png', images: ['opti.png'], category: 'healthcare', subcategory: 'supplements', type: 'supplements', desc: 'Supplément premium huile de saumon pure. Riche en Oméga-3 pour le pelage et la peau.' },
 { id: 'acc_dist_2in1_st_d', name: 'Distributeur Automatique 2-en-1 - Croquettes & Eau', price: 280, weight: '1.2 kg', image: 'hh.png', images: ['hh.png'], category: 'accessories', subcategory: 'feeding_bowls', type: 'gear', desc: 'Station de nourrissage par gravité. Gamelle en acier inoxydable.' },
 { id: 'acc_dist_2in1_blue_d', name: 'Distributeur Automatique 2-en-1 - Bleu', price: 150, weight: '1.2 kg', image: 'hihi.png', images: ['hihi.png'], category: 'accessories', subcategory: 'feeding_bowls', type: 'gear', desc: 'Distributeur bleu. Gamelle en acier inoxydable amovible.' },
 { id: 'acc_dist_2in1_pink_d', name: 'Distributeur Automatique 2-en-1 - Rose', price: 150, weight: '1.2 kg', image: 'hoho.png', images: ['hoho.png'], category: 'accessories', subcategory: 'feeding_bowls', type: 'gear', desc: 'Distributeur rose with fontaine à eau intégrée.' },
@@ -1018,7 +967,7 @@ dogs: [
 { id: 'c3', name: 'Royal Canin MINI ADULT Sauce', price: 22, weight: '85 g', image: 'rcwetdog2.jfif', images: ['rcwetdog2.jfif'], category: 'food', subcategory: 'wet', type: 'normal', desc: ' Royal Canin Mini Adult en Sauce est un aliment humide complet et équilibré pour les chiens adultes de petites races (jusqu à 10 kg), offrant un soutien optimal pour le maintien du poids idéal, la santé des os, un pelage brillant et une digestion optimale.' },
 { id: 'c3', name: 'Royal Canin MINI ADULT Sauce ( 12 UNITES)', price: "264 (12*22)", weight: '85*12 g', image: 'rcwetdog2.jfif', images: ['rcwetdog2.jfif'], category: 'food', subcategory: 'wet', type: 'normal', desc: 'Royal Canin Mini Adult en Sauce est un aliment humide complet et équilibré pour les chiens adultes de petites races (jusqu à 10 kg), offrant un soutien optimal pour le maintien du poids idéal, la santé des os, un pelage brillant et une digestion optimale..' },
 { id: 'c3', name: 'Royal Canin Bichon Maltais Adulte', price: 206, weight: '1.5 kg', image: 'markiz.jfif', images: ['markiz.jfif'], category: 'food', subcategory: 'dry', type: 'normal', desc: ' ROYAL CANIN®️ Maltese Adult est spécialement formulé pour répondre à tous les besoins nutritionnels de votre chien adulte et convient aux Bichons Maltais âgés de 10 mois et plus.    Une bonne nutrition est essentielle à la santé de la peau et du pelage, c’est pourquoi ROYAL CANIN®️ Maltese Adult contient des nutriments spécialement adaptés – y compris des acides gras oméga-3 – pour que le pelage de votre Bichon Maltais reste lisse et de toute beauté.' },
-{ id: 'rc_bm1', name: 'Huile de saumon chien et chat Beaphar', price: 188, weight: '425 ml', image: 'medog1.jfif', images: ['medog1.jfif'], category: 'food', subcategory: 'wet', type: 'supplements', desc: '* Contient des acides gras essentiels : Omega 3 et 6 * Effet bénéfique sur le système cardio-vasculaire * Contribue à la souplesse des articulations * Constitue un apport énergétique L’huile de saumon de Beaphar est un aliment complémentaire appètent pour chiens et chats. Elle contient des acides gras Omega 3 et Omega 6 et est une source acides gras essentiels comme le EPA et le DHA. huile de saumon a un effet bénéfique sur le système cardio-vasculaire et contribue à la souplesse des articulations. Elle constitue un apport énergétique et maintient un pelage et un épiderme en bonne santé. L’huile de saumon est idéale pour les chiens qui dépensent beaucoup d’énergie (chiens de sauvetage, chiens sportifs, chiens de chasse) et les chats vivant en liberté..' },
+{ id: 'rc_bm1', name: 'Huile de saumon chien et chat Beaphar', price: 188, weight: '425 ml', image: 'medog1.jfif', images: ['medog1.jfif'], category: 'healthcare', subcategory: 'supplements', type: 'supplements', desc: '* Contient des acides gras essentiels : Omega 3 et 6 * Effet bénéfique sur le système cardio-vasculaire * Contribue à la souplesse des articulations * Constitue un apport énergétique L’huile de saumon de Beaphar est un aliment complémentaire appètent pour chiens et chats. Elle contient des acides gras Omega 3 et Omega 6 et est une source acides gras essentiels comme le EPA et le DHA. huile de saumon a un effet bénéfique sur le système cardio-vasculaire et contribue à la souplesse des articulations. Elle constitue un apport énergétique et maintient un pelage et un épiderme en bonne santé. L’huile de saumon est idéale pour les chiens qui dépensent beaucoup d’énergie (chiens de sauvetage, chiens sportifs, chiens de chasse) et les chats vivant en liberté..' },
 ],
 birds: [
 { id: 'b1', name: 'Melange pour inseparable', price: 30, weight: '1 kg', image: 'vinci1.webp', images: ['vinci1.webp'], category: 'food', subcategory: 'dry', type: 'general', desc: 'Blend of millet, canary seed, and sunflower to provide essential fatty acids for lovebirds.' },
@@ -1319,7 +1268,7 @@ function setLanguage(lang) {
 // ✅ FIX #1: Wrap localStorage in try/catch for iOS safety
 try {
 document.querySelectorAll('.language-option').forEach(opt => { opt.classList.toggle('active', opt.dataset.lang === lang); });
-const langLabels = { en: '🇬🇧 EN', fr: '🇫🇷 FR', ar: '🇲 AR' };
+const langLabels = { en: '🇬🇧 EN', fr: '🇫🇷 FR', ar: '🇲🇦 AR' };
 document.getElementById('currentLang').textContent = langLabels[lang];
 document.documentElement.lang = lang;
 document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
@@ -1342,7 +1291,7 @@ if (document.getElementById('cartModal').classList.contains('active')) { updateC
 } catch(e) {
 // Fallback: just update DOM without localStorage
 document.querySelectorAll('.language-option').forEach(opt => { opt.classList.toggle('active', opt.dataset.lang === lang); });
-const langLabels = { en: '🇬 EN', fr: '🇷 FR', ar: '🇲🇦 AR' };
+const langLabels = { en: '🇬🇧 EN', fr: '🇫🇷 FR', ar: '🇲🇦 AR' };
 document.getElementById('currentLang').textContent = langLabels[lang];
 document.documentElement.lang = lang;
 document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
@@ -1422,7 +1371,6 @@ section.classList.toggle('hidden-filter', visibleProducts.length === 0);
 }
 });
 }
-
 function getCurrentLangSafe() {
 try { return localStorage.getItem('soukiluna_lang') || 'en'; } catch(e) { return 'en'; }
 }
@@ -1680,26 +1628,26 @@ goBack();
 });
 // Restore category if iOS reloads the tab while viewing cats/dogs/birds.
 (function(){
-  const validHashes = ['#cats','#dogs','#birds'];
-  const h = window.location.hash;
-  if (validHashes.includes(h)) {
-    const key = h.slice(1);
-    try { history.replaceState({ category: key }, '', h); } catch(e) {}
-    setTimeout(() => { try { openCategory(key); } catch(e) {} }, 0);
-    return;
-  }
-  try {
-    const nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
-    const navType = nav ? nav.type : '';
-    const saved = JSON.parse(sessionStorage.getItem('soukiluna_last_view') || 'null');
-    const fresh = saved && saved.category && (Date.now() - saved.time < 15 * 60 * 1000);
-    if (fresh && navType === 'reload' && ['cats','dogs','birds'].includes(saved.category)) {
-      history.replaceState({ category: saved.category, section: saved.section || null }, '', '#' + saved.category);
-      setTimeout(() => { try { openCategory(saved.category, saved.section || null); } catch(e) {} }, 0);
-      return;
-    }
-  } catch(e) {}
-  try { history.replaceState({ home: true }, '', window.location.pathname); } catch(e) {}
+const validHashes = ['#cats','#dogs','#birds'];
+const h = window.location.hash;
+if (validHashes.includes(h)) {
+const key = h.slice(1);
+try { history.replaceState({ category: key }, '', h); } catch(e) {}
+setTimeout(() => { try { openCategory(key); } catch(e) {} }, 0);
+return;
+}
+try {
+const nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+const navType = nav ? nav.type : '';
+const saved = JSON.parse(sessionStorage.getItem('soukiluna_last_view') || 'null');
+const fresh = saved && saved.category && (Date.now() - saved.time < 15 * 60 * 1000);
+if (fresh && navType === 'reload' && ['cats','dogs','birds'].includes(saved.category)) {
+history.replaceState({ category: saved.category, section: saved.section || null }, '', '#' + saved.category);
+setTimeout(() => { try { openCategory(saved.category, saved.section || null); } catch(e) {} }, 0);
+return;
+}
+} catch(e) {}
+try { history.replaceState({ home: true }, '', window.location.pathname); } catch(e) {}
 })();
 // ===== DRY/WET FILTER LOGIC =====
 function setDryWet(type) {
