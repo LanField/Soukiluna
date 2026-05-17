@@ -106,18 +106,18 @@ body { font-family: 'Nunito', sans-serif; background-color: transparent; overflo
 /* ===== WEIGHT SELECTOR ===== */
 .weight-selector { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; margin: 1rem 0; }
 .weight-btn {
-width: 80px; height: 60px; border-radius: 12px;
+width: 60px; height: 60px; border-radius: 50%;
 border: 2px solid #e5e7eb; background: #f9fafb;
-color: #4b5563; font-size: 0.75rem; font-weight: 700;
+color: #4b5563; font-size: 0.7rem; font-weight: 800;
 cursor: pointer; transition: all 0.2s ease;
 display: flex; flex-direction: column; align-items: center; justify-content: center;
-box-shadow: 0 2px 6px rgba(0,0,0,0.05); padding: 4px;
+box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
-.weight-btn span.price { font-size: 0.8rem; font-weight: 800; margin-top: 2px; color: #f43f5e; }
+.weight-btn span.price { font-size: 0.65rem; font-weight: 700; margin-top: 2px; }
 .weight-btn:hover { border-color: #f43f5e; transform: scale(1.05); }
 .weight-btn.active {
 background: linear-gradient(135deg, #f43f5e, #fb7185); color: white;
-border-color: #f43f5e; transform: scale(1.08); box-shadow: 0 4px 12px rgba(244,63,94,0.4);
+border-color: #f43f5e; transform: scale(1.1); box-shadow: 0 4px 12px rgba(244,63,94,0.4);
 }
 .weight-btn.active span.price { color: #fff; }
 /* ===== PRODUCT DETAIL MODAL ===== */
@@ -460,21 +460,21 @@ let currentFoodFilter = 'all';
 let currentHealthcareFilter = 'all';
 let currentProduct = null;
 let selectedVariantIndex = 0;
-let carouselImages = [];
+let orderAddress = {};
 let carouselIndex = 0;
+let carouselImages = [];
 let activeDisplayList = [];
 let activeDisplayCategory = null;
 let activeProductRenderIndex = 0;
 const PRODUCT_BATCH_SIZE = /iPhone|iPad|iPod/i.test(navigator.userAgent) ? 20 : 48;
 window._productLookup = {};
-
+window._soukilunaDryWetFilter = null;
 // ===== TRANSLATIONS =====
 const translations = {
 en: { tagline: "Your pet's happy place in Rabat", welcome_title: "Welcome to Soukiluna", welcome_text1: 'Nestled in the heart of <strong>Rabat, Morocco</strong>, Soukiluna is your pet\'s sanctuary. Our name combines <strong>"Souki"</strong> from Soukayna, the shop\'s owner, and <strong>"Luna"</strong>, her beloved husky who inspired this journey.', welcome_text2: "We provide premium pet supplies, nutritious food, adorable accessories, and loving adoption services with expert advice from our passionate team.", address: "Rue Assounounou, El Menzeh, Rabat", adoption: "Pet Adoption", care: "Premium Care", view_on_map: "📍 View on Map", get_directions: "Get Directions", cats: "Cats", dogs: "Dogs", birds: "Birds", explore: "Click to explore", accessories: "Accessories", clothes: "Clothes", toys: "Toys", food: "Food", healthcare: "Healthcare", complements: "💊 Complements", cleanings: "🧼 Cleanings", treats: "🍖 Treats", back: "Back to Categories", footer_tagline: "Making tails wag in Rabat since 2024", add_to_cart: "Add to Cart", added: "Added!", your_cart: "Your Cart", empty_cart: "Your cart is empty", start_shopping: "Start shopping", subtotal: "Subtotal:", checkout: "🛒 Place Order (Cash on Delivery)", remove: "Remove", weight: "Weight", dry_food: "Dry Food", wet_food: "Wet Food", dry_food_label: "🌾 Dry", wet_food_label: "💧 Wet", all_food_types: "All Food Types", dry_food_opt: "🌾 Dry Food", wet_food_opt: "💧 Wet Food", sterilized: "🏥 Sterilized", normal: "✅ Normal", urinary: "💧 Urinary", supplements: "💊 Supplements", all_types: "All Types", load_more: "Load more products", search_placeholder: "Search products...", search_results: "Found {count} product(s)", no_results: "No products found", clear_search: "Clear search", availability: "Availability", in_stock: "✓ In Stock", premium_quality: "Premium Quality Pet Product", close: "Close", products_available: "products available", click_details: "Click Details", delivery_address: "Delivery Address", delivery_subtitle: "Fill in your details for delivery anywhere in Morocco", label_name: "👤 Full Name", label_phone: "📱 Phone Number", label_city: "🏙️ City", label_neighborhood: "📍 Neighborhood", select_city: "-- Select your city --", other_city: "Other", confirm_summary: "✅ Confirm & See Order Summary", back_to_cart: "← Back to Cart", order_confirmation: "Order Confirmation", order_confirmation_subtitle: "Review your order before sending to us on WhatsApp", your_products: "Your Products", total: "Total", payment_label: "Payment:", cod: "Cash on Delivery", send_whatsapp: "Send Order via WhatsApp 📲", edit_address: "← Edit Address", fill_all_fields: "Please fill in all fields" },
 fr: { tagline: "Le lieu de bonheur de votre animal à Rabat", welcome_title: "Bienvenue chez Soukiluna", welcome_text1: 'Niché au cœur de <strong>Rabat, Maroc</strong>, Soukiluna est le sanctuaire de votre animal. Notre nom combine <strong>"Souki"</strong> de Soukayna, la propriétaire, et <strong>"Luna"</strong>, son husky bien-aimé qui a inspiré cette aventure.', welcome_text2: "Nous proposons des fournitures premium, une nourriture nutritive, des accessoires adorables et des services d'adoption aimants avec des conseils d'experts.", address: "Rue Assounounou, El Menzeh, Rabat", adoption: "Adoption d'animaux", care: "Soins Premium", view_on_map: "📍 Voir sur la Carte", get_directions: "Itinéraire", cats: "Chats", dogs: "Chiens", birds: "Oiseaux", explore: "Cliquez pour explorer", accessories: "Accessoires", clothes: "Vêtements", toys: "Jouets", food: "Nourriture", healthcare: "Santé", complements: "💊 Compléments", cleanings: "🧼 Nettoyages", treats: "🍖 Friandises", back: "Retour aux catégories", footer_tagline: "Faire remuer les queues à Rabat depuis 2024", add_to_cart: "Ajouter au panier", added: "Ajouté!", your_cart: "Votre panier", empty_cart: "Votre panier est vide", start_shopping: "Commencer vos achats", subtotal: "Sous-total:", checkout: "🛒 Commander (Paiement à la livraison)", remove: "Supprimer", weight: "Poids", dry_food: "Nourriture sèche", wet_food: "Nourriture humide", dry_food_label: "🌾 Sec", wet_food_label: "💧 Humide", all_food_types: "Tous les types", dry_food_opt: "🌾 Nourriture Sèche", wet_food_opt: "💧 Nourriture Humide", sterilized: "🏥 Stérilisé", normal: "✅ Normal", urinary: "💧 Urinaire", supplements: "💊 Suppléments", all_types: "Tous les types", load_more: "Charger plus de produits", search_placeholder: "Rechercher des produits...", search_results: "{count} produit(s) trouvé(s)", no_results: "Aucun produit trouvé", clear_search: "Effacer la recherche", availability: "Disponibilité", in_stock: "✓ En stock", premium_quality: "Produit Premium pour Animaux", close: "Fermer", products_available: "produits disponibles", click_details: "Voir détails", delivery_address: "Adresse de Livraison", delivery_subtitle: "Remplissez vos coordonnées pour la livraison partout au Maroc", label_name: "👤 Nom complet", label_phone: "📱 Numéro de téléphone", label_city: "🏙️ Ville", label_neighborhood: "📍 Quartier", select_city: "-- Choisissez votre ville --", other_city: "Autre", confirm_summary: "✅ Confirmer et voir le récapitulatif", back_to_cart: "← Retour au panier", order_confirmation: "Confirmation de commande", order_confirmation_subtitle: "Vérifiez votre commande avant de l'envoyer sur WhatsApp", your_products: "Vos Produits", total: "Total", payment_label: "Paiement :", cod: "Paiement à la livraison", send_whatsapp: "Envoyer la commande via WhatsApp 📲", edit_address: "← Modifier l'adresse", fill_all_fields: "Veuillez remplir tous les champs" },
 ar: { tagline: "مكان سعادة حيوانك الأليف في الرباط", welcome_title: "مرحبًا بكم في سوكيلونا", welcome_text1: 'في قلب <strong>الرباط، المغرب</strong>، تُعد سوكيلونا ملاذًا لحيوانك الأليف. اسمنا يجمع بين <strong>"سوكي"</strong> من سكينة، صاحبة المتجر، و<strong>"لونا"</strong>، كلبتها الهاسكي الحبيبة التي ألهمت هذه الرحلة.', welcome_text2: "نوفر لوازم حيوانات أليفة فاخرة، وطعامًا مغذيًا، وإكسسوارات لطيفة، وخدمات تبني رائعة مع نصائح خبراء متحمسين.", address: "شارع أسونونو، المنزه، الرباط", adoption: "تبني الحيوانات", care: "رعاية متميزة", view_on_map: "📍 عرض على الخريطة", get_directions: "الحصول على الاتجاهات", cats: "القطط", dogs: "الكلاب", birds: "الطيور", explore: "انقر للاستكشاف", accessories: "إكسسوارات", clothes: "ملابس", toys: "ألعاب", food: "طعام", healthcare: "الرعاية الصحية", complements: "💊 المكملات", cleanings: "🧼 التنظيف", treats: "🍖 المكافآت", back: "العودة إلى الفئات", footer_tagline: "نجعل ذيول الحيوانات ترفرف في الرباط منذ 2024", add_to_cart: "أضف إلى السلة", added: "تمت الإضافة!", your_cart: "سلة التسوق", empty_cart: "سلتك فارغة", start_shopping: "ابدأ التسوق", subtotal: "المجموع الفرعي:", checkout: "🛒 تأكيد الطلب (الدفع عند التسليم)", remove: "إزالة", weight: "الوزن", dry_food: "طعام جاف", wet_food: "طعام رطب", dry_food_label: "🌾 جاف", wet_food_label: "💧 رطب", all_food_types: "جميع أنواع الطعام", dry_food_opt: "🌾 طعام جاف", wet_food_opt: "💧 طعام رطب", sterilized: "🏥 معقم", normal: "✅ عادي", urinary: "💧 بولي", supplements: "💊 المكملات", all_types: "جميع الأنواع", load_more: "تحميل المزيد", search_placeholder: "البحث عن المنتجات...", search_results: "تم العثور على {count} منتج(ات)", no_results: "لم يتم العثور على منتجات", clear_search: "مسح البحث", availability: "التوفر", in_stock: "✓ متوفر", premium_quality: "منتج حيوانات أليفة فاخر", close: "إغلاق", products_available: "منتج متاح", click_details: "عرض التفاصيل", delivery_address: "عنوان التسليم", delivery_subtitle: "أدخل بياناتك للتوصيل في أي مكان بالمغرب", label_name: "👤 الاسم الكامل", label_phone: "📱 رقم الهاتف", label_city: "🏙️ المدينة", label_neighborhood: "📍 الحي", select_city: "-- اختر مدينتك --", other_city: "أخرى", confirm_summary: "✅ تأكيد وعرض ملخص الطلب", back_to_cart: "← العودة إلى السلة", order_confirmation: "تأكيد الطلب", order_confirmation_subtitle: "راجع طلبك قبل إرساله عبر واتساب", your_products: "منتجاتك", total: "المجموع", payment_label: "طريقة الدفع:", cod: "الدفع عند التسليم", send_whatsapp: "إرسال الطلب عبر واتساب 📲", edit_address: "← تعديل العنوان", fill_all_fields: "يرجى ملء جميع الحقول" }
 };
-
 // ===== PRODUCT DATABASE =====
 const products = {
 cats: [
@@ -484,6 +484,8 @@ cats: [
 { id: 'hill_kit_ster', name: { en: "Hill's Kitten Sterilized Chicken", fr: "Hill's Chaton Stérilisé Poulet", ar: "هيلز دجاج معقم للقطط الصغيرة" }, price: 255, weight: '1.5 kg', image: 'hill2.jpeg', images: ['hill2.jpeg'], category: 'food', subcategory: 'dry', type: 'sterilized', desc: 'Includes DHA from fish oil...', weights: [{w:'1.5 kg', p:255}] },
 { id: 'hs_a1', name: { en: "Hill's Science Plan Adult Chicken", fr: "Hill's Science Plan Adulte Poulet", ar: "هيلز ساينس بلان دجاج للبالغين" }, price: 250, weight: '12x85 g', image: 'hill.jpg', images: ['hill.jpg'], category: 'food', subcategory: 'wet', type: 'normal', desc: 'High-quality protein for lean muscle...', weights: [{w:'12x85 g', p:250}] },
 { id: 'rc_ster', name: { en: "Royal Canin Sterilised", fr: "Royal Canin Stérilisé", ar: "رويال كانين معقم" }, price: 303, weight: '2 kg', image: 'maxicat3.jfif', images: ['maxicat3.jfif'], category: 'food', subcategory: 'dry', type: 'sterilized', desc: 'Adapted nutrition to manage weight...', weights: [{w:'2 kg', p:303}, {w:'4 kg', p:484}, {w:'10 kg', p:1060}] },
+{ id: 'rc_ster', name: { en: "Royal Canin FIT", fr: "Royal Canin fit", ar: "رويال كانين فيت" }, price: 275, weight: '2 kg', image: 'rcfit1.jfif', images: ['rcfit1.jfif'], category: 'food', subcategory: 'dry', type: 'sterilized', desc: 'Adapted nutrition to manage weight...', weights: [{w:'2 kg', p:275}, {w:'10 kg', p:927}]},
+{ id: 'rc_ster', name: { en: "Royal Canin indoor", fr: "Royal Canin indoor", ar: "رويال كانين اندوور" }, price: 292, weight: '2 kg', image: 'rcindoor1.jfif', images: ['rcindoor1.jfif'], category: 'food', subcategory: 'dry', type: 'sterilized', desc: 'Adapted nutrition to manage weight...', weights: [{w:'2 kg', p:292}, {w:'10 kg', p:1098}]},
 { id: 'rc_kitten', name: { en: "Royal Canin Kitten", fr: "Royal Canin Chaton", ar: "رويال كانين للقطط الصغيرة" }, price: 308, weight: '2 kg', image: 'maxicat4.jfif', images: ['maxicat4.jfif'], category: 'food', subcategory: 'dry', type: 'normal', desc: 'Supports natural defenses...', weights: [{w:'2 kg', p:308}, {w:'10 kg', p:1007}] },
 { id: 'rc_hairball', name: { en: "Royal Canin Hairball", fr: "Royal Canin Boules de Poils", ar: "رويال كانين لمضاد كرات الشعر" }, price: 308, weight: '2 kg', image: 'maxicat5.jfif', images: ['maxicat5.jfif'], category: 'food', subcategory: 'dry', type: 'normal', desc: 'Special fiber blend...', weights: [{w:'2 kg', p:308}] },
 { id: 'rc_persian', name: { en: "Royal Canin PERSAN ADULT", fr: "Royal Canin Persan Adulte", ar: "رويال كانين فارسي للبالغين" }, price: 303, weight: '2 kg', image: 'maxicat6.jfif', images: ['maxicat6.jfif'], category: 'food', subcategory: 'dry', type: 'normal', desc: 'Tailored nutrition for Persian cats...', weights: [{w:'2 kg', p:303}] },
@@ -584,7 +586,7 @@ cats: [
 { id: 'roy_scal', name: { en: "Royalist Creamy Scallop Snack", fr: "Royalist Snack Crémeux Saint-Jacques", ar: "روياليست سناك كريمي اسكالوب" }, price: 25, weight: '75 g', image: 's5.webp', images: ['s5.webp'], category: 'food', subcategory: 'wet', type: 'treats', desc: 'Chicken & scallop...', weights: [{w:'75 g', p:25}] },
 { id: 'roy_shr', name: { en: "Royalist Creamy Shrimp Snack", fr: "Royalist Snack Crémeux Crevette", ar: "روياليست سناك كريمي روبيان" }, price: 25, weight: '75 g', image: 's6.jpg', images: ['s6.jpg'], category: 'food', subcategory: 'wet', type: 'treats', desc: 'Chicken & shrimp...', weights: [{w:'75 g', p:25}] },
 { id: 'bio_milk', name: { en: "Bio PetActive Kitten Milk", fr: "Bio PetActive Lait Chaton", ar: "بيو بيت أكتيف حليب" }, price: 100, weight: '200 g', image: 'bioki.jpg', images: ['bioki.jpg'], category: 'healthcare', subcategory: 'supplements', type: 'supplements', desc: 'Milk replacer...', weights: [{w:'200 g', p:100}] },
-{ id: 'rc_milk', name: { en: "Royal Canin Babycat Milk", fr: "Royal Canin Lait Babycat", ar: "رويال كانين حليب" }, price: 300, weight: '365 g', image: 'royal2.png', images: ['royal2.png'], category: 'healthcare', subcategory: 'supplements', type: 'supplements', desc: 'Instant-dissolving milk...', weights: [{w:'365 g', p:300}] },
+{ id: 'rc_milk', name: { en: "Royal Canin Babycat Milk", fr: "Royal Canin Lait Babycat", ar: "رويال كانين حليب" }, price: 395, weight: '300 g', image: 'royal2.png', images: ['royal2.png'], category: 'healthcare', subcategory: 'supplements', type: 'supplements', desc: 'Instant-dissolving milk...', weights: [{w:'365 g', p:300}] },
 { id: 'bottle', name: { en: "Kitten & Puppy Feeding Bottle", fr: "Biberon Chaton & Chiot", ar: "رضاعة للقطط والجراء" }, price: 40, weight: '50 ml', image: 'bib.png', images: ['bib.png'], category: 'accessories', subcategory: 'feeding_tools', type: 'accessory', desc: 'Complete kit...', weights: [{w:'50 ml', p:40}] },
 { id: 'vc_white', name: { en: "Veto Care White Coat Shampoo", fr: "Veto Care Shampoing Pelage Blanc", ar: "فيتو كير شعر أبيض" }, price: 60, weight: '200 ml', image: 'veto1.webp', images: ['veto1.webp'], category: 'healthcare', subcategory: 'cleanings', type: 'care', desc: 'Revives bright white...', weights: [{w:'200 ml', p:60}] },
 { id: 'vc_dark', name: { en: "Veto Care Dark Coat Shampoo", fr: "Veto Care Shampoing Pelage Noir", ar: "فيتو كير شعر أسود" }, price: 60, weight: '200 ml', image: 'veto2.webp', images: ['veto2.webp'], category: 'healthcare', subcategory: 'cleanings', type: 'care', desc: 'Intensifies black...', weights: [{w:'200 ml', p:60}] },
@@ -610,14 +612,14 @@ cats: [
 { id: 'pro_lav', name: { en: "Proline Lavender Litter", fr: "Proline Litière Lavande", ar: "برولاين رمل لافندر" }, price: 60, weight: '10 L', image: 'pro1.webp', images: ['pro1.webp'], category: 'accessories', subcategory: 'accessories', type: 'accessories', desc: 'Clumping lavender...', weights: [{w:'10 L', p:60}, {w:'20 L', p:100}] },
 { id: 'pro_pow', name: { en: "Proline Baby Powder Litter", fr: "Proline Litière Poudre Bébé", ar: "برولاين رمل بودرة" }, price: 60, weight: '10 L', image: 'pro2.webp', images: ['pro2.webp'], category: 'accessories', subcategory: 'accessories', type: 'accessories', desc: 'White clumping...', weights: [{w:'10 L', p:60}, {w:'20 L', p:100}] },
 { id: 'pro_mar', name: { en: "Proline Marseille Litter", fr: "Proline Litière Marseille", ar: "برولاين رمل مرسيليا" }, price: 60, weight: '10 L', image: 'pro3.webp', images: ['pro3.webp'], category: 'accessories', subcategory: 'accessories', type: 'accessories', desc: 'Hygiene Marseille...', weights: [{w:'10 L', p:60}, {w:'20 L', p:100}] },
-{ id: 'feeder_2in1', name: { en: "Auto Feeder 2-in-1 Food & Water", fr: "Distributeur Automatique 2-en-1", ar: "موزع طعام 2 في 1" }, price: 280, weight: '1.2 kg', image: 'hh.png', images: ['hh.png'], category: 'accessories', subcategory: 'feeding_bowls', type: 'gear', desc: 'Gravity-fed station...', weights: [{w:'Standard', p:280}, {w:'Blue', p:150}, {w:'Pink', p:150}] },
+{ id: 'feeder_2in1', name: { en: "Auto Feeder 2-in-1 Food & Water", fr: "Distributeur Automatique 2-en-1", ar: "موزع طعام 2 في 1" }, price: 280, weight: '1.2 kg', image: 'hh.png', images: ['hh.png'], category: 'accessories', subcategory: 'feeding_bowls', type: 'gear', desc: 'Gravity-fed station...', weights: [{w:'Standard', p:280, img:'hh.png'}, {w:'Blue', p:150,img:'hihi.png'}, {w:'Pink', p:150, img:'hoho.png'}] },
 { id: 'feeder_prog', name: { en: "Programmable Auto Feeder", fr: "Distributeur Automatique Programmable", ar: "موزع طعام أوتوماتيكي قابل للبرمجة" }, price: 550, weight: '2.5 kg', image: 'dis1.jpeg', images: ['dis1.jpeg'], category: 'accessories', subcategory: 'feeding_bowls', type: 'electronics', desc: 'Programmable meals...', weights: [{w:'2.5 kg', p:550}] },
-{ id: 'bed_calm', name: { en: "Calming Plush Bed", fr: "Lit Apaisant Peluche", ar: "سرير مهدئ ناعم" }, price: 180, weight: '0.8 kg', image: 'tkh1.jpeg', images: ['tkh1.jpeg'], category: 'accessories', subcategory: 'pet_beds', type: 'comfort', desc: 'Ultra-soft bed...', weights: [{w:'Pink', p:180}, {w:'Grey', p:180}, {w:'Brown', p:180}] },
+{ id: 'bed_calm', name: { en: "Calming Plush Bed", fr: "Lit Apaisant Peluche", ar: "سرير مهدئ ناعم" }, price: 180, weight: '0.8 kg', image: 'tkh1.jpeg', images: ['tkh1.jpeg'], category: 'accessories', subcategory: 'pet_beds', type: 'comfort', desc: 'Ultra-soft bed...', weights: [{w:'Pink', p:180, img: 'tkh1.jpeg'}, {w:'Grey', p:180, img: 'tkh3.jpeg'}, {w:'Brown', p:180, img: 'tkh2.jpeg'}] },
 { id: 'bed_slipper', name: { en: "Slipper Comfort Bed", fr: "Lit Pantoufle Confort", ar: "سرير راحة شبشب" }, price: 150, weight: '0.9 kg', image: 'khb1.png', images: ['khb1.png'], category: 'accessories', subcategory: 'pet_beds', type: 'comfort', desc: 'Giant slipper design...', weights: [{w:'Magenta', p:150}] },
 { id: 'bed_round', name: { en: "Round Cozy Cushion", fr: "Coussin Rond Douillet", ar: "وسادة دائرية مريحة" }, price: 80, weight: '0.6 kg', image: 'ter1.png', images: ['ter1.png'], category: 'accessories', subcategory: 'pet_beds', type: 'budget_comfort', desc: 'Ultra-soft round...', weights: [{w:'Pastel Pink', p:80}] },
-{ id: 'bed_canijess', name: { en: "Canijess Comfort Bed", fr: "Lit Canijess Confort", ar: "سرير كانيجيس مريح" }, price: 300, weight: '1.5 kg', image: 'sou1.png', images: ['sou1.png'], category: 'accessories', subcategory: 'pet_beds', type: 'premium_comfort', desc: 'High-density filling...', weights: [{w:'S/M A', p:300}, {w:'S/M B', p:300}, {w:'Large', p:520}] },
+{ id: 'bed_canijess', name: { en: "Canijess Comfort Bed", fr: "Lit Canijess Confort", ar: "سرير كانيجيس مريح" }, price: 300, weight: '1.5 kg', image: 'sou1.png', images: ['sou1.png'], category: 'accessories', subcategory: 'pet_beds', type: 'premium_comfort', desc: 'High-density filling...', weights: [{w:'red' , p:300, img:'sou1.png'}, {w:'gray', p:300, img:'sou2.png'}, {w:'black', p:520, img:'sou3.png'}] },
 { id: 'carrier_rigid', name: { en: "Rigid Transport Carrier", fr: "Cage de Transport Rigide", ar: "قفص نقل صلب" }, price: 80, weight: '1.5 kg', image: 'port1.png', images: ['port1.png'], category: 'accessories', subcategory: 'travel_carriers', type: 'gear', desc: 'High-resistance cage...', weights: [{w:'1.5 kg', p:80}] },
-{ id: 'bag_back', name: { en: "Transport Backpack", fr: "Sac à Dos Transport", ar: "حقيبة ظهر نقل" }, price: 199, weight: '1.2 kg', image: 'pr1.png', images: ['pr1.png'], category: 'accessories', subcategory: 'travel_carriers', type: 'gear', desc: 'Mesh-ventilated backpack...', weights: [{w:'Urban Grey', p:199}, {w:'Pastel Pink', p:199}, {w:'Emerald', p:199}, {w:'Sapphire', p:199}] },
+{ id: 'bag_back', name: { en: "Transport Backpack", fr: "Sac à Dos Transport", ar: "حقيبة ظهر نقل" }, price: 199, weight: '1.2 kg', image: 'pr1.png', images: ['pr1.png'], category: 'accessories', subcategory: 'travel_carriers', type: 'gear', desc: 'Mesh-ventilated backpack...', weights: [{w:'Urban Grey', p:199, img: 'pr1.png'}, {w:'Pastel Pink', p:199, img: 'pr2.png'}, {w:'Emerald', p:199, img: 'pr3.png'}, {w:'Sapphire', p:199, img: 'pr4.png'}] },
 { id: 'carrier_top', name: { en: "Top-Loading Carrier", fr: "Cage Ouverture Haut", ar: "قفص فتح علوي" }, price: 220, weight: '1.8 kg', image: 'pt1.png', images: ['pt1.png'], category: 'accessories', subcategory: 'travel_carriers', type: 'gear', desc: 'Dual access...', weights: [{w:'Size S', p:220}, {w:'Size M', p:280}] },
 { id: 'dental_spray', name: { en: "Flamingo Dental Care Spray", fr: "Flamingo Spray Dentaire", ar: "فلامنغو بخار أسنان" }, price: 85, weight: '175 ml', image: 'flamdog.jfif', images: ['flamdog.jfif'], category: 'healthcare', subcategory: 'cleanings', type: 'care', desc: 'Plaque protection...', weights: [{w:'175 ml', p:85}] },
 { id: 'dental_kit', name: { en: "Flamingo Dental Kit", fr: "Flamingo Kit Dentaire", ar: "فلامنغو طقم أسنان" }, price: 75, weight: '100 g', image: 'flamingoteeth.jfif', images: ['flamingoteeth.jfif'], category: 'healthcare', subcategory: 'cleanings', type: 'care', desc: 'Brush & paste...', weights: [{w:'100 g', p:75}] },
@@ -693,18 +695,18 @@ dogs: [
 { id: 'd_shamp_pooshi', name: { en: "Pooshi Antiparasitic Shampoo", fr: "Pooshi Shampoing Antiparasitaire", ar: "بوشي شامبو مضاد طفيليات" }, price: 70, weight: '250 ml', image: 'shamp0.jfif', images: ['shamp0.jfif'], category: 'healthcare', subcategory: 'cleanings', type: 'treatment', desc: 'Complete protection...', weights: [{w:'Coco Vanilla', p:70}, {w:'Candy', p:70}, {w:'Tutti Frutti', p:70}, {w:'Mango Papaya', p:75}] },
 { id: 'd_salmon_oil', name: { en: "Brit Care Salmon Oil", fr: "Brit Care Huile de Saumon", ar: "بريت كير زيت سلمون" }, price: 180, weight: '500 ml', image: 'brrrt.jpg', images: ['brrrt.jpg'], category: 'healthcare', subcategory: 'supplements', type: 'supplements', desc: 'Norwegian salmon oil...', weights: [{w:'500 ml', p:180}] },
 { id: 'd_opti_oil', name: { en: "Optibiomega Salmon Oil", fr: "Optibiomega Huile de Saumon", ar: "أوبتيبيوميغا زيت سلمون" }, price: 135, weight: '250 ml', image: 'opti.png', images: ['opti.png'], category: 'healthcare', subcategory: 'supplements', type: 'supplements', desc: 'Premium salmon oil...', weights: [{w:'250 ml', p:135}] },
-{ id: 'd_feeder_2in1', name: { en: "Auto Feeder 2-in-1 Food & Water", fr: "Distributeur Automatique 2-en-1", ar: "موزع طعام 2 في 1" }, price: 280, weight: '1.2 kg', image: 'hh.png', images: ['hh.png'], category: 'accessories', subcategory: 'feeding_bowls', type: 'gear', desc: 'Gravity-fed station...', weights: [{w:'Standard', p:280}, {w:'Blue', p:150}, {w:'Pink', p:150}] },
+{ id: 'feeder_2in1', name: { en: "Auto Feeder 2-in-1 Food & Water", fr: "Distributeur Automatique 2-en-1", ar: "موزع طعام 2 في 1" }, price: 280, weight: '1.2 kg', image: 'hh.png', images: ['hh.png'], category: 'accessories', subcategory: 'feeding_bowls', type: 'gear', desc: 'Gravity-fed station...', weights: [{w:'Standard', p:280, img:'hh.png'}, {w:'Blue', p:150,img:'hihi.png'}, {w:'Pink', p:150, img:'hoho.png'}] },
 { id: 'd_feeder_prog', name: { en: "Programmable Auto Feeder", fr: "Distributeur Automatique Programmable", ar: "موزع طعام أوتوماتيكي قابل للبرمجة" }, price: 550, weight: '2.5 kg', image: 'dis1.jpeg', images: ['dis1.jpeg'], category: 'accessories', subcategory: 'feeding_bowls', type: 'electronics', desc: 'Programmable meals...', weights: [{w:'2.5 kg', p:550}] },
-{ id: 'd_bed_calm', name: { en: "Calming Plush Bed", fr: "Lit Apaisant Peluche", ar: "سرير مهدئ ناعم" }, price: 180, weight: '0.8 kg', image: 'tkh1.jpeg', images: ['tkh1.jpeg'], category: 'accessories', subcategory: 'pet_beds', type: 'comfort', desc: 'Ultra-soft bed...', weights: [{w:'Pink', p:180}, {w:'Grey', p:180}, {w:'Brown', p:180}] },
+{ id: 'bed_calm', name: { en: "Calming Plush Bed", fr: "Lit Apaisant Peluche", ar: "سرير مهدئ ناعم" }, price: 180, weight: '0.8 kg', image: 'tkh1.jpeg', images: ['tkh1.jpeg'], category: 'accessories', subcategory: 'pet_beds', type: 'comfort', desc: 'Ultra-soft bed...', weights: [{w:'Pink', p:180, img: 'tkh1.jpeg'}, {w:'Grey', p:180, img: 'tkh3.jpeg'}, {w:'Brown', p:180, img: 'tkh2.jpeg'}] },
 { id: 'd_bed_slipper', name: { en: "Slipper Comfort Bed", fr: "Lit Pantoufle Confort", ar: "سرير راحة شبشب" }, price: 150, weight: '0.9 kg', image: 'khb1.png', images: ['khb1.png'], category: 'accessories', subcategory: 'pet_beds', type: 'comfort', desc: 'Giant slipper design...', weights: [{w:'Magenta', p:150}] },
 { id: 'd_bed_round', name: { en: "Round Cozy Cushion", fr: "Coussin Rond Douillet", ar: "وسادة دائرية مريحة" }, price: 80, weight: '0.6 kg', image: 'ter1.png', images: ['ter1.png'], category: 'accessories', subcategory: 'pet_beds', type: 'budget_comfort', desc: 'Ultra-soft round...', weights: [{w:'Pastel Pink', p:80}] },
-{ id: 'd_bed_canijess', name: { en: "Canijess Comfort Bed", fr: "Lit Canijess Confort", ar: "سرير كانيجيس مريح" }, price: 300, weight: '1.5 kg', image: 'sou1.png', images: ['sou1.png'], category: 'accessories', subcategory: 'pet_beds', type: 'premium_comfort', desc: 'High-density filling...', weights: [{w:'S/M', p:300}, {w:'S/M B', p:300}, {w:'Large', p:520}] },
-{ id: 'd_bag_back', name: { en: "Transport Backpack", fr: "Sac à Dos Transport", ar: "حقيبة ظهر نقل" }, price: 199, weight: '1.2 kg', image: 'pr1.png', images: ['pr1.png'], category: 'accessories', subcategory: 'travel_carriers', type: 'gear', desc: 'Mesh-ventilated backpack...', weights: [{w:'Urban Grey', p:199}, {w:'Pastel Pink', p:199}, {w:'Emerald', p:199}, {w:'Sapphire', p:199}] },
+{ id: 'bed_canijess', name: { en: "Canijess Comfort Bed", fr: "Lit Canijess Confort", ar: "سرير كانيجيس مريح" }, price: 300, weight: '1.5 kg', image: 'sou1.png', images: ['sou1.png'], category: 'accessories', subcategory: 'pet_beds', type: 'premium_comfort', desc: 'High-density filling...', weights: [{w:'red' , p:300, img:'sou1.png'}, {w:'gray', p:300, img:'sou2.png'}, {w:'black', p:520, img:'sou3.png'}] },
+{ id: 'bag_back', name: { en: "Transport Backpack", fr: "Sac à Dos Transport", ar: "حقيبة ظهر نقل" }, price: 199, weight: '1.2 kg', image: 'pr1.png', images: ['pr1.png'], category: 'accessories', subcategory: 'travel_carriers', type: 'gear', desc: 'Mesh-ventilated backpack...', weights: [{w:'Urban Grey', p:199, img: 'pr1.png'}, {w:'Pastel Pink', p:199, img: 'pr2.png'}, {w:'Emerald', p:199, img: 'pr3.png'}, {w:'Sapphire', p:199, img: 'pr4.png'}] },
 { id: 'd_carrier_top', name: { en: "Top-Loading Carrier", fr: "Cage Ouverture Haut", ar: "قفص فتح علوي" }, price: 220, weight: '1.8 kg', image: 'pt1.png', images: ['pt1.png'], category: 'accessories', subcategory: 'travel_carriers', type: 'gear', desc: 'Dual access...', weights: [{w:'Size S', p:220}, {w:'Size M', p:280}] },
 { id: 'd_leash_classic', name: { en: "Flexi New Classic Leash (5m)", fr: "Laisse Rétractable Flexi New Classic (5m)", ar: "حبل سحب فليكسي نيو كلاسيك (5م)" }, price: 200, weight: '0.35 kg', image: 'cla1.jpeg', images: ['cla1.jpeg'], category: 'accessories', subcategory: 'leashes_collars', type: 'gear', desc: 'German retractable leash...', weights: [{w:'5m', p:200}] },
 { id: 'd_leash_comfort', name: { en: "Flexi New Comfort Leash (5m)", fr: "Laisse Rétractable Flexi New Comfort (5m)", ar: "حبل سحب فليكسي نيو كومفورت (5م)" }, price: 180, weight: '0.25 kg', image: 'cla2.jpeg', images: ['cla2.jpeg'], category: 'accessories', subcategory: 'leashes_collars', type: 'gear', desc: 'Comfort grip leash...', weights: [{w:'5m', p:180}] },
 { id: 'd_ball_launch', name: { en: "Ergonomic Ball Launcher", fr: "Lanceur de Balle Ergonomique", ar: "قاذف كرة مريح" }, price: 150, weight: '0.2 kg', image: 'bat.avif', images: ['bat.avif'], category: 'toys', subcategory: 'toys', type: 'outdoor_gear', desc: 'Launches ball twice as far...', weights: [{w:'1 pc', p:150}] },
-{ id: 'd_leash_set', name: { en: "Robust Leash & Collar Set", fr: "Pack Laisse & Collier Robuste", ar: "طقم حقل وطوق متين" }, price: 120, weight: '', image: 'bra1.png', images: ['bra1.png'], category: 'accessories', subcategory: 'leashes_collars', type: 'heavy_duty', desc: 'Woven red and black...', weights: [{w:'Red/Black', p:120}, {w:'Black', p:120}, {w:'Black/Blue', p:120}, {w:'Forest', p:120}, {w:'Red/Blue', p:120}] },
+{ id: 'd_leash_set', name: { en: "Robust Leash & Collar Set", fr: "Pack Laisse & Collier Robuste", ar: "طقم حقل وطوق متين" }, price: 120, weight: '', image: 'bra1.png', images: ['bra1.png'], category: 'accessories', subcategory: 'leashes_collars', type: 'heavy_duty', desc: 'Woven red and black...', weights: [{w:'Red/Black', p:120, img:'bra1.png'}, {w:'Black', p:120, img:'bra4.png'}, {w:'Black/Blue', p:120, img:'bra2.png'}, {w:'Forest', p:120, img:'bra3.png'}, {w:'Red/Blue', p:120, img:'bra5.png'}] },
 { id: 'd_leash_leather', name: { en: "Leather Leash with Shock Absorber", fr: "Laisse en Cuir avec Amortisseur", ar: "حقل جلدي مع ممتص صدمات" }, price: 120, weight: '1.2 m', image: 'br1.png', images: ['br1.png'], category: 'accessories', subcategory: 'leashes_collars', type: 'heavy_duty', desc: 'Leather prestige...', weights: [{w:'1.2 m', p:120}] },
 { id: 'd_collar_k9', name: { en: "Julius-K9 IDC Collar (49-70cm)", fr: "Collier Julius-K9 IDC (49-70cm)", ar: "طوق يوليوس ك9 آي دي سي" }, price: 250, weight: '0.12 kg', image: 'br2.png', images: ['br2.png'], category: 'accessories', subcategory: 'leashes_collars', type: 'heavy_duty', desc: 'Professional collar...', weights: [{w:'49-70cm', p:250}] },
 { id: 'd_wipes_eye', name: { en: "Amore Mio Eye Wipes", fr: "Amore Mio Lingettes Yeux", ar: "أمور ميو مناديل عيون" }, price: 75, weight: '100 pcs', image: 'amorenew.jfif', images: ['amorenew.jfif'], category: 'healthcare', subcategory: 'cleanings', type: 'treatment', desc: 'Hypoallergenic wipes...', weights: [{w:'100 pcs', p:75}] },
@@ -744,15 +746,65 @@ birds: [
 { id: 'b9', name: { en: "Small Bird Siphon Drinker", fr: "Abreuvoir Siphon pour Petit Oiseau", ar: "شارب سيفون للطيور الصغيرة" }, price: 15, weight: '100 ml', image: 'mange1.webp', images: ['mange1.webp'], category: 'accessories', subcategory: 'cage_birds', type: 'accessory', desc: 'Automatic drinker...', weights: [{w:'100 ml', p:15}] }
 ]
 };
-
-
 // ===== HELPER: GET TRANSLATED NAME =====
 function getTranslatedName(nameObj) {
 const lang = getCurrentLangSafe();
 return nameObj[lang] || nameObj.en || Object.values(nameObj)[0];
 }
 function getCurrentLangSafe() { try{ return localStorage.getItem('soukiluna_lang')||'en'; }catch(e){ return 'en'; } }
-
+// ===== PROCESS PRODUCTS TO GROUP VARIANTS =====
+function processProducts() {
+const processed = {};
+for (const category in products) {
+processed[category] = [];
+const grouped = {};
+products[category].forEach(product => {
+// Create a base key from the product name
+const baseName = getTranslatedName(product.name).toLowerCase()
+.replace(/\s*\([^)]*\)\s*/g, '')
+.replace(/\s*-\s*.*/g, '')
+.trim();
+if (!grouped[baseName]) {
+grouped[baseName] = {
+...product,
+variants: [],
+allImages: []
+};
+}
+// Add this product as a variant
+const variant = {
+id: product.id,
+weight: product.weights && product.weights.length > 0 ? product.weights[0].w : product.weight,
+price: product.weights && product.weights.length > 0 ? product.weights[0].p : product.price,
+weightOptions: product.weights || [{w: product.weight, p: product.price}],
+image: product.image,
+images: product.images || [product.image]
+};
+grouped[baseName].variants.push(variant);
+// Collect all images
+if (product.images) {
+grouped[baseName].allImages = [...new Set([...grouped[baseName].allImages, ...product.images])];
+} else {
+grouped[baseName].allImages.push(product.image);
+}
+});
+// Convert grouped objects to array
+for (const key in grouped) {
+const item = grouped[key];
+if (item.variants.length > 1) {
+item.price = Math.min(...item.variants.map(v => v.price));
+item.weight = item.variants[0].weight;
+item.image = item.variants[0].image;
+item.hasVariants = true;
+} else {
+item.hasVariants = false;
+}
+processed[category].push(item);
+}
+}
+return processed;
+}
+const processedProducts = processProducts();
 // ===== CAROUSEL FUNCTIONS =====
 function getImagesForProduct(product) { return (product.images && product.images.length > 0) ? product.images : [product.image]; }
 function setupCarousel(images) {
@@ -767,143 +819,173 @@ document.getElementById('carouselWrapper').addEventListener('touchend', e => { c
 function updateCarouselNav() { document.querySelectorAll('.carousel-dot').forEach((d,i)=>d.classList.toggle('active', i===carouselIndex)); document.getElementById('carouselPrev').disabled = carouselIndex===0; document.getElementById('carouselNext').disabled = carouselIndex===carouselImages.length-1; }
 function goToImage(idx) { if(idx<0||idx>=carouselImages.length) return; carouselIndex=idx; document.getElementById('carouselTrack').style.transform=`translateX(-${carouselIndex*100}%)`; updateCarouselNav(); }
 function changeImage(dir) { goToImage(carouselIndex + dir); }
-
-// ===== CORE FUNCTIONS (Dynamic Variant Handling) =====
+// ===== CORE FUNCTIONS (WITH COLOR IMAGE SWAP) =====
 function showProductDetail(product) {
-    currentProduct = product;
-    selectedVariantIndex = 0;
-
-    document.getElementById('detailTitle').textContent = getTranslatedName(product.name);
-    document.getElementById('detailDescription').innerHTML = product.desc || '';
-    
-    const imgs = product.images && product.images.length > 0 ? product.images : [product.image];
-    setupCarousel(imgs);
-
-    const weightContainer = document.getElementById('weightSelector');
-    weightContainer.innerHTML = '';
-    
-    const weights = product.weights && product.weights.length > 0 ? product.weights : [{w: product.weight, p: product.price}];
-    
-    weights.forEach((wObj, idx) => {
-        const btn = document.createElement('button');
-        btn.className = `weight-btn ${idx === 0 ? 'active' : ''}`;
-        btn.innerHTML = `<span>${wObj.w}</span><span class="price">${wObj.p} DH</span>`;
-        btn.onclick = () => selectVariant(idx);
-        weightContainer.appendChild(btn);
-    });
-
-    updateVariantUI(weights[0]);
-    document.getElementById('productDetailModal').classList.add('active');
+currentProduct = product;
+selectedVariantIndex = 0;
+document.getElementById('detailTitle').textContent = getTranslatedName(product.name);
+document.getElementById('detailDescription').innerHTML = product.desc || '';
+// Setup carousel with ALL images from all variants
+const allImages = product.allImages && product.allImages.length > 0 ? product.allImages : [product.image];
+setupCarousel(allImages);
+// Create variant selector
+const variantContainer = document.getElementById('weightSelector');
+variantContainer.innerHTML = '';
+if (product.hasVariants && product.variants.length > 1) {
+product.variants.forEach((variant, idx) => {
+const btn = document.createElement('button');
+btn.className = `weight-btn ${idx === 0 ? 'active' : ''}`;
+const displayText = variant.weightOptions.length > 1 ? variant.weightOptions[0].w : variant.weight;
+btn.innerHTML = `<span>${displayText}</span><span class="price">${variant.price} DH</span>`;
+btn.onclick = () => selectVariant(idx);
+variantContainer.appendChild(btn);
+});
+updateVariantUI(product.variants[0]);
+} else {
+const weights = product.weights && product.weights.length > 0 ? product.weights : [{w: product.weight, p: product.price}];
+weights.forEach((wObj, idx) => {
+const btn = document.createElement('button');
+btn.className = `weight-btn ${idx === 0 ? 'active' : ''}`;
+btn.innerHTML = `<span>${wObj.w}</span><span class="price">${wObj.p} DH</span>`;
+btn.onclick = () => selectWeightVariant(idx);
+variantContainer.appendChild(btn);
+});
+updateVariantUI(weights[0]);
 }
-
+document.getElementById('productDetailModal').classList.add('active');
+}
 function selectVariant(index) {
-    if (!currentProduct) return;
-    selectedVariantIndex = index;
-    const weights = currentProduct.weights && currentProduct.weights.length > 0 ? currentProduct.weights : [{w: currentProduct.weight, p: currentProduct.price}];
-    
-    document.querySelectorAll('.weight-btn').forEach((btn, i) => {
-        btn.classList.toggle('active', i === index);
-    });
-    updateVariantUI(weights[index]);
+if (!currentProduct || !currentProduct.variants) return;
+selectedVariantIndex = index;
+const variant = currentProduct.variants[index];
+document.querySelectorAll('.weight-btn').forEach((btn, i) => btn.classList.toggle('active', i === index));
+updateVariantUI(variant);
+// 📸 DYNAMIC IMAGE SWAP FOR VARIANTS
+if (variant.image && carouselImages.includes(variant.image)) {
+const idx = carouselImages.indexOf(variant.image);
+goToImage(idx);
 }
-
-function updateVariantUI(weightObj) {
-    document.getElementById('detailPrice').textContent = `${weightObj.p} DH`;
-    document.getElementById('detailWeight').textContent = weightObj.w;
 }
-
+function selectWeightVariant(index) {
+if (!currentProduct) return;
+const weights = currentProduct.weights && currentProduct.weights.length > 0 ? currentProduct.weights : [{w: currentProduct.weight, p: currentProduct.price}];
+document.querySelectorAll('.weight-btn').forEach((btn, i) => btn.classList.toggle('active', i === index));
+const selected = weights[index];
+updateVariantUI(selected);
+// 📸 DYNAMIC IMAGE SWAP FOR WEIGHTS/COLORS
+if (selected.img) {
+// If a specific color image exists, replace first slide and go to it
+const firstSlideImg = document.querySelector('#carouselTrack .carousel-slide:first-child img');
+if (firstSlideImg) {
+firstSlideImg.src = selected.img;
+carouselImages[0] = selected.img;
+}
+goToImage(0);
+} else if (carouselImages.length > index) {
+goToImage(index);
+}
+}
+function updateVariantUI(variant) {
+document.getElementById('detailPrice').textContent = `${variant.price} DH`;
+document.getElementById('detailWeight').textContent = variant.weight || variant.w;
+}
 function addToCartFromModal() {
-    if (!currentProduct) return;
-    const weights = currentProduct.weights && currentProduct.weights.length > 0 ? currentProduct.weights : [{w: currentProduct.weight, p: currentProduct.price}];
-    const selected = weights[selectedVariantIndex] || weights[0];
-    
-    addToCart({
-        id: currentProduct.id,
-        name: currentProduct.name,
-        image: currentProduct.image,
-        weight: selected.w,
-        price: selected.p,
-        quantity: 1
-    });
-    closeProductDetail();
+if (!currentProduct) return;
+let selectedData;
+if (currentProduct.hasVariants && currentProduct.variants.length > 1) {
+const variant = currentProduct.variants[selectedVariantIndex];
+const weights = variant.weightOptions;
+selectedData = {
+id: variant.id,
+name: currentProduct.name,
+image: variant.image,
+weight: weights[0].w,
+price: weights[0].p,
+quantity: 1
+};
+} else {
+const weights = currentProduct.weights && currentProduct.weights.length > 0 ? currentProduct.weights : [{w: currentProduct.weight, p: currentProduct.price}];
+const selected = weights[selectedVariantIndex] || weights[0];
+selectedData = {
+id: currentProduct.id,
+name: currentProduct.name,
+image: currentProduct.image,
+weight: selected.w,
+price: selected.p,
+quantity: 1
+};
 }
-
-function closeProductDetail(event) { 
-    if (event && event.target !== event.currentTarget) return; 
-    document.getElementById('productDetailModal').classList.remove('active'); 
-    currentProduct = null; 
+addToCart(selectedData);
+closeProductDetail();
 }
-
+function closeProductDetail(event) { if (event && event.target !== event.currentTarget) return; document.getElementById('productDetailModal').classList.remove('active'); currentProduct = null; }
 function addToCart(product) {
-    const ex = cart.find(i => i.id === product.id && i.weight === product.weight);
-    if(ex) ex.quantity++; else cart.push({...product, quantity: 1});
-    updateCartCount(); updateCartModal(); alert(`${getTranslatedName(product.name)} (${product.weight}) ${translations[getCurrentLangSafe()].added}`);
+const ex = cart.find(i => i.id === product.id && i.weight === product.weight);
+if(ex) ex.quantity++; else cart.push({...product, quantity: 1});
+updateCartCount(); updateCartModal(); alert(`${getTranslatedName(product.name)} (${product.weight}) ${translations[getCurrentLangSafe()].added}`);
 }
 function removeFromCart(id) { cart = cart.filter(i => i.id !== id); updateCartCount(); updateCartModal(); }
 function updateQuantity(id, c) { const i = cart.find(x=>x.id===id); if(i) { i.quantity+=c; i.quantity<=0 ? removeFromCart(id) : updateCartModal(); } }
 function updateCartCount() { const c = cart.reduce((s,i)=>s+i.quantity,0); const b = document.getElementById('cartCount'); b.textContent=c; c>0 ? b.classList.remove('hidden') : b.classList.add('hidden'); }
 function updateCartModal() {
-    const lang = getCurrentLangSafe(); const t = translations[lang];
-    if(cart.length===0) { document.getElementById('cartItems').innerHTML=`<div class="empty-cart"><div class="empty-cart-icon">🛒</div><p class="text-lg font-medium">${t.empty_cart}</p><p class="text-sm mt-1">${t.start_shopping}</p></div>`; document.getElementById('cartTotal').textContent='0 DH'; return; }
-    let h='', tot=0; cart.forEach(i=>{ tot+=i.price*i.quantity; h+=`<div class="cart-item"><div class="cart-item-image"></div><div class="cart-item-info"><div class="cart-item-name">${getTranslatedName(i.name)}</div><div class="cart-item-weight text-pink-500 font-bold">${i.weight}</div><div class="cart-item-price">${i.price} DH</div><div class="cart-item-quantity"><button class="quantity-btn" onclick="updateQuantity('${i.id}',-1)">−</button><span>${i.quantity}</span><button class="quantity-btn" onclick="updateQuantity('${i.id}',1)">+</button><button class="remove-item-btn ml-auto" onclick="removeFromCart('${i.id}')">✕</button></div></div></div>`; });
-    document.getElementById('cartItems').innerHTML=h; document.getElementById('cartTotal').textContent=`${tot} DH`;
+const lang = getCurrentLangSafe(); const t = translations[lang];
+if(cart.length===0) { document.getElementById('cartItems').innerHTML=`<div class="empty-cart"><div class="empty-cart-icon">🛒</div><p class="text-lg font-medium">${t.empty_cart}</p><p class="text-sm mt-1">${t.start_shopping}</p></div>`; document.getElementById('cartTotal').textContent='0 DH'; return; }
+let h='', tot=0; cart.forEach(i=>{ tot+=i.price*i.quantity; h+=`<div class="cart-item"><div class="cart-item-image"></div><div class="cart-item-info"><div class="cart-item-name">${getTranslatedName(i.name)}</div><div class="cart-item-weight text-pink-500 font-bold">${i.weight}</div><div class="cart-item-price">${i.price} DH</div><div class="cart-item-quantity"><button class="quantity-btn" onclick="updateQuantity('${i.id}',-1)">−</button><span>${i.quantity}</span><button class="quantity-btn" onclick="updateQuantity('${i.id}',1)">+</button><button class="remove-item-btn ml-auto" onclick="removeFromCart('${i.id}')">✕</button></div></div></div>`; });
+document.getElementById('cartItems').innerHTML=h; document.getElementById('cartTotal').textContent=`${tot} DH`;
 }
 function toggleCart() { document.getElementById('cartModal').classList.toggle('active'); document.getElementById('cartOverlay').classList.toggle('active'); if(document.getElementById('cartModal').classList.contains('active')) updateCartModal(); }
-
 // ===== ORDER SYSTEM =====
 function checkout() { if(cart.length===0) return; document.getElementById('cartModal').classList.remove('active'); document.getElementById('cartOverlay').classList.remove('active'); document.getElementById('orderAddressModal').classList.add('active'); }
 function closeAddressModal() { document.getElementById('orderAddressModal').classList.remove('active'); document.getElementById('cartModal').classList.add('active'); document.getElementById('cartOverlay').classList.add('active'); }
 function submitAddress() {
-    const t = translations[getCurrentLangSafe()]; const n=document.getElementById('orderName').value.trim(), p=document.getElementById('orderPhone').value.trim(), c=document.getElementById('orderCity').value.trim(), nb=document.getElementById('orderNeighborhood').value.trim();
-    if(!n||!p||!c||!nb) { alert(t.fill_all_fields); return; }
-    orderAddress={name:n, phone:p, city:c, neighborhood:nb}; document.getElementById('orderAddressModal').classList.remove('active'); showConfirmation();
+const t = translations[getCurrentLangSafe()]; const n=document.getElementById('orderName').value.trim(), p=document.getElementById('orderPhone').value.trim(), c=document.getElementById('orderCity').value.trim(), nb=document.getElementById('orderNeighborhood').value.trim();
+if(!n||!p||!c||!nb) { alert(t.fill_all_fields); return; }
+orderAddress={name:n, phone:p, city:c, neighborhood:nb}; document.getElementById('orderAddressModal').classList.remove('active'); showConfirmation();
 }
 function showConfirmation() {
-    const t = translations[getCurrentLangSafe()]; let h='', tot=0;
-    cart.forEach(i=>{ tot+=i.price*i.quantity; h+=`<div class="confirm-product-row"><span class="confirm-product-name">${getTranslatedName(i.name)} (${i.weight})</span><span class="confirm-product-qty">x${i.quantity}</span><span class="confirm-product-price">${i.price*i.quantity} DH</span></div>`; });
-    document.getElementById('confirmProductsList').innerHTML=h; document.getElementById('confirmTotal').textContent=tot+' DH';
-    document.getElementById('confirmAddressBox').innerHTML=`<strong>📦 ${t.delivery_address}:</strong><br>👤 ${orderAddress.name}<br>📱 ${orderAddress.phone}<br>📍 ${orderAddress.neighborhood}, ${orderAddress.city}, Morocco`;
-    document.getElementById('orderConfirmModal').classList.add('active');
-    document.querySelectorAll('[data-i18n]').forEach(el=>{ if(t[el.dataset.i18n]) el.innerHTML=t[el.dataset.i18n]; });
+const t = translations[getCurrentLangSafe()]; let h='', tot=0;
+cart.forEach(i=>{ tot+=i.price*i.quantity; h+=`<div class="confirm-product-row"><span class="confirm-product-name">${getTranslatedName(i.name)} (${i.weight})</span><span class="confirm-product-qty">x${i.quantity}</span><span class="confirm-product-price">${i.price*i.quantity} DH</span></div>`; });
+document.getElementById('confirmProductsList').innerHTML=h; document.getElementById('confirmTotal').textContent=tot+' DH';
+document.getElementById('confirmAddressBox').innerHTML=`<strong>📦 ${t.delivery_address}:</strong><br>👤 ${orderAddress.name}<br>📱 ${orderAddress.phone}<br>📍 ${orderAddress.neighborhood}, ${orderAddress.city}, Morocco`;
+document.getElementById('orderConfirmModal').classList.add('active');
+document.querySelectorAll('[data-i18n]').forEach(el=>{ if(t[el.dataset.i18n]) el.innerHTML=t[el.dataset.i18n]; });
 }
 function closeConfirmModal() { document.getElementById('orderConfirmModal').classList.remove('active'); document.getElementById('orderAddressModal').classList.add('active'); }
 function sendWhatsApp() {
-    const lang = getCurrentLangSafe(); const t = translations[lang];
-    let msg=`🐾 *New Order - Soukiluna Pet Shop* 🐾
+const lang = getCurrentLangSafe(); const t = translations[lang];
+let msg=`🐾 *New Order - Soukiluna Pet Shop* 🐾
 👤 *Customer:* ${orderAddress.name}
 📱 *Phone:* ${orderAddress.phone}
 📍 *Address:* ${orderAddress.neighborhood}, ${orderAddress.city}, Morocco
 🛒 *Order Details:
 `;
-    let tot=0; cart.forEach(i=>{ tot+=i.price*i.quantity; msg+=`• ${getTranslatedName(i.name)} (${i.weight}) x${i.quantity} → ${i.price*i.quantity} DH
+let tot=0; cart.forEach(i=>{ tot+=i.price*i.quantity; msg+=`• ${getTranslatedName(i.name)} (${i.weight}) x${i.quantity} → ${i.price*i.quantity} DH
 `; });
-    msg+=`
+msg+=`
 💰 *Total: ${tot} DH*
 💵 *Payment: ${t.cod}*
 Thank you for your order! 🐾`;
-    window.open(`https://wa.me/212629167222?text=${encodeURIComponent(msg)}`, '_blank');
-    setTimeout(()=>{ cart=[]; updateCartCount(); updateCartModal(); document.getElementById('orderConfirmModal').classList.remove('active'); }, 1000);
+window.open(`https://wa.me/212629167222?text=${encodeURIComponent(msg)}`, '_blank');
+setTimeout(()=>{ cart=[]; updateCartCount(); updateCartModal(); document.getElementById('orderConfirmModal').classList.remove('active'); }, 1000);
 }
-
 // ===== LANGUAGE & TRANSLATIONS =====
 function setLanguage(lang) {
-    try {
-        document.querySelectorAll('.language-option').forEach(o=>o.classList.toggle('active', o.dataset.lang===lang));
-        document.getElementById('currentLang').textContent = {en:'🇬🇧 EN', fr:'🇫🇷 FR', ar:'🇲🇦 AR'}[lang];
-        document.documentElement.lang = lang; document.documentElement.dir = lang==='ar'?'rtl':'ltr';
-        const t = translations[lang];
-        document.querySelectorAll('[data-i18n]').forEach(el=>{ if(t[el.dataset.i18n]) el.innerHTML=t[el.dataset.i18n]; });
-        const si = document.getElementById('searchInput'); if(si) si.placeholder = t.search_placeholder;
-        const ds = document.getElementById('dryWetSelect'); if(ds){ ds.options[0].text=t.all_food_types; ds.options[1].text=t.dry_food_opt; ds.options[2].text=t.wet_food_opt; }
-        document.getElementById('languageSelector').classList.remove('active'); localStorage.setItem('soukiluna_lang', lang);
-        if(document.getElementById('cartModal').classList.contains('active')) updateCartModal();
-        if(activeDisplayList.length) openCategory(activeDisplayCategory, currentSection);
-    } catch(e) {}
+try {
+document.querySelectorAll('.language-option').forEach(o=>o.classList.toggle('active', o.dataset.lang===lang));
+document.getElementById('currentLang').textContent = {en:'🇬🇧 EN', fr:'🇫🇷 FR', ar:'🇲🇦 AR'}[lang];
+document.documentElement.lang = lang; document.documentElement.dir = lang==='ar'?'rtl':'ltr';
+const t = translations[lang];
+document.querySelectorAll('[data-i18n]').forEach(el=>{ if(t[el.dataset.i18n]) el.innerHTML=t[el.dataset.i18n]; });
+const si = document.getElementById('searchInput'); if(si) si.placeholder = t.search_placeholder;
+const ds = document.getElementById('dryWetSelect'); if(ds){ ds.options[0].text=t.all_food_types; ds.options[1].text=t.dry_food_opt; ds.options[2].text=t.wet_food_opt; }
+document.getElementById('languageSelector').classList.remove('active'); localStorage.setItem('soukiluna_lang', lang);
+if(document.getElementById('cartModal').classList.contains('active')) updateCartModal();
+if(activeDisplayList.length) openCategory(activeDisplayCategory, currentSection);
+} catch(e) {}
 }
 document.getElementById('languageBtn').addEventListener('click', e=>{ e.stopPropagation(); document.getElementById('languageSelector').classList.toggle('active'); });
 document.addEventListener('click', e=>{ if(!e.target.closest('.language-selector')) document.getElementById('languageSelector').classList.remove('active'); });
 document.addEventListener('DOMContentLoaded', ()=>{ try{ setLanguage(localStorage.getItem('soukiluna_lang')||'en'); }catch(e){ setLanguage('en'); } });
-
 // ===== SEARCH & FILTER LOGIC =====
 function setFoodFilter(type) { currentFoodFilter=type; currentHealthcareFilter='all'; document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); event.target.classList.add('active'); resetAndFilter(); }
 function setHealthcareFilter(type) { currentHealthcareFilter=type; currentFoodFilter='all'; document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); event.target.classList.add('active'); resetAndFilter(); }
@@ -912,51 +994,56 @@ function applyActiveFilters() { document.querySelectorAll('.product-card').forEa
 function productMatchesActiveView(p) { const q = document.getElementById('searchInput').value.toLowerCase().trim(); const translatedName = getTranslatedName(p.name).toLowerCase(); if(q && !translatedName.includes(q)) return false; if(currentSection==='food' && currentFoodFilter!=='all' && p.type!==currentFoodFilter) return false; if(currentSection==='healthcare' && currentHealthcareFilter!=='all' && p.subcategory!==currentHealthcareFilter) return false; if(window._soukilunaDryWetFilter && window._soukilunaDryWetFilter!=='all' && p.subcategory!==window._soukilunaDryWetFilter) return false; return true; }
 function countMatchingActiveProducts() { return activeDisplayList.filter(productMatchesActiveView).length; }
 function createProductCardHTML(product, index) {
-    const lang=getCurrentLangSafe(); const t=translations[lang]||translations.en; const pid=`prod_${activeDisplayCategory||'category'}_${index}_${Math.random().toString(36).slice(2)}`;
-    window._productLookup[pid]=product;
-    const dry=`<span class="text-xs font-semibold px-2 py-1 rounded-full bg-yellow-100 text-yellow-700">${t.dry_food_label||'🌾 Dry'}</span>`;
-    const wet=`<span class="text-xs font-semibold px-2 py-1 rounded-full bg-blue-100 text-blue-700">${t.wet_food_label||'💧 Wet'}</span>`;
-    return `<div class="glass-card rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-300 border border-white/40 product-card fade-in cursor-pointer" onclick="showProductDetail(window._productLookup['${pid}'])" data-type="${product.type||'other'}" data-subcategory="${product.subcategory||'other'}">
-    <img src="${product.image}" alt="${getTranslatedName(product.name)}" class="product-image mb-4" loading="lazy" width="300" height="180" onerror="this.src='https://via.placeholder.com/300x300?text=No+Image'">
-    <h3 class="font-bold text-gray-800 mb-1">${getTranslatedName(product.name)}</h3>
-    <div class="flex items-center gap-2 mb-3 flex-wrap">${product.category==='food'&&product.subcategory==='dry'?dry:''}${product.category==='food'&&product.subcategory==='wet'?wet:''}<span class="product-weight">⚖️ ${product.weight||''}</span></div>
-    <div class="flex items-center justify-between"><span class="product-price">${product.price} DH</span><span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-semibold">${t.click_details}</span></div></div>`;
+const lang=getCurrentLangSafe(); const t=translations[lang]||translations.en; const pid=`prod_${activeDisplayCategory||'category'}_${index}_${Math.random().toString(36).slice(2)}`;
+window._productLookup[pid]=product;
+const dry=`<span class="text-xs font-semibold px-2 py-1 rounded-full bg-yellow-100 text-yellow-700">${t.dry_food_label||'🌾 Dry'}</span>`;
+const wet=`<span class="text-xs font-semibold px-2 py-1 rounded-full bg-blue-100 text-blue-700">${t.wet_food_label||'💧 Wet'}</span>`;
+const priceDisplay = product.hasVariants && product.variants.length > 1
+? `<span class="product-price">From ${product.price} DH</span>`
+: `<span class="product-price">${product.price} DH</span>`;
+const variantBadge = product.hasVariants && product.variants.length > 1
+? `<span class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full font-semibold">${product.variants.length} options</span>`
+: `<span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-semibold">${t.click_details}</span>`;
+return `<div class="glass-card rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-300 border border-white/40 product-card fade-in cursor-pointer" onclick="showProductDetail(window._productLookup['${pid}'])" data-type="${product.type||'other'}" data-subcategory="${product.subcategory||'other'}">
+<img src="${product.image}" alt="${getTranslatedName(product.name)}" class="product-image mb-4" loading="lazy" width="300" height="180" onerror="this.src='https://via.placeholder.com/300x300?text=No+Image'">
+<h3 class="font-bold text-gray-800 mb-1">${getTranslatedName(product.name)}</h3>
+<div class="flex items-center gap-2 mb-3 flex-wrap">${product.category==='food'&&product.subcategory==='dry'?dry:''}${product.category==='food'&&product.subcategory==='wet'?wet:''}<span class="product-weight">⚖️ ${product.weight||''}</span></div>
+<div class="flex items-center justify-between">${priceDisplay}${variantBadge}</div></div>`;
 }
 function updateLoadMoreButton() { const btn=document.getElementById('loadMoreProductsBtn'); if(!btn) return; let has=false; for(let i=activeProductRenderIndex;i<activeDisplayList.length;i++){ if(productMatchesActiveView(activeDisplayList[i])){has=true; break;} } btn.classList.toggle('hidden', !has); }
 function renderProductBatch(reset=false) { const grid=document.getElementById('productGrid'); if(!grid) return; if(reset){ grid.innerHTML=''; window._productLookup={}; activeProductRenderIndex=0; } let added=0; while(activeProductRenderIndex<activeDisplayList.length && added<PRODUCT_BATCH_SIZE){ const p=activeDisplayList[activeProductRenderIndex++]; if(!productMatchesActiveView(p)) continue; grid.insertAdjacentHTML('beforeend', createProductCardHTML(p, activeProductRenderIndex-1)); added++; } const t=translations[getCurrentLangSafe()]||translations.en; const tot=countMatchingActiveProducts(); if(reset&&tot===0) grid.innerHTML=`<div class="no-results"><div class="no-results-icon">🔍</div><p>${t.no_results}</p></div>`; const si=document.getElementById('searchInfo'), inp=document.getElementById('searchInput'); if(si&&inp&&inp.value.trim()){ si.textContent=t.search_results.replace('{count}',tot); si.classList.toggle('highlight', tot===0); } updateLoadMoreButton(); }
 function resetProductGridForFilters() { if(!activeDisplayList.length||!document.getElementById('productGrid')) return false; renderProductBatch(true); return true; }
 function filterProducts() { const q=document.getElementById('searchInput').value.toLowerCase().trim(); const t=translations[getCurrentLangSafe()]||translations.en; const si=document.getElementById('searchInfo'), sg=document.getElementById('searchResultsGrid'), sc=document.getElementById('searchResultsContainer'); if(activeDisplayList.length && document.getElementById('productGrid')){ sc.classList.remove('active'); sg.innerHTML=''; if(si){ si.textContent=q?t.search_results.replace('{count}',countMatchingActiveProducts()):''; si.classList.remove('highlight'); } renderProductBatch(true); return; } if(!q){ document.querySelectorAll('.product-card').forEach(c=>c.classList.remove('hidden-search')); document.querySelectorAll('.section-title').forEach(s=>s.classList.remove('hidden-search')); si.textContent=''; sc.classList.remove('active'); sg.innerHTML=''; applyActiveFilters(); return; } let vis=0, html=''; document.querySelectorAll('.product-card').forEach(c=>{ const n=c.querySelector('h3').textContent.toLowerCase(), hf=c.classList.contains('hidden-filter'), hd=c.classList.contains('hidden-dw'); if(n.includes(q) && !hf && !hd){ c.classList.remove('hidden-search'); vis++; const cl=c.cloneNode(true); cl.classList.remove('hidden-search','hidden-filter','hidden-dw'); html+=cl.outerHTML; } else c.classList.add('hidden-search'); }); if(vis===0){ sg.innerHTML=`<div class="no-results"><div class="no-results-icon">🔍</div><p>${t.no_results}</p></div>`; si.innerHTML=''; si.classList.add('highlight'); sc.classList.add('active'); } else{ sg.innerHTML=html; si.textContent=t.search_results.replace('{count}',vis); si.classList.remove('highlight'); sc.classList.add('active'); } }
-
 // ===== CATEGORY NAVIGATION =====
 function openCategory(key, section=null) {
-    currentCategory=key; currentSection=section; currentFoodFilter='all'; currentHealthcareFilter='all';
-    try{ sessionStorage.setItem('soukiluna_last_view', JSON.stringify({category:key, section:section, time:Date.now()})); history.pushState({category:key, section:section}, '', '#'+key); }catch(e){}
-    const cv=document.getElementById('category-view'), dv=document.getElementById('detail-view'), dc=document.getElementById('detail-content'), sw=document.getElementById('searchAndResultsWrapper'), fb=document.getElementById('filterButtonsContainer');
-    const ab=document.getElementById('aboutSection'); ab.classList.add('fade-out'); setTimeout(()=>ab.classList.add('hidden'), 300);
-    cv.classList.add('hidden'); sw.classList.remove('hidden');
-    const lang=localStorage.getItem('soukiluna_lang')||'en'; const t=translations[lang];
-    if((key==='cats'||key==='dogs')&&section==='food'){ fb.classList.remove('hidden'); document.querySelectorAll('.filter-btn').forEach(b=>b.id.includes('healthcare')?b.classList.add('hidden'):b.classList.remove('hidden')); }
-    else if((key==='cats'||key==='dogs')&&section==='healthcare'){ fb.classList.remove('hidden'); document.querySelectorAll('.filter-btn').forEach(b=>b.id.includes('healthcare')?b.classList.remove('hidden'):b.classList.add('hidden')); }
-    else fb.classList.add('hidden');
-    document.getElementById('searchInput').value=''; document.getElementById('searchInfo').textContent=''; document.getElementById('searchResultsContainer').classList.remove('active'); document.getElementById('searchResultsGrid').innerHTML='';
-    const catNames={cats:{title:t.cats, theme:'orange', icon:'🐱'}, dogs:{title:t.dogs, theme:'green', icon:'🐶'}, birds:{title:t.birds, theme:'blue', icon:'🐦'}};
-    const cat=catNames[key]; let list=products[key], disp=[...list];
-    if(section) disp.sort((a,b)=>{const am=a.category===section, bm=b.category===section; return am&&!bm?-1:!am&&bm?1:0;});
-    let h=`<div class="text-center mb-12"><h2 class="text-4xl font-bold text-gray-800 mb-2">${cat.icon} ${cat.title}</h2><div class="h-1 w-20 bg-${cat.theme}-400 mx-auto rounded-full"></div><p class="text-gray-500 mt-2">${disp.length} ${t.products_available}</p></div>`;
-    h+=`<div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>`;
-    h+=`<div class="mt-8 flex justify-center"><button id="loadMoreProductsBtn" type="button" onclick="renderProductBatch(false)" class="px-6 py-3 rounded-full bg-pink-500 text-white font-bold shadow-sm hover:bg-pink-600 transition-colors hidden">${t.load_more||'Load more'}</button></div>`;
-    activeDisplayList=disp; activeDisplayCategory=key; activeProductRenderIndex=0; dc.innerHTML=h; renderProductBatch(true);
-    dv.classList.remove('hidden'); dv.style.opacity='0'; requestAnimationFrame(()=>{dv.style.opacity=''; dv.style.transition='opacity 0.3s ease';});
-    document.querySelectorAll('[data-i18n]').forEach(el=>{if(t[el.dataset.i18n]) el.innerHTML=t[el.dataset.i18n];}); window.scrollTo({top:0, behavior:'smooth'});
+currentCategory=key; currentSection=section; currentFoodFilter='all'; currentHealthcareFilter='all';
+try{ sessionStorage.setItem('soukiluna_last_view', JSON.stringify({category:key, section:section, time:Date.now()})); history.pushState({category:key, section:section}, '', '#'+key); }catch(e){}
+const cv=document.getElementById('category-view'), dv=document.getElementById('detail-view'), dc=document.getElementById('detail-content'), sw=document.getElementById('searchAndResultsWrapper'), fb=document.getElementById('filterButtonsContainer');
+const ab=document.getElementById('aboutSection'); ab.classList.add('fade-out'); setTimeout(()=>ab.classList.add('hidden'), 300);
+cv.classList.add('hidden'); sw.classList.remove('hidden');
+const lang=localStorage.getItem('soukiluna_lang')||'en'; const t=translations[lang];
+if((key==='cats'||key==='dogs')&&section==='food'){ fb.classList.remove('hidden'); document.querySelectorAll('.filter-btn').forEach(b=>b.id.includes('healthcare')?b.classList.add('hidden'):b.classList.remove('hidden')); }
+else if((key==='cats'||key==='dogs')&&section==='healthcare'){ fb.classList.remove('hidden'); document.querySelectorAll('.filter-btn').forEach(b=>b.id.includes('healthcare')?b.classList.remove('hidden'):b.classList.add('hidden')); }
+else fb.classList.add('hidden');
+document.getElementById('searchInput').value=''; document.getElementById('searchInfo').textContent=''; document.getElementById('searchResultsContainer').classList.remove('active'); document.getElementById('searchResultsGrid').innerHTML='';
+const catNames={cats:{title:t.cats, theme:'orange', icon:'🐱'}, dogs:{title:t.dogs, theme:'green', icon:'🐶'}, birds:{title:t.birds, theme:'blue', icon:'🐦'}};
+const cat=catNames[key]; let list=processedProducts[key] || products[key], disp=[...list];
+if(section) disp.sort((a,b)=>{const am=a.category===section, bm=b.category===section; return am&&!bm?-1:!am&&bm?1:0;});
+let h=`<div class="text-center mb-12"><h2 class="text-4xl font-bold text-gray-800 mb-2">${cat.icon} ${cat.title}</h2><div class="h-1 w-20 bg-${cat.theme}-400 mx-auto rounded-full"></div><p class="text-gray-500 mt-2">${disp.length} ${t.products_available}</p></div>`;
+h+=`<div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>`;
+h+=`<div class="mt-8 flex justify-center"><button id="loadMoreProductsBtn" type="button" onclick="renderProductBatch(false)" class="px-6 py-3 rounded-full bg-pink-500 text-white font-bold shadow-sm hover:bg-pink-600 transition-colors hidden">${t.load_more||'Load more'}</button></div>`;
+activeDisplayList=disp; activeDisplayCategory=key; activeProductRenderIndex=0; dc.innerHTML=h; renderProductBatch(true);
+dv.classList.remove('hidden'); dv.style.opacity='0'; requestAnimationFrame(()=>{dv.style.opacity=''; dv.style.transition='opacity 0.3s ease';});
+document.querySelectorAll('[data-i18n]').forEach(el=>{if(t[el.dataset.i18n]) el.innerHTML=t[el.dataset.i18n];}); window.scrollTo({top:0, behavior:'smooth'});
 }
 function goBack() {
-    try{ sessionStorage.removeItem('soukiluna_last_view'); }catch(e){}
-    activeDisplayList=[]; activeDisplayCategory=null; activeProductRenderIndex=0;
-    document.getElementById('detail-view').classList.add('hidden'); document.getElementById('searchAndResultsWrapper').classList.add('hidden');
-    document.getElementById('category-view').classList.remove('hidden');
-    const ab=document.getElementById('aboutSection'); ab.classList.remove('hidden','fade-out'); ab.style.opacity='0';
-    requestAnimationFrame(()=>{ ab.style.transition='opacity 0.4s ease, transform 0.4s ease'; ab.style.opacity='1'; });
-    setTimeout(()=>document.getElementById('category-view').classList.remove('fade-in'), 500);
+try{ sessionStorage.removeItem('soukiluna_last_view'); }catch(e){}
+activeDisplayList=[]; activeDisplayCategory=null; activeProductRenderIndex=0;
+document.getElementById('detail-view').classList.add('hidden'); document.getElementById('searchAndResultsWrapper').classList.add('hidden');
+document.getElementById('category-view').classList.remove('hidden');
+const ab=document.getElementById('aboutSection'); ab.classList.remove('hidden','fade-out'); ab.style.opacity='0';
+requestAnimationFrame(()=>{ ab.style.transition='opacity 0.4s ease, transform 0.4s ease'; ab.style.opacity='1'; });
+setTimeout(()=>document.getElementById('category-view').classList.remove('fade-in'), 500);
 }
 window.addEventListener('popstate', e=>{ if(!window.location.hash||window.location.hash==='#') goBack(); });
 window.addEventListener('hashchange', e=>{ if(!window.location.hash||window.location.hash==='#') goBack(); });
