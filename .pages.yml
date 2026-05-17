@@ -3,12 +3,32 @@ media:
   output: /
 
 content:
-  - name: website-pages
-    label: My Pages
-    type: collection
-    path: /
-    filename: index.html
+  - name: pet-shop
+    label: My Pet Shop Website
+    type: document
+    path: index.html
     fields:
-      - name: body
-        label: Page Content
+      - name: intro
+        label: Welcome Message & Hero Section
         type: rich-text
+
+      - name: cats_section
+        label: Cats Section (Text & Info)
+        type: rich-text
+      - name: cats_image
+        label: Cats Section Image
+        type: image
+
+      - name: dogs_section
+        label: Dogs Section (Text & Info)
+        type: rich-text
+      - name: dogs_image
+        label: Dogs Section Image
+        type: image
+
+      - name: birds_section
+        label: Birds Section (Text & Info)
+        type: rich-text
+      - name: birds_image
+        label: Birds Section Image
+        type: image
