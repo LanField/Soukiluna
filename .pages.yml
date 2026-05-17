@@ -1,1 +1,14 @@
-index.html
+media:
+  input: /
+  output: /
+
+content:
+  - name: website-pages
+    label: My Pages
+    type: collection
+    path: /
+    filename: index.html
+    fields:
+      - name: body
+        label: Page Content
+        type: rich-text
