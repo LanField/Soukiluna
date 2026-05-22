@@ -1050,5 +1050,40 @@ window.addEventListener('hashchange', e=>{ if(!window.location.hash||window.loca
 (function(){ const v=['#cats','#dogs','#birds'], h=window.location.hash; if(v.includes(h)){ try{history.replaceState({category:h.slice(1)},'',h);}catch(e){} setTimeout(()=>{try{openCategory(h.slice(1));}catch(e){}},0); return; } try{history.replaceState({home:true},'',window.location.pathname);}catch(e){} })();
 function setDryWet(type) { window._soukilunaDryWetFilter=type; if(resetProductGridForFilters()){filterProducts(); return;} document.querySelectorAll('.product-card').forEach(c=>c.classList.toggle('hidden-dw', type!=='all'&&c.getAttribute('data-subcategory')!==type)); filterProducts(); }
 </script>
+  <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const app = initializeApp({
+  apiKey: "AIzaSyDlpFemSOMCHnGCqkIMKG9e8aSw0flqLWs",
+  authDomain: "soukiluna-83104.firebaseapp.com",
+  projectId: "soukiluna-83104",
+  storageBucket: "soukiluna-83104.firebasestorage.app",
+  messagingSenderId: "970708595362",
+  appId: "1:970708595362:web:3073a9c5985665bce4ddfb"
+});
+
+const db = getFirestore(app);
+
+async function loadProductsFromFirebase() {
+  try {
+    const snap = await getDocs(collection(db, 'products'));
+    const loaded = { cats: [], dogs: [], birds: [] };
+    snap.forEach(doc => {
+      const p = doc.data();
+      if (loaded[p.animalCategory]) loaded[p.animalCategory].push(p);
+    });
+    products.cats = loaded.cats;
+    products.dogs = loaded.dogs;
+    products.birds = loaded.birds;
+    Object.assign(processedProducts, processProducts());
+    console.log('✅ Firebase products loaded:', loaded.cats.length, 'cats,', loaded.dogs.length, 'dogs,', loaded.birds.length, 'birds');
+  } catch(err) {
+    console.warn('⚠️ Firebase failed, using local data:', err);
+  }
+}
+
+loadProductsFromFirebase();
+</script>
 </body>
 </html>
