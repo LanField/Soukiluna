@@ -1085,5 +1085,57 @@ async function loadProductsFromFirebase() {
 
 loadProductsFromFirebase();
 </script>
+  <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const app = initializeApp({
+  apiKey: "AIzaSyDlpFemSOMCHnGCqkIMKG9e8aSw0flqLWs",
+  authDomain: "soukiluna-83104.firebaseapp.com",
+  projectId: "soukiluna-83104",
+  storageBucket: "soukiluna-83104.firebasestorage.app",
+  messagingSenderId: "970708595362",
+  appId: "1:970708595362:web:3073a9c5985665bce4ddfb"
+});
+
+const db = getFirestore(app);
+
+// The correct order for each category
+const catsOrder = ['hill_adult','hill_kitten','hill_ster','hill_kit_ster','hs_a1','rc_ster','rc_fit','rc_indoor','rc_kitten','rc_hairball','rc_persian','rc_hair_skin','rc_sensitive','rc_digestive','rc_savour','rc_light','rc_mother','rc_mousse','rc_ster_pouch','rc_ster_box','rc_hs_pouch','rc_hs_box','rc_inst_pouch','rc_inst_box','rc_hb_pouch','rc_hb_box','rc_kit_pouch','rc_kit_box','c32','c22','c23','c24','c25','c7','bp_sausage','bp_ss1','rc_kit_ster','own_ster','own_gf_ster','own_daily','own_fish','own_kitten','monge_ster','monge_ur','ref_ster_ch','ref_ster_fish','ref_ster_meat','ref_kit','ref_ad','ref_kit_ch','ref_ch_ad','ref_sr','rp1','ref_ur','rp2','rp3','me1','me2','s1','re_elite','pl_sauce','pl_kit','pl_bs','pl_ss','pl_at','pl_pc','pl_ds','pl_cs','eco_beef','eco_chicken','eco_fish','eco_ch_pate','eco_f_pate','eco_b_pate','eco_t_pate','diana_fish','kippy_beef','kippy_tuna','whisk_jun','whisk_fish','felix_veg','felix_jun','felix_duo','ap_liq','rok_beef','rok_fish','prem_fish','prem_beef','prem_ch','pur_mousse','pur_tuna','pur_sal','pur_mouss','pur_veg','pur_ch','simb_ch','simb_sal','simb_tuna','roy_coconut','roy_cran','roy_gins','roy_crab','roy_ch_sn','roy_sal_sn','roy_tuna_sn','roy_scal','roy_shr','bio_milk','rc_milk','bottle','vc_white','vc_dark','vc_anti','vc_nour','vc_foam','fl_det','fl_paste','gim_paste','bc_paste','ref_wipes','brush_el','brush_3in1','litter_cotton','litter_marseille','litter_vanilla','litter_lav','litter_pow','litter_uns','kif_pow','kif_lav','kif_mar','pro_lav','pro_pow','pro_mar','feeder_2in1','feeder_prog','bed_calm','bed_slipper','bed_round','bed_canijess','carrier_rigid','bag_back','carrier_top','dental_spray','dental_kit','wipes_eye','spray_anti','spray_vanilla','shamp_pooshi','perf_pooshi','litter_box','litter_box_sep','litter_box_scoop','litter_auto','carrier_vent','bag_sack','tunnel_cat','ball_inter','house_scratch','bowl_tilt','bowl_metal','fountain','laser','comb','bowtie','duck_box','salmon_oil'];
+
+const dogsOrder = ['d_acc_cage','d1','d2','d3','d4','d5','kg_b2','d_ry_jun','d_ry_multi','d_pl_ch','d_pl_ch_pup','d_pl_beef','d_mig_beef','d_mig_pate','d_mig_game','d_brit_pup','d_brit_ven','d_brit_duck','d_brit_sal','d_brit_tur','d_brit_ch','d_brit_lamb','d_rok_liver','d_rok_game','d_rok_ch','d_rok_beef','d_rok_tur','d_oscar_ch','d_oscar_beef','d_bottle','d_shamp_nour','d_foam','d_shamp_anti','d_shamp_sooth','d_shamp_dark','d_spray_anti','d_spray_vanilla','d_shamp_white','d_shamp_herm','d_dental_spray','d_dental_kit','d_brush_el','d_brush_3in1','d_sausage','d_perf_pooshi','d_shamp_pooshi','d_salmon_oil','d_opti_oil','feeder_2in1','d_feeder_prog','bed_calm','d_bed_slipper','d_bed_round','bed_canijess','bag_back','d_carrier_top','d_leash_classic','d_leash_comfort','d_ball_launch','d_leash_set','d_leash_leather','d_collar_k9','d_wipes_eye','d_carrier_vent','d_bag_sack','d_tunnel','d_bowl_tilt','d_bowl_metal','d_ball','d_choke','d_semi_choke','d_comb','d_bowtie','d_potty','d_rc_maxi_ad','d_rc_maxi_pup','d_rc_min_ad','d_rc_min_pup','d_rc_xs_pup','d_rc_min_exig','d_rc_pom','d_rc_chih','d_rc_joint','d_rc_med','d_rc_min_sauce','d_rc_min_ad_sauce','d_rc_mal','d_salmon_oil'];
+
+const birdsOrder = ['b1','b2','b3','b4','b6','b7','b9'];
+
+function sortByOrder(arr, orderArr) {
+  return arr.sort((a, b) => {
+    const ai = orderArr.indexOf(a.id);
+    const bi = orderArr.indexOf(b.id);
+    const av = ai === -1 ? 9999 : ai;
+    const bv = bi === -1 ? 9999 : bi;
+    return av - bv;
+  });
+}
+
+async function loadProductsFromFirebase() {
+  try {
+    const snap = await getDocs(collection(db, 'products'));
+    const loaded = { cats: [], dogs: [], birds: [] };
+    snap.forEach(doc => {
+      const p = doc.data();
+      if (loaded[p.animalCategory]) loaded[p.animalCategory].push(p);
+    });
+    products.cats = sortByOrder(loaded.cats, catsOrder);
+    products.dogs = sortByOrder(loaded.dogs, dogsOrder);
+    products.birds = sortByOrder(loaded.birds, birdsOrder);
+    Object.assign(processedProducts, processProducts());
+    console.log('✅ Firebase loaded:', products.cats.length, 'cats,', products.dogs.length, 'dogs,', products.birds.length, 'birds');
+  } catch(err) {
+    console.warn('⚠️ Firebase failed, using local data:', err);
+  }
+}
+
+loadProductsFromFirebase();
+</script>
 </body>
 </html>
