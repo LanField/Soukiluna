@@ -158,6 +158,22 @@ body{font-family:'DM Sans',sans-serif;background:var(--dark);color:var(--text);m
 .main-upload-preview{width:80px;height:80px;object-fit:cover;border-radius:10px;border:1px solid var(--border);flex-shrink:0;}
 .main-upload-preview-placeholder{width:80px;height:80px;border-radius:10px;border:1px solid var(--border);background:var(--dark3);display:flex;align-items:center;justify-content:center;font-size:1.75rem;flex-shrink:0;}
  
+/* GALLERY */
+.gallery-grid{display:flex;flex-wrap:wrap;gap:0.6rem;margin-bottom:0.75rem;min-height:30px;}
+.gallery-item{position:relative;width:80px;height:80px;border-radius:10px;overflow:hidden;border:1px solid var(--border);flex-shrink:0;}
+.gallery-item img{width:100%;height:100%;object-fit:cover;display:block;}
+.gallery-item-star{position:absolute;top:3px;left:3px;background:var(--pink);color:white;font-size:0.6rem;padding:1px 5px;border-radius:4px;font-weight:700;}
+.gallery-item-rm{position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:4px;background:rgba(0,0,0,0.7);border:none;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.75rem;transition:all 0.15s;}
+.gallery-item-rm:hover{background:var(--red);}
+.gallery-item-main-btn{position:absolute;bottom:3px;left:50%;transform:translateX(-50%);white-space:nowrap;background:rgba(0,0,0,0.7);border:none;color:var(--text2);font-size:0.58rem;padding:2px 5px;border-radius:4px;cursor:pointer;transition:all 0.15s;}
+.gallery-item-main-btn:hover{color:white;background:var(--pink);}
+.gallery-upload-btn{width:80px;height:80px;border-radius:10px;border:2px dashed var(--border);background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;position:relative;flex-shrink:0;}
+.gallery-upload-btn:hover{border-color:var(--pink);background:rgba(244,63,94,0.05);}
+.gallery-upload-btn input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.gallery-upload-btn span{font-size:1.4rem;display:block;}
+.gallery-upload-btn small{font-size:0.6rem;color:var(--text3);margin-top:2px;}
+.gallery-uploading-indicator{font-size:0.75rem;color:var(--amber);margin-top:0.4rem;display:none;}
+ 
 /* CONFIRM */
 .confirm-modal{position:fixed;inset:0;background:rgba(0,0,0,0.75);display:flex;align-items:center;justify-content:center;z-index:300;opacity:0;visibility:hidden;transition:all 0.2s;}
 .confirm-modal.active{opacity:1;visibility:visible;}
@@ -353,23 +369,20 @@ body{font-family:'DM Sans',sans-serif;background:var(--dark);color:var(--text);m
         </div>
       </div>
  
-      <!-- MAIN IMAGE -->
+      <!-- GALLERY -->
       <div class="form-section">
-        <div class="form-section-title">Main Product Image</div>
-        <div class="main-upload-row">
-          <div id="mainImgPreviewWrap">
-            <div class="main-upload-preview-placeholder" id="mainImgPlaceholder">🐾</div>
-          </div>
-          <div style="flex:1">
-            <div class="upload-zone" id="mainUploadZone">
-              <input type="file" accept="image/*" onchange="uploadMainImage(event)">
-              <span class="upload-zone-icon">📷</span>
-              <div class="upload-zone-text">Click or drag to upload main image</div>
-              <div class="upload-zone-hint">JPG, PNG, WEBP — uploaded to Cloudinary instantly</div>
-            </div>
-            <div class="upload-status" id="mainUploadStatus"></div>
+        <div class="form-section-title">Product Images Gallery</div>
+        <p style="font-size:0.78rem;color:var(--text2);margin-bottom:0.875rem;line-height:1.6">
+          Upload one or more images. The <span style="background:var(--pink);color:white;padding:1px 6px;border-radius:4px;font-size:0.68rem;font-weight:700">MAIN</span> badge marks the first image — shown in the product list and product page. Click <strong>Set as main</strong> on any image to change which is primary. All images are saved into the <code style="font-size:0.72rem;background:var(--dark3);padding:1px 5px;border-radius:4px">images</code> array.
+        </p>
+        <div class="gallery-grid" id="galleryGrid">
+          <div class="gallery-upload-btn" id="galleryAddBtn">
+            <input type="file" accept="image/*" multiple onchange="galleryUpload(event)">
+            <span>📷</span>
+            <small>Add images</small>
           </div>
         </div>
+        <div class="gallery-uploading-indicator" id="galleryUploading">⏳ Uploading images, please wait...</div>
       </div>
  
       <!-- VARIANTS -->
@@ -427,66 +440,99 @@ let activeTab = 'all';
 let editDocId = null;
 let toastTimer;
 let variantCount = 0;
-let mainImageUrl = '';
+let galleryImages = []; // array of URLs — index 0 is the main image
  
 // ===== CLOUDINARY UPLOAD =====
-async function uploadToCloudinary(file, statusEl, zoneEl) {
+async function uploadToCloudinary(file) {
   if (!file) return null;
   if (file.size > 10 * 1024 * 1024) { showToast('❌ Image too large. Max 10MB.', 'error'); return null; }
- 
-  zoneEl.classList.add('uploading');
-  if (statusEl) { statusEl.className = 'upload-status uploading'; statusEl.textContent = '⏳ Uploading...'; }
- 
   const fd = new FormData();
   fd.append('file', file);
   fd.append('upload_preset', CLOUDINARY_PRESET);
- 
   try {
     const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: fd });
     const data = await res.json();
-    if (data.secure_url) {
-      zoneEl.classList.remove('uploading');
-      zoneEl.classList.add('done');
-      if (statusEl) { statusEl.className = 'upload-status done'; statusEl.textContent = '✅ Uploaded successfully!'; }
-      return data.secure_url;
-    } else {
-      throw new Error(data.error?.message || 'Upload failed');
-    }
+    if (data.secure_url) return data.secure_url;
+    throw new Error(data.error?.message || 'Upload failed');
   } catch(e) {
-    zoneEl.classList.remove('uploading');
-    if (statusEl) { statusEl.className = 'upload-status error'; statusEl.textContent = '❌ ' + e.message; }
     showToast('❌ Upload failed: ' + e.message, 'error');
     return null;
   }
 }
  
-// ===== MAIN IMAGE UPLOAD =====
-window.uploadMainImage = async (event) => {
-  const file = event.target.files[0];
-  if (!file) return;
-  const zone = document.getElementById('mainUploadZone');
-  const status = document.getElementById('mainUploadStatus');
-  const url = await uploadToCloudinary(file, status, zone);
-  if (url) {
-    mainImageUrl = url;
-    const wrap = document.getElementById('mainImgPreviewWrap');
-    wrap.innerHTML = `<img src="${url}" class="main-upload-preview" style="width:80px;height:80px;object-fit:cover;border-radius:10px;border:1px solid var(--border)">`;
-    showToast('✅ Main image uploaded!', 'success');
+// ===== GALLERY =====
+function renderGallery() {
+  const grid = document.getElementById('galleryGrid');
+  const addBtn = document.getElementById('galleryAddBtn');
+  // remove all items except the add button
+  [...grid.querySelectorAll('.gallery-item')].forEach(el => el.remove());
+  galleryImages.forEach((url, i) => {
+    const div = document.createElement('div');
+    div.className = 'gallery-item';
+    div.id = 'gitem' + i;
+    div.innerHTML = `
+      <img src="${url}" onerror="this.style.opacity=0.3">
+      ${i === 0 ? '<span class="gallery-item-star">MAIN</span>' : ''}
+      <button type="button" class="gallery-item-rm" onclick="galleryRemove(${i})" title="Remove">✕</button>
+      ${i !== 0 ? `<button type="button" class="gallery-item-main-btn" onclick="gallerySetMain(${i})">Set as main</button>` : ''}`;
+    grid.insertBefore(div, addBtn);
+  });
+}
+ 
+window.galleryUpload = async (event) => {
+  const files = [...event.target.files];
+  if (!files.length) return;
+  const indicator = document.getElementById('galleryUploading');
+  indicator.style.display = 'block';
+  for (const file of files) {
+    const url = await uploadToCloudinary(file);
+    if (url) {
+      galleryImages.push(url);
+      showToast('✅ Image uploaded!', 'success');
+    }
   }
+  renderGallery();
+  indicator.style.display = 'none';
+  // reset the file input so same file can be re-selected
+  event.target.value = '';
 };
+ 
+window.galleryRemove = (i) => {
+  galleryImages.splice(i, 1);
+  renderGallery();
+};
+ 
+window.gallerySetMain = (i) => {
+  const [img] = galleryImages.splice(i, 1);
+  galleryImages.unshift(img);
+  renderGallery();
+  showToast('✅ Main image updated!', 'success');
+};
+ 
+function resetGallery(urls = []) {
+  galleryImages = [...urls];
+  renderGallery();
+}
  
 // ===== VARIANT IMAGE UPLOAD =====
 window.uploadVariantImage = async (i, event) => {
   const file = event.target.files[0];
   if (!file) return;
-  const zone = document.getElementById('vzone' + i);
   const status = document.getElementById('vstatus' + i);
-  const url = await uploadToCloudinary(file, status, zone);
+  const zone = document.getElementById('vzone' + i);
+  if (status) { status.className = 'upload-status uploading'; status.textContent = '⏳ Uploading...'; }
+  if (zone) zone.classList.add('uploading');
+  const url = await uploadToCloudinary(file);
   if (url) {
     document.getElementById('vurl' + i).value = url;
     const prev = document.getElementById('vprev' + i);
     if (prev) prev.innerHTML = `<img src="${url}" style="width:60px;height:60px;object-fit:cover;border-radius:8px;border:1px solid var(--border);display:block;margin:0 auto 0.25rem">`;
+    if (status) { status.className = 'upload-status done'; status.textContent = '✅ Uploaded!'; }
+    if (zone) { zone.classList.remove('uploading'); zone.classList.add('done'); }
     showToast('✅ Variant image uploaded!', 'success');
+  } else {
+    if (status) { status.className = 'upload-status error'; status.textContent = '❌ Failed'; }
+    if (zone) zone.classList.remove('uploading');
   }
 };
  
@@ -643,15 +689,7 @@ function getVariants() {
   }).filter(v => v.w || v.p);
 }
  
-// ===== RESET MAIN UPLOAD =====
-function resetMainUpload() {
-  mainImageUrl = '';
-  document.getElementById('mainImgPreviewWrap').innerHTML = '<div class="main-upload-preview-placeholder" id="mainImgPlaceholder">🐾</div>';
-  const zone = document.getElementById('mainUploadZone');
-  zone.classList.remove('uploading','done');
-  document.getElementById('mainUploadStatus').textContent = '';
-  document.getElementById('mainUploadStatus').className = 'upload-status';
-}
+// resetMainUpload replaced by resetGallery
  
 // ===== OPEN ADD =====
 window.openAdd = () => {
@@ -663,7 +701,7 @@ window.openAdd = () => {
   document.getElementById('fSubcategory').value = 'dry';
   document.getElementById('fType').value = 'normal';
   document.getElementById('variantsList').innerHTML = '';
-  resetMainUpload();
+  resetGallery([]);
   addVariant();
   document.getElementById('editModal').classList.add('active');
 };
@@ -683,17 +721,9 @@ window.openEdit = (id) => {
   document.getElementById('fType').value = p.type || 'normal';
   document.getElementById('fDesc').value = p.desc || '';
  
-  // Show current main image
-  mainImageUrl = p.image || '';
-  if (mainImageUrl) {
-    document.getElementById('mainImgPreviewWrap').innerHTML = `<img src="${mainImageUrl}" style="width:80px;height:80px;object-fit:cover;border-radius:10px;border:1px solid var(--border)">`;
-    const zone = document.getElementById('mainUploadZone');
-    zone.classList.remove('uploading'); zone.classList.add('done');
-    document.getElementById('mainUploadStatus').className = 'upload-status done';
-    document.getElementById('mainUploadStatus').textContent = '✅ Current image loaded';
-  } else {
-    resetMainUpload();
-  }
+  // Load existing images into gallery
+  const existingImgs = p.images?.length ? p.images : (p.image ? [p.image] : []);
+  resetGallery(existingImgs);
  
   document.getElementById('variantsList').innerHTML = '';
   const ws = p.weights?.length ? p.weights : [{ w: p.weight||'', p: p.price||0 }];
@@ -710,10 +740,11 @@ window.saveProduct = async () => {
   const weights = getVariants();
   if (!weights.length) { showToast('❌ At least one variant is required', 'error'); return; }
  
-  // Use uploaded main image or fall back to first variant image
-  const image = mainImageUrl || (weights[0]?.img || '');
-  const allImgs = [image, ...weights.map(w => w.img||'').filter(Boolean)];
+  // Build images array: gallery first, then variant images
+  const variantImgs = weights.map(w => w.img||'').filter(Boolean);
+  const allImgs = [...galleryImages, ...variantImgs];
   const images = [...new Set(allImgs.filter(Boolean))];
+  const image = images[0] || '';
  
   const data = {
     name: { en: nameEn, fr: document.getElementById('fNameFr').value.trim(), ar: document.getElementById('fNameAr').value.trim() },
