@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -219,14 +219,14 @@ border-color: #f43f5e; transform: scale(1.1); box-shadow: 0 4px 12px rgba(244,63
 <div class="flex items-center gap-3">
 <div class="language-selector" id="languageSelector">
 <button class="language-btn" id="languageBtn">
-<span id="currentLang">🇬🇧 EN</span>
+<span id="currentLang">🇫🇷 FR</span>
 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
 </svg>
 </button>
 <div class="language-dropdown">
-<div class="language-option active" data-lang="en" onclick="setLanguage('en')"><span>🇬🇧</span> English</div>
-<div class="language-option" data-lang="fr" onclick="setLanguage('fr')"><span>🇫🇷</span> Français</div>
+<div class="language-option" data-lang="en" onclick="setLanguage('en')"><span>🇬🇧</span> English</div>
+<div class="language-option active" data-lang="fr" onclick="setLanguage('fr')"><span>🇫🇷</span> Français</div>
 <div class="language-option" data-lang="ar" onclick="setLanguage('ar')" dir="rtl"><span>🇲🇦</span> العربية</div>
 </div>
 </div>
@@ -749,9 +749,9 @@ birds: [
 // ===== HELPER: GET TRANSLATED NAME =====
 function getTranslatedName(nameObj) {
 const lang = getCurrentLangSafe();
-return nameObj[lang] || nameObj.en || Object.values(nameObj)[0];
+return nameObj[lang] || nameObj.fr || Object.values(nameObj)[0];
 }
-function getCurrentLangSafe() { try{ return localStorage.getItem('soukiluna_lang')||'en'; }catch(e){ return 'en'; } }
+function getCurrentLangSafe() { try{ return localStorage.getItem('soukiluna_lang')||'fr'; }catch(e){ return 'fr'; } }
 // ===== PROCESS PRODUCTS TO GROUP VARIANTS =====
 function processProducts() {
 const processed = {};
@@ -985,7 +985,7 @@ if(activeDisplayList.length) openCategory(activeDisplayCategory, currentSection)
 }
 document.getElementById('languageBtn').addEventListener('click', e=>{ e.stopPropagation(); document.getElementById('languageSelector').classList.toggle('active'); });
 document.addEventListener('click', e=>{ if(!e.target.closest('.language-selector')) document.getElementById('languageSelector').classList.remove('active'); });
-document.addEventListener('DOMContentLoaded', ()=>{ try{ setLanguage(localStorage.getItem('soukiluna_lang')||'en'); }catch(e){ setLanguage('en'); } });
+document.addEventListener('DOMContentLoaded', ()=>{ try{ setLanguage(localStorage.getItem('soukiluna_lang')||'fr'); }catch(e){ setLanguage('fr'); } });
 // ===== SEARCH & FILTER LOGIC =====
 function setFoodFilter(type) { currentFoodFilter=type; currentHealthcareFilter='all'; document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); event.target.classList.add('active'); resetAndFilter(); }
 function setHealthcareFilter(type) { currentHealthcareFilter=type; currentFoodFilter='all'; document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); event.target.classList.add('active'); resetAndFilter(); }
@@ -994,7 +994,7 @@ function applyActiveFilters() { document.querySelectorAll('.product-card').forEa
 function productMatchesActiveView(p) { const q = document.getElementById('searchInput').value.toLowerCase().trim(); const translatedName = getTranslatedName(p.name).toLowerCase(); if(q && !translatedName.includes(q)) return false; if(currentSection==='food' && currentFoodFilter!=='all' && p.type!==currentFoodFilter) return false; if(currentSection==='healthcare' && currentHealthcareFilter!=='all' && p.subcategory!==currentHealthcareFilter) return false; if(window._soukilunaDryWetFilter && window._soukilunaDryWetFilter!=='all' && p.subcategory!==window._soukilunaDryWetFilter) return false; return true; }
 function countMatchingActiveProducts() { return activeDisplayList.filter(productMatchesActiveView).length; }
 function createProductCardHTML(product, index) {
-const lang=getCurrentLangSafe(); const t=translations[lang]||translations.en; const pid=`prod_${activeDisplayCategory||'category'}_${index}_${Math.random().toString(36).slice(2)}`;
+const lang=getCurrentLangSafe(); const t=translations[lang]||translations.fr; const pid=`prod_${activeDisplayCategory||'category'}_${index}_${Math.random().toString(36).slice(2)}`;
 window._productLookup[pid]=product;
 const dry=`<span class="text-xs font-semibold px-2 py-1 rounded-full bg-yellow-100 text-yellow-700">${t.dry_food_label||'🌾 Dry'}</span>`;
 const wet=`<span class="text-xs font-semibold px-2 py-1 rounded-full bg-blue-100 text-blue-700">${t.wet_food_label||'💧 Wet'}</span>`;
@@ -1011,9 +1011,9 @@ return `<div class="glass-card rounded-2xl p-4 shadow-sm hover:shadow-md transit
 <div class="flex items-center justify-between">${priceDisplay}${variantBadge}</div></div>`;
 }
 function updateLoadMoreButton() { const btn=document.getElementById('loadMoreProductsBtn'); if(!btn) return; let has=false; for(let i=activeProductRenderIndex;i<activeDisplayList.length;i++){ if(productMatchesActiveView(activeDisplayList[i])){has=true; break;} } btn.classList.toggle('hidden', !has); }
-function renderProductBatch(reset=false) { const grid=document.getElementById('productGrid'); if(!grid) return; if(reset){ grid.innerHTML=''; window._productLookup={}; activeProductRenderIndex=0; } let added=0; while(activeProductRenderIndex<activeDisplayList.length && added<PRODUCT_BATCH_SIZE){ const p=activeDisplayList[activeProductRenderIndex++]; if(!productMatchesActiveView(p)) continue; grid.insertAdjacentHTML('beforeend', createProductCardHTML(p, activeProductRenderIndex-1)); added++; } const t=translations[getCurrentLangSafe()]||translations.en; const tot=countMatchingActiveProducts(); if(reset&&tot===0) grid.innerHTML=`<div class="no-results"><div class="no-results-icon">🔍</div><p>${t.no_results}</p></div>`; const si=document.getElementById('searchInfo'), inp=document.getElementById('searchInput'); if(si&&inp&&inp.value.trim()){ si.textContent=t.search_results.replace('{count}',tot); si.classList.toggle('highlight', tot===0); } updateLoadMoreButton(); }
+function renderProductBatch(reset=false) { const grid=document.getElementById('productGrid'); if(!grid) return; if(reset){ grid.innerHTML=''; window._productLookup={}; activeProductRenderIndex=0; } let added=0; while(activeProductRenderIndex<activeDisplayList.length && added<PRODUCT_BATCH_SIZE){ const p=activeDisplayList[activeProductRenderIndex++]; if(!productMatchesActiveView(p)) continue; grid.insertAdjacentHTML('beforeend', createProductCardHTML(p, activeProductRenderIndex-1)); added++; } const t=translations[getCurrentLangSafe()]||translations.fr; const tot=countMatchingActiveProducts(); if(reset&&tot===0) grid.innerHTML=`<div class="no-results"><div class="no-results-icon">🔍</div><p>${t.no_results}</p></div>`; const si=document.getElementById('searchInfo'), inp=document.getElementById('searchInput'); if(si&&inp&&inp.value.trim()){ si.textContent=t.search_results.replace('{count}',tot); si.classList.toggle('highlight', tot===0); } updateLoadMoreButton(); }
 function resetProductGridForFilters() { if(!activeDisplayList.length||!document.getElementById('productGrid')) return false; renderProductBatch(true); return true; }
-function filterProducts() { const q=document.getElementById('searchInput').value.toLowerCase().trim(); const t=translations[getCurrentLangSafe()]||translations.en; const si=document.getElementById('searchInfo'), sg=document.getElementById('searchResultsGrid'), sc=document.getElementById('searchResultsContainer'); if(activeDisplayList.length && document.getElementById('productGrid')){ sc.classList.remove('active'); sg.innerHTML=''; if(si){ si.textContent=q?t.search_results.replace('{count}',countMatchingActiveProducts()):''; si.classList.remove('highlight'); } renderProductBatch(true); return; } if(!q){ document.querySelectorAll('.product-card').forEach(c=>c.classList.remove('hidden-search')); document.querySelectorAll('.section-title').forEach(s=>s.classList.remove('hidden-search')); si.textContent=''; sc.classList.remove('active'); sg.innerHTML=''; applyActiveFilters(); return; } let vis=0, html=''; document.querySelectorAll('.product-card').forEach(c=>{ const n=c.querySelector('h3').textContent.toLowerCase(), hf=c.classList.contains('hidden-filter'), hd=c.classList.contains('hidden-dw'); if(n.includes(q) && !hf && !hd){ c.classList.remove('hidden-search'); vis++; const cl=c.cloneNode(true); cl.classList.remove('hidden-search','hidden-filter','hidden-dw'); html+=cl.outerHTML; } else c.classList.add('hidden-search'); }); if(vis===0){ sg.innerHTML=`<div class="no-results"><div class="no-results-icon">🔍</div><p>${t.no_results}</p></div>`; si.innerHTML=''; si.classList.add('highlight'); sc.classList.add('active'); } else{ sg.innerHTML=html; si.textContent=t.search_results.replace('{count}',vis); si.classList.remove('highlight'); sc.classList.add('active'); } }
+function filterProducts() { const q=document.getElementById('searchInput').value.toLowerCase().trim(); const t=translations[getCurrentLangSafe()]||translations.fr; const si=document.getElementById('searchInfo'), sg=document.getElementById('searchResultsGrid'), sc=document.getElementById('searchResultsContainer'); if(activeDisplayList.length && document.getElementById('productGrid')){ sc.classList.remove('active'); sg.innerHTML=''; if(si){ si.textContent=q?t.search_results.replace('{count}',countMatchingActiveProducts()):''; si.classList.remove('highlight'); } renderProductBatch(true); return; } if(!q){ document.querySelectorAll('.product-card').forEach(c=>c.classList.remove('hidden-search')); document.querySelectorAll('.section-title').forEach(s=>s.classList.remove('hidden-search')); si.textContent=''; sc.classList.remove('active'); sg.innerHTML=''; applyActiveFilters(); return; } let vis=0, html=''; document.querySelectorAll('.product-card').forEach(c=>{ const n=c.querySelector('h3').textContent.toLowerCase(), hf=c.classList.contains('hidden-filter'), hd=c.classList.contains('hidden-dw'); if(n.includes(q) && !hf && !hd){ c.classList.remove('hidden-search'); vis++; const cl=c.cloneNode(true); cl.classList.remove('hidden-search','hidden-filter','hidden-dw'); html+=cl.outerHTML; } else c.classList.add('hidden-search'); }); if(vis===0){ sg.innerHTML=`<div class="no-results"><div class="no-results-icon">🔍</div><p>${t.no_results}</p></div>`; si.innerHTML=''; si.classList.add('highlight'); sc.classList.add('active'); } else{ sg.innerHTML=html; si.textContent=t.search_results.replace('{count}',vis); si.classList.remove('highlight'); sc.classList.add('active'); } }
 // ===== CATEGORY NAVIGATION =====
 function openCategory(key, section=null) {
 currentCategory=key; currentSection=section; currentFoodFilter='all'; currentHealthcareFilter='all';
@@ -1021,7 +1021,7 @@ try{ sessionStorage.setItem('soukiluna_last_view', JSON.stringify({category:key,
 const cv=document.getElementById('category-view'), dv=document.getElementById('detail-view'), dc=document.getElementById('detail-content'), sw=document.getElementById('searchAndResultsWrapper'), fb=document.getElementById('filterButtonsContainer');
 const ab=document.getElementById('aboutSection'); ab.classList.add('fade-out'); setTimeout(()=>ab.classList.add('hidden'), 300);
 cv.classList.add('hidden'); sw.classList.remove('hidden');
-const lang=localStorage.getItem('soukiluna_lang')||'en'; const t=translations[lang];
+const lang=localStorage.getItem('soukiluna_lang')||'fr'; const t=translations[lang];
 if((key==='cats'||key==='dogs')&&section==='food'){ fb.classList.remove('hidden'); document.querySelectorAll('.filter-btn').forEach(b=>b.id.includes('healthcare')?b.classList.add('hidden'):b.classList.remove('hidden')); }
 else if((key==='cats'||key==='dogs')&&section==='healthcare'){ fb.classList.remove('hidden'); document.querySelectorAll('.filter-btn').forEach(b=>b.id.includes('healthcare')?b.classList.remove('hidden'):b.classList.add('hidden')); }
 else fb.classList.add('hidden');
@@ -1050,91 +1050,79 @@ window.addEventListener('hashchange', e=>{ if(!window.location.hash||window.loca
 (function(){ const v=['#cats','#dogs','#birds'], h=window.location.hash; if(v.includes(h)){ try{history.replaceState({category:h.slice(1)},'',h);}catch(e){} setTimeout(()=>{try{openCategory(h.slice(1));}catch(e){}},0); return; } try{history.replaceState({home:true},'',window.location.pathname);}catch(e){} })();
 function setDryWet(type) { window._soukilunaDryWetFilter=type; if(resetProductGridForFilters()){filterProducts(); return;} document.querySelectorAll('.product-card').forEach(c=>c.classList.toggle('hidden-dw', type!=='all'&&c.getAttribute('data-subcategory')!==type)); filterProducts(); }
 </script>
-  <script type="module">
+<script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
 const app = initializeApp({
-  apiKey: "AIzaSyDlpFemSOMCHnGCqkIMKG9e8aSw0flqLWs",
-  authDomain: "soukiluna-83104.firebaseapp.com",
-  projectId: "soukiluna-83104",
-  storageBucket: "soukiluna-83104.firebasestorage.app",
-  messagingSenderId: "970708595362",
-  appId: "1:970708595362:web:3073a9c5985665bce4ddfb"
+apiKey: "AIzaSyDlpFemSOMCHnGCqkIMKG9e8aSw0flqLWs",
+authDomain: "soukiluna-83104.firebaseapp.com",
+projectId: "soukiluna-83104",
+storageBucket: "soukiluna-83104.firebasestorage.app",
+messagingSenderId: "970708595362",
+appId: "1:970708595362:web:3073a9c5985665bce4ddfb"
 });
-
 const db = getFirestore(app);
-
 async function loadProductsFromFirebase() {
-  try {
-    const snap = await getDocs(collection(db, 'products'));
-    const loaded = { cats: [], dogs: [], birds: [] };
-    snap.forEach(doc => {
-      const p = doc.data();
-      if (loaded[p.animalCategory]) loaded[p.animalCategory].push(p);
-    });
-    products.cats = loaded.cats;
-    products.dogs = loaded.dogs;
-    products.birds = loaded.birds;
-    Object.assign(processedProducts, processProducts());
-    console.log('✅ Firebase products loaded:', loaded.cats.length, 'cats,', loaded.dogs.length, 'dogs,', loaded.birds.length, 'birds');
-  } catch(err) {
-    console.warn('⚠️ Firebase failed, using local data:', err);
-  }
+try {
+const snap = await getDocs(collection(db, 'products'));
+const loaded = { cats: [], dogs: [], birds: [] };
+snap.forEach(doc => {
+const p = doc.data();
+if (loaded[p.animalCategory]) loaded[p.animalCategory].push(p);
+});
+products.cats = loaded.cats;
+products.dogs = loaded.dogs;
+products.birds = loaded.birds;
+Object.assign(processedProducts, processProducts());
+console.log('✅ Firebase products loaded:', loaded.cats.length, 'cats,', loaded.dogs.length, 'dogs,', loaded.birds.length, 'birds');
+} catch(err) {
+console.warn('⚠️ Firebase failed, using local data:', err);
 }
-
+}
 loadProductsFromFirebase();
 </script>
-  <script type="module">
+<script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
 const app = initializeApp({
-  apiKey: "AIzaSyDlpFemSOMCHnGCqkIMKG9e8aSw0flqLWs",
-  authDomain: "soukiluna-83104.firebaseapp.com",
-  projectId: "soukiluna-83104",
-  storageBucket: "soukiluna-83104.firebasestorage.app",
-  messagingSenderId: "970708595362",
-  appId: "1:970708595362:web:3073a9c5985665bce4ddfb"
+apiKey: "AIzaSyDlpFemSOMCHnGCqkIMKG9e8aSw0flqLWs",
+authDomain: "soukiluna-83104.firebaseapp.com",
+projectId: "soukiluna-83104",
+storageBucket: "soukiluna-83104.firebasestorage.app",
+messagingSenderId: "970708595362",
+appId: "1:970708595362:web:3073a9c5985665bce4ddfb"
 });
-
 const db = getFirestore(app);
-
 // The correct order for each category
 const catsOrder = ['hill_adult','hill_kitten','hill_ster','hill_kit_ster','hs_a1','rc_ster','rc_fit','rc_indoor','rc_kitten','rc_hairball','rc_persian','rc_hair_skin','rc_sensitive','rc_digestive','rc_savour','rc_light','rc_mother','rc_mousse','rc_ster_pouch','rc_ster_box','rc_hs_pouch','rc_hs_box','rc_inst_pouch','rc_inst_box','rc_hb_pouch','rc_hb_box','rc_kit_pouch','rc_kit_box','c32','c22','c23','c24','c25','c7','bp_sausage','bp_ss1','rc_kit_ster','own_ster','own_gf_ster','own_daily','own_fish','own_kitten','monge_ster','monge_ur','ref_ster_ch','ref_ster_fish','ref_ster_meat','ref_kit','ref_ad','ref_kit_ch','ref_ch_ad','ref_sr','rp1','ref_ur','rp2','rp3','me1','me2','s1','re_elite','pl_sauce','pl_kit','pl_bs','pl_ss','pl_at','pl_pc','pl_ds','pl_cs','eco_beef','eco_chicken','eco_fish','eco_ch_pate','eco_f_pate','eco_b_pate','eco_t_pate','diana_fish','kippy_beef','kippy_tuna','whisk_jun','whisk_fish','felix_veg','felix_jun','felix_duo','ap_liq','rok_beef','rok_fish','prem_fish','prem_beef','prem_ch','pur_mousse','pur_tuna','pur_sal','pur_mouss','pur_veg','pur_ch','simb_ch','simb_sal','simb_tuna','roy_coconut','roy_cran','roy_gins','roy_crab','roy_ch_sn','roy_sal_sn','roy_tuna_sn','roy_scal','roy_shr','bio_milk','rc_milk','bottle','vc_white','vc_dark','vc_anti','vc_nour','vc_foam','fl_det','fl_paste','gim_paste','bc_paste','ref_wipes','brush_el','brush_3in1','litter_cotton','litter_marseille','litter_vanilla','litter_lav','litter_pow','litter_uns','kif_pow','kif_lav','kif_mar','pro_lav','pro_pow','pro_mar','feeder_2in1','feeder_prog','bed_calm','bed_slipper','bed_round','bed_canijess','carrier_rigid','bag_back','carrier_top','dental_spray','dental_kit','wipes_eye','spray_anti','spray_vanilla','shamp_pooshi','perf_pooshi','litter_box','litter_box_sep','litter_box_scoop','litter_auto','carrier_vent','bag_sack','tunnel_cat','ball_inter','house_scratch','bowl_tilt','bowl_metal','fountain','laser','comb','bowtie','duck_box','salmon_oil'];
-
 const dogsOrder = ['d_acc_cage','d1','d2','d3','d4','d5','kg_b2','d_ry_jun','d_ry_multi','d_pl_ch','d_pl_ch_pup','d_pl_beef','d_mig_beef','d_mig_pate','d_mig_game','d_brit_pup','d_brit_ven','d_brit_duck','d_brit_sal','d_brit_tur','d_brit_ch','d_brit_lamb','d_rok_liver','d_rok_game','d_rok_ch','d_rok_beef','d_rok_tur','d_oscar_ch','d_oscar_beef','d_bottle','d_shamp_nour','d_foam','d_shamp_anti','d_shamp_sooth','d_shamp_dark','d_spray_anti','d_spray_vanilla','d_shamp_white','d_shamp_herm','d_dental_spray','d_dental_kit','d_brush_el','d_brush_3in1','d_sausage','d_perf_pooshi','d_shamp_pooshi','d_salmon_oil','d_opti_oil','feeder_2in1','d_feeder_prog','bed_calm','d_bed_slipper','d_bed_round','bed_canijess','bag_back','d_carrier_top','d_leash_classic','d_leash_comfort','d_ball_launch','d_leash_set','d_leash_leather','d_collar_k9','d_wipes_eye','d_carrier_vent','d_bag_sack','d_tunnel','d_bowl_tilt','d_bowl_metal','d_ball','d_choke','d_semi_choke','d_comb','d_bowtie','d_potty','d_rc_maxi_ad','d_rc_maxi_pup','d_rc_min_ad','d_rc_min_pup','d_rc_xs_pup','d_rc_min_exig','d_rc_pom','d_rc_chih','d_rc_joint','d_rc_med','d_rc_min_sauce','d_rc_min_ad_sauce','d_rc_mal','d_salmon_oil'];
-
 const birdsOrder = ['b1','b2','b3','b4','b6','b7','b9'];
-
 function sortByOrder(arr, orderArr) {
-  return arr.sort((a, b) => {
-    const ai = orderArr.indexOf(a.id);
-    const bi = orderArr.indexOf(b.id);
-    const av = ai === -1 ? 9999 : ai;
-    const bv = bi === -1 ? 9999 : bi;
-    return av - bv;
-  });
+return arr.sort((a, b) => {
+const ai = orderArr.indexOf(a.id);
+const bi = orderArr.indexOf(b.id);
+const av = ai === -1 ? 9999 : ai;
+const bv = bi === -1 ? 9999 : bi;
+return av - bv;
+});
 }
-
 async function loadProductsFromFirebase() {
-  try {
-    const snap = await getDocs(collection(db, 'products'));
-    const loaded = { cats: [], dogs: [], birds: [] };
-    snap.forEach(doc => {
-      const p = doc.data();
-      if (loaded[p.animalCategory]) loaded[p.animalCategory].push(p);
-    });
-    products.cats = sortByOrder(loaded.cats, catsOrder);
-    products.dogs = sortByOrder(loaded.dogs, dogsOrder);
-    products.birds = sortByOrder(loaded.birds, birdsOrder);
-    Object.assign(processedProducts, processProducts());
-    console.log('✅ Firebase loaded:', products.cats.length, 'cats,', products.dogs.length, 'dogs,', products.birds.length, 'birds');
-  } catch(err) {
-    console.warn('⚠️ Firebase failed, using local data:', err);
-  }
+try {
+const snap = await getDocs(collection(db, 'products'));
+const loaded = { cats: [], dogs: [], birds: [] };
+snap.forEach(doc => {
+const p = doc.data();
+if (loaded[p.animalCategory]) loaded[p.animalCategory].push(p);
+});
+products.cats = sortByOrder(loaded.cats, catsOrder);
+products.dogs = sortByOrder(loaded.dogs, dogsOrder);
+products.birds = sortByOrder(loaded.birds, birdsOrder);
+Object.assign(processedProducts, processProducts());
+console.log('✅ Firebase loaded:', products.cats.length, 'cats,', products.dogs.length, 'dogs,', products.birds.length, 'birds');
+} catch(err) {
+console.warn('⚠️ Firebase failed, using local data:', err);
 }
-
+}
 loadProductsFromFirebase();
 </script>
 </body>
