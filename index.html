@@ -978,14 +978,14 @@ const t = translations[lang];
 document.querySelectorAll('[data-i18n]').forEach(el=>{ if(t[el.dataset.i18n]) el.innerHTML=t[el.dataset.i18n]; });
 const si = document.getElementById('searchInput'); if(si) si.placeholder = t.search_placeholder;
 const ds = document.getElementById('dryWetSelect'); if(ds){ ds.options[0].text=t.all_food_types; ds.options[1].text=t.dry_food_opt; ds.options[2].text=t.wet_food_opt; }
-document.getElementById('languageSelector').classList.remove('active'); localStorage.setItem('soukiluna_lang', lang);
+document.getElementById('languageSelector').classList.remove('active'); localStorage.setItem('soukiluna_lang', lang); localStorage.setItem('soukiluna_lang_set', '1');
 if(document.getElementById('cartModal').classList.contains('active')) updateCartModal();
 if(activeDisplayList.length) openCategory(activeDisplayCategory, currentSection);
 } catch(e) {}
 }
 document.getElementById('languageBtn').addEventListener('click', e=>{ e.stopPropagation(); document.getElementById('languageSelector').classList.toggle('active'); });
 document.addEventListener('click', e=>{ if(!e.target.closest('.language-selector')) document.getElementById('languageSelector').classList.remove('active'); });
-document.addEventListener('DOMContentLoaded', ()=>{ try{ setLanguage(localStorage.getItem('soukiluna_lang')||'fr'); }catch(e){ setLanguage('fr'); } });
+document.addEventListener('DOMContentLoaded', ()=>{ try{ var chose=localStorage.getItem('soukiluna_lang_set'); var saved=localStorage.getItem('soukiluna_lang'); setLanguage(chose&&saved?saved:'fr'); }catch(e){ setLanguage('fr'); } });
 // ===== SEARCH & FILTER LOGIC =====
 function setFoodFilter(type) { currentFoodFilter=type; currentHealthcareFilter='all'; document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); event.target.classList.add('active'); resetAndFilter(); }
 function setHealthcareFilter(type) { currentHealthcareFilter=type; currentFoodFilter='all'; document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); event.target.classList.add('active'); resetAndFilter(); }
