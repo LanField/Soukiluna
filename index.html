@@ -460,6 +460,7 @@ let currentFoodFilter = 'all';
 let currentHealthcareFilter = 'all';
 let currentProduct = null;
 let selectedVariantIndex = 0;
+let selectedWeightIndex = 0;
 let orderAddress = {};
 let carouselIndex = 0;
 let carouselImages = [];
@@ -823,6 +824,7 @@ function changeImage(dir) { goToImage(carouselIndex + dir); }
 function showProductDetail(product) {
 currentProduct = product;
 selectedVariantIndex = 0;
+selectedWeightIndex = 0;
 document.getElementById('detailTitle').textContent = getTranslatedName(product.name);
 document.getElementById('detailDescription').innerHTML = product.desc || '';
 // Setup carousel with ALL images from all variants
@@ -866,12 +868,14 @@ const idx = carouselImages.indexOf(variant.image);
 goToImage(idx);
 }
 }
-function selectWeightVariant(index) {
-if (!currentProduct) return;
-const weights = currentProduct.weights && currentProduct.weights.length > 0 ? currentProduct.weights : [{w: currentProduct.weight, p: currentProduct.price}];
-document.querySelectorAll('.weight-btn').forEach((btn, i) => btn.classList.toggle('active', i === index));
-const selected = weights[index];
-updateVariantUI(selected);
+function selectVariant(index) {
+    if (!currentProduct || !currentProduct.variants) return;
+    selectedVariantIndex = index;
+    selectedWeightIndex = 0;
+    const weights = currentProduct.weights && currentProduct.weights.length > 0 ? currentProduct.weights : [{w: currentProduct.weight, p: currentProduct.price}];
+    document.querySelectorAll('.weight-btn').forEach((btn, i) => btn.classList.toggle('active', i === index));
+    const selected = weights[index];
+    updateVariantUI(selected);
 // 📸 DYNAMIC IMAGE SWAP FOR WEIGHTS/COLORS
 if (selected.img) {
 // If a specific color image exists, replace first slide and go to it
@@ -890,33 +894,35 @@ document.getElementById('detailPrice').textContent = `${variant.price} DH`;
 document.getElementById('detailWeight').textContent = variant.weight || variant.w;
 }
 function addToCartFromModal() {
-if (!currentProduct) return;
-let selectedData;
-if (currentProduct.hasVariants && currentProduct.variants.length > 1) {
-const variant = currentProduct.variants[selectedVariantIndex];
-const weights = variant.weightOptions;
-selectedData = {
-id: variant.id,
-name: currentProduct.name,
-image: variant.image,
-weight: weights[0].w,
-price: weights[0].p,
-quantity: 1
-};
-} else {
-const weights = currentProduct.weights && currentProduct.weights.length > 0 ? currentProduct.weights : [{w: currentProduct.weight, p: currentProduct.price}];
-const selected = weights[selectedVariantIndex] || weights[0];
-selectedData = {
-id: currentProduct.id,
-name: currentProduct.name,
-image: currentProduct.image,
-weight: selected.w,
-price: selected.p,
-quantity: 1
-};
-}
-addToCart(selectedData);
-closeProductDetail();
+    if (!currentProduct) return;
+    let selectedData;
+    if (currentProduct.hasVariants && currentProduct.variants.length > 1) {
+        const variant = currentProduct.variants[selectedVariantIndex];
+        const weights = variant.weightOptions;
+        // Use selectedWeightIndex to get the correct weight option within this variant
+        const selectedWeight = weights[selectedWeightIndex] || weights[0];
+        selectedData = {
+            id: variant.id,
+            name: currentProduct.name,
+            image: variant.image,
+            weight: selectedWeight.w,
+            price: selectedWeight.p,
+            quantity: 1
+        };
+    } else {
+        const weights = currentProduct.weights && currentProduct.weights.length > 0 ? currentProduct.weights : [{w: currentProduct.weight, p: currentProduct.price}];
+        const selected = weights[selectedWeightIndex] || weights[0];
+        selectedData = {
+            id: currentProduct.id,
+            name: currentProduct.name,
+            image: currentProduct.image,
+            weight: selected.w,
+            price: selected.p,
+            quantity: 1
+        };
+    }
+    addToCart(selectedData);
+    closeProductDetail();
 }
 function closeProductDetail(event) { if (event && event.target !== event.currentTarget) return; document.getElementById('productDetailModal').classList.remove('active'); currentProduct = null; }
 function addToCart(product) {
